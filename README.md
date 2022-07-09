@@ -77,7 +77,7 @@
   - 각자가 기간 동안 맡은 역할을 전부 수행하면, 각자 브랜치에서 develop브랜치로 Pull Request를 보냅니다.  
   **develop 브랜치로의 Pull Request는 상대방의 코드리뷰 후에 merge할 수 있습니다.**
 
-## Code Review Convention
+## 📋 Code Review Convention
 
 - P1: 꼭 반영해주세요 (Request changes)
 - P2: 적극적으로 고려해주세요 (Request changes)
