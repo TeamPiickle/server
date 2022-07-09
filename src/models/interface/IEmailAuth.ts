@@ -3,4 +3,4 @@ export default interface IEmailAuth {
   isVerified: boolean;
   expiresIn: Date;
   code?: string;
-};
+}

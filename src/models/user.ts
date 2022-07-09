@@ -1,5 +1,5 @@
-import IDocument from "./interface/Document";
-import IUser from "./interface/IUser";
+import IDocument from './interface/Document';
+import IUser from './interface/IUser';
 import { model, Schema } from 'mongoose';
 
 type UserDocument = IUser & IDocument;
@@ -7,29 +7,31 @@ type UserDocument = IUser & IDocument;
 const userSchema = new Schema<UserDocument>({
   email: {
     type: String,
-    required: true,
+    required: true
   },
   name: {
     type: String,
-    required: true,
+    required: true
   },
   nickname: {
     type: String,
-    required: true,
+    required: true
   },
   hashedPassword: {
     type: String,
-    required: true,
+    required: true
   },
   profileImageUrl: {
     type: String,
-    required: false,
+    required: false
   },
-  bookmarks: [{
-    type: Schema.Types.ObjectId,
-    required: false,
-  }]
-})
+  bookmarks: [
+    {
+      type: Schema.Types.ObjectId,
+      required: false
+    }
+  ]
+});
 
 const User = model<UserDocument>('User', userSchema);
 

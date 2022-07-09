@@ -1,4 +1,4 @@
-import { Types} from 'mongoose';
+import { Types } from 'mongoose';
 
 export default interface IBallotResult {
   ballotTopicId: Types.ObjectId;
