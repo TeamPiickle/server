@@ -12,7 +12,7 @@
 
 [API 명세서 링크](https://joyous-ghost-8c7.notion.site/API-a2efdef81ae34b9c98bcf0d96cd5dd4f)
 
-# erd 구성
+# 📋 Model Diagram
 ![image](https://user-images.githubusercontent.com/80771842/178112388-8ce96330-cae2-4169-b6de-7e66e4dac70f.png)
 
 
@@ -23,19 +23,21 @@
 - 반영사항을 바로 확인할 수 있도록 작은 기능 하나라도 구현되면 커밋을 권장합니다.
 - 기능 구현이 완벽하지 않을 땐, 각자 브랜치에 커밋을 해주세요.
 
-### 커밋 메시지 태그 모음
+### 📌 Commit Convention
 
-```
-- feat: 새로운 기능 추가
-- fix: 버그 수정
-- chore: 짜잘한 수정.
-- docs: 문서 수정
-- init: 초기 설정
-- test: 테스트 코드, 리펙토링 테스트 코드 추가
-- rename: 파일 혹은 폴더명을 수정하거나 옮기는 작업만인 경우
-- style: 코드 포맷팅, 세미콜론 누락, 코드 변경이 없는 경우
-- refactor: 코드 리팩토링
-```
+**[태그] 제목의 형태**
+
+| 태그 이름| 설명 |
+| :--: | :-----: |
+| feat | 새로운 기능을 추가할 경우 |
+| fix | 버그를 고친 경우 |
+| chore | 짜잘한 수정 |
+| docs | 문서 수정 |
+| init | 초기 설정 |
+| test | 테스트 코드, 리펙토링 테스트 코드 추가 |
+| rename | 파일 혹은 폴더명을 수정하거나 옮기는 작업인 경우 |
+| style | 코드 포맷팅, 세미콜론 누락, 코드 변경이 없는 경우 |
+| refactor | 코드 리팩토링 |
 
 ### **커밋 타입**
 
@@ -88,6 +90,27 @@
 - D-N (Within N days)
 
 “Working Day 기준으로 N일 이내에 리뷰해 주세요”
+
+### 🙋🏻‍♀️ 담당
+<details>
+<summary>DB 설계</summary>
+<div markdown="1">  
+ 
+| 기능명 | 담당자 | 완료 여부 |
+| :-----: | :---: | :---: |
+ 
+</div>
+</details>
+
+<details>
+<summary>api 구현</summary>
+<div markdown="1">  
+
+| 기능명 | 담당자 | 완료 여부 |
+| :-----: | :---: | :---: |
+
+</div>
+</details>
 
 # Developers
 | 윤가영 | 이동현 | 최승빈 |
