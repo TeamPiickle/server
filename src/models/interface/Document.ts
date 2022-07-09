@@ -1,5 +1,7 @@
+import { Types } from 'mongoose';
+
 interface IDocument {
-  _id: string;
+  _id: Types.ObjectId;
   createdAt?: Date;
   updatedAt?: Date;
 }
