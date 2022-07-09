@@ -25,12 +25,14 @@ const userSchema = new Schema<UserDocument>({
     type: String,
     required: false
   },
-  bookmarks: [
-    {
-      type: Schema.Types.ObjectId,
-      required: false
-    }
-  ]
+  createdAt: {
+    type: Date,
+    default: Date.now
+  },
+  updatedAt: {
+    type: Date,
+    default: Date.now
+  }
 });
 
 const User = model<UserDocument>('User', userSchema);

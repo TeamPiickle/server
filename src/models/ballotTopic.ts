@@ -8,14 +8,6 @@ const ballotTopicSchema = new Schema<BallotTopicDocument>({
   topic: {
     type: String,
     required: true
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now
-  },
-  updatedAt: {
-    type: Date,
-    default: Date.now
   }
 });
 
