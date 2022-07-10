@@ -1,5 +1,4 @@
 on:
-  pull_request:
   issues:
     types: [opened, reopened, closed, deleted]
 jobs:
