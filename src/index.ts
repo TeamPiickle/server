@@ -1,11 +1,19 @@
-import express, { Request, Response, NextFunction } from 'express';
-const app = express();
+import express, { Request, Response } from 'express';
 import connectDB from './loaders/db';
 import routes from './routes';
 import helmet from 'helmet';
-require('dotenv').config();
+import config from './config';
 
-connectDB();
+const app = express();
+
+connectDB()
+  .then(() => {
+    console.log('db connected successfully.');
+  })
+  .catch(err => {
+    console.error(err);
+    process.exit(1);
+  });
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -19,12 +27,7 @@ interface ErrorType {
   status: number;
 }
 
-app.use(function (
-  err: ErrorType,
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
+app.use(function (err: ErrorType, req: Request, res: Response) {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'production' ? err : {};
 
@@ -34,10 +37,10 @@ app.use(function (
 });
 
 app
-  .listen(process.env.PORT, () => {
+  .listen(config.port, () => {
     console.log(`
     ################################################
-          🛡️  Server listening on port 🛡️
+          🛡️  Server listening on port ${config.port} 🛡️
     ################################################
   `);
   })
