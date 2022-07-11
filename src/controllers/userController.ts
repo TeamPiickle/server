@@ -65,5 +65,4 @@ const loginUser = async (req: Request, res: Response, next: NextFunction) => {
     next(err);
   }
 };
-
 export default { postUser, loginUser };
