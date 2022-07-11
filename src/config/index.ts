@@ -17,6 +17,12 @@ export default {
   port: parseInt(process.env.PORT as string, 10),
 
   /**
+   * jwt
+   */
+  jwtSecret: process.env.JWT_SECRET as string,
+  jwtAlgo: process.env.JWT_ALGO as string,
+
+  /**
    * MongoDB URI
    */
   mongoURI: process.env.MONGODB_URI as string,
