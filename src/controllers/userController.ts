@@ -1,4 +1,4 @@
-import { Response } from 'express';
+import { NextFunction, Response } from 'express';
 import Request from '../intefaces/common';
 import CreateUserCommand from '../intefaces/createUserCommand';
 import message from '../modules/responseMessage';
@@ -11,35 +11,19 @@ import { UserService } from '../services';
  *  @desc 회원가입 api
  *  @access Public
  */
-const postUser = async (req: Request<CreateUserCommand>, res: Response) => {
+const postUser = async (
+  req: Request<CreateUserCommand>,
+  res: Response,
+  next: NextFunction
+): Promise<void | Response> => {
   try {
-    const { name, email, password, nickname } = req.body;
-    if (!name || !email || !password || !nickname) {
-      res
-        .status(statusCode.BAD_REQUEST)
-        .send(util.fail(statusCode.BAD_REQUEST, message.NULL_VALUE));
-      return;
-    }
-    const createUserCommand: CreateUserCommand = {
-      name,
-      email,
-      password,
-      nickname
-    };
+    const createUserCommand: CreateUserCommand = req.body;
     await UserService.createUser(createUserCommand);
-    res
+    return res
       .status(statusCode.CREATED)
       .send(util.success(statusCode.CREATED, message.USER_CREATED));
   } catch (err) {
-    console.log(err);
-    res
-      .status(statusCode.INTERNAL_SERVER_ERROR)
-      .send(
-        util.fail(
-          statusCode.INTERNAL_SERVER_ERROR,
-          message.INTERNAL_SERVER_ERROR
-        )
-      );
+    next(err);
   }
 };
 
