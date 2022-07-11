@@ -89,4 +89,30 @@ const getUserProfile = async (
     next(err);
   }
 };
-export default { postUser, loginUser, getUserProfile };
+
+/**
+ *  @route patch /users
+ *  @desc 유저 프로필 조회
+ *  @access
+ */
+const updateUserNickname = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const error = validationResult(req);
+  if (!error.isEmpty) {
+    throw new IllegalArgumentException('필요한 값이 없습니다.');
+  }
+  const userId = req.body.user.id;
+  const nickname: string = req.body.nickname;
+  try {
+    await UserService.updateNickname(userId, nickname);
+    return res
+      .status(statusCode.OK)
+      .send(util.success(statusCode.OK, message.USER_NICKNAME_UPDATE_SUCCESS));
+  } catch (err) {
+    next(err);
+  }
+};
+export default { postUser, loginUser, getUserProfile, updateUserNickname };

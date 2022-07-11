@@ -68,4 +68,16 @@ const findUserById = async (
   };
   return userProfileResponseDto;
 };
-export default { createUser, loginUser, findUserById };
+
+const updateNickname = async (userId: string, nickname: string) => {
+  const user = await User.findById(userId);
+  if (!user) {
+    throw new IllegalArgumentException('존재하지 않는 사용자 입니다.');
+  }
+
+  await user.updateOne({
+    nickname: nickname
+  });
+};
+
+export default { createUser, loginUser, findUserById, updateNickname };
