@@ -31,7 +31,7 @@ const createUser = async (command: CreateUserCommand) => {
 
 const loginUser = async (
   userLoginDto: UserLoginDto
-): Promise<PostBaseResponseDto | null> => {
+): Promise<PostBaseResponseDto> => {
   const user = await User.findOne({
     email: userLoginDto.email
   });

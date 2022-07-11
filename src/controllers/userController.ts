@@ -50,7 +50,9 @@ const loginUser = async (req: Request, res: Response, next: NextFunction) => {
 
   const userLoginDto: UserLoginDto = req.body;
   try {
-    const result = await UserService.loginUser(userLoginDto);
+    const result: PostBaseResponseDto = await UserService.loginUser(
+      userLoginDto
+    );
     const accessToken = getToken((result as PostBaseResponseDto)._id);
     const data = {
       _id: (result as PostBaseResponseDto)._id,
