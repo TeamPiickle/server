@@ -10,7 +10,10 @@ const message = {
   //카테고리
   READ_CATEGORY_SUCCESS: '카테고리 종류 읽어오기 성공',
   USER_LOGIN_SUCCESS: '로그인 성공',
-  EXPIRED_TOKEN: '만료된 토큰입니다.'
+  EXPIRED_TOKEN: '만료된 토큰입니다.',
+
+  // 투표
+  BALLOT_RESULT_CREATED: '투표 성공'
 };
 
 export default message;
