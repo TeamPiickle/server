@@ -80,7 +80,6 @@ const getUserProfile = async (
   const userId = req.body.user.id;
   try {
     const data: UserProfileResponseDto = await UserService.findUserById(userId);
-    console.log(data);
     return res
       .status(statusCode.OK)
       .send(
