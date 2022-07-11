@@ -13,3 +13,4 @@ export class PiickleException extends Error {
 }
 
 export class IllegalArgumentException extends PiickleException {}
+export class NullDataException extends PiickleException {}

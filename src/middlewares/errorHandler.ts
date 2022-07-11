@@ -20,6 +20,11 @@ export default (
         .status(statusCode.BAD_REQUEST)
         .send(util.fail(statusCode.BAD_REQUEST, message.NULL_VALUE));
     }
+    if (err instanceof NullDataException) {
+      return res
+        .status(statusCode.NO_CONTENT)
+        .send(util.fail(statusCode.NO_CONTENT, err.message));
+    }
     return res
       .status(statusCode.BAD_REQUEST)
       .send(util.fail(statusCode.BAD_REQUEST, err.message));
