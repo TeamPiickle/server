@@ -18,7 +18,6 @@ router.post(
 
 router.post(
   '/login',
-  auth,
   [body('email').notEmpty(), body('password').notEmpty()],
   UserController.loginUser
 );
