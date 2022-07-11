@@ -11,6 +11,8 @@ import statusCode from '../modules/statusCode';
 import util from '../modules/util';
 import { UserService } from '../services';
 import { UserProfileResponseDto } from '../intefaces/user/UserProfileResponseDto';
+import { JwtPayloadInfo } from '../intefaces/JwtPayloadInfo';
+import { UserUpdateNicknameDto } from '../intefaces/user/UserUpdateNicknameDto';
 
 /**
  *  @route /users
@@ -43,14 +45,12 @@ const postUser = async (
  *  @access Public
  */
 const loginUser = async (req: Request, res: Response, next: NextFunction) => {
-  const error = validationResult(req);
-
-  if (!error.isEmpty) {
-    throw new IllegalArgumentException('필요한 값이 없습니다.');
-  }
-
-  const userLoginDto: UserLoginDto = req.body;
   try {
+    const error = validationResult(req);
+    if (!error.isEmpty()) {
+      throw new IllegalArgumentException('필요한 값이 없습니다.');
+    }
+    const userLoginDto: UserLoginDto = req.body;
     const result: PostBaseResponseDto = await UserService.loginUser(
       userLoginDto
     );
@@ -96,17 +96,18 @@ const getUserProfile = async (
  *  @access
  */
 const updateUserNickname = async (
-  req: Request,
+  req: Request<UserUpdateNicknameDto>,
   res: Response,
   next: NextFunction
 ) => {
-  const error = validationResult(req);
-  if (!error.isEmpty) {
-    throw new IllegalArgumentException('필요한 값이 없습니다.');
-  }
-  const userId = req.body.user.id;
-  const nickname: string = req.body.nickname;
   try {
+    const error = validationResult(req);
+    if (!error.isEmpty()) {
+      throw new IllegalArgumentException('필요한 값이 없습니다.');
+    }
+    console.log(req.body);
+    const userId = req.body.user.id;
+    const nickname: string = req.body.nickname;
     await UserService.updateNickname(userId, nickname);
     return res
       .status(statusCode.OK)
