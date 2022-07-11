@@ -14,10 +14,12 @@ export default {
   /**
    * Your favorite port
    */
-  port: parseInt(process.env.PORT as string, 10) as number,
+  port: parseInt(process.env.PORT as string, 10),
 
   /**
    * MongoDB URI
    */
-  mongoURI: process.env.MONGODB_URI as string
+  mongoURI: process.env.MONGODB_URI as string,
+
+  defaultProfileImgUrl: process.env.DEFAULT_PROFILE_IMG_URL as string
 };
