@@ -1,8 +1,15 @@
 import { hashSync } from 'bcrypt';
+import { compare } from 'bcrypt';
 import config from '../config';
 import CreateUserCommand from '../intefaces/createUserCommand';
 import User from '../models/user';
-import { IllegalArgumentException } from '../intefaces/common';
+import {
+  IllegalArgumentException,
+  InternalAuthenticationServiceException,
+  BadCredentialException
+} from '../intefaces/common';
+import { UserLoginDto } from '../intefaces/UserLoginDto';
+import { PostBaseResponseDto } from '../intefaces/PostBaseResponseDto';
 
 const createUser = async (command: CreateUserCommand) => {
   const alreadyUser = await User.findOne({
@@ -22,4 +29,28 @@ const createUser = async (command: CreateUserCommand) => {
   await user.save();
 };
 
-export default { createUser };
+const loginUser = async (
+  userLoginDto: UserLoginDto
+): Promise<PostBaseResponseDto> => {
+  const user = await User.findOne({
+    email: userLoginDto.email
+  });
+
+  if (!user) {
+    throw new InternalAuthenticationServiceException(
+      '존재하지 않는 email 입니다.'
+    );
+  }
+
+  const isMatch = await compare(user.hashedPassword, userLoginDto.password);
+  if (!isMatch) {
+    throw new BadCredentialException('비밀번호가 일치하지 않습니다.');
+  }
+
+  const data = {
+    _id: user._id
+  };
+  return data;
+};
+
+export default { createUser, loginUser };
