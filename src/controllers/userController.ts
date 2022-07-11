@@ -3,13 +3,14 @@ import { validationResult } from 'express-validator';
 import Request, { IllegalArgumentException } from '../intefaces/common';
 import CreateUserCommand from '../intefaces/createUserCommand';
 import { PostBaseResponseDto } from '../intefaces/PostBaseResponseDto';
-import { UserLoginDto } from '../intefaces/UserLoginDto';
+import { UserLoginDto } from '../intefaces/user/UserLoginDto';
 import User from '../models/user';
 import getToken from '../modules/jwtHandler';
 import message from '../modules/responseMessage';
 import statusCode from '../modules/statusCode';
 import util from '../modules/util';
 import { UserService } from '../services';
+import { UserProfileResponseDto } from '../intefaces/user/UserProfileResponseDto';
 
 /**
  *  @route /users
@@ -65,4 +66,27 @@ const loginUser = async (req: Request, res: Response, next: NextFunction) => {
     next(err);
   }
 };
-export default { postUser, loginUser };
+
+/**
+ *  @route get /users
+ *  @desc 유저 프로필 조회
+ *  @access
+ */
+const getUserProfile = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const userId = req.body.user.id;
+  try {
+    const data: UserProfileResponseDto = await UserService.findUserById(userId);
+    return res
+      .status(statusCode.OK)
+      .send(
+        util.success(statusCode.OK, message.USER_PROFILE_VIEW_SUCCESS, data)
+      );
+  } catch (err) {
+    next(err);
+  }
+};
+export default { postUser, loginUser, getUserProfile };

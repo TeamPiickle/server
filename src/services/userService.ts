@@ -8,8 +8,9 @@ import {
   InternalAuthenticationServiceException,
   BadCredentialException
 } from '../intefaces/common';
-import { UserLoginDto } from '../intefaces/UserLoginDto';
+import { UserLoginDto } from '../intefaces/user/UserLoginDto';
 import { PostBaseResponseDto } from '../intefaces/PostBaseResponseDto';
+import { UserProfileResponseDto } from '../intefaces/user/UserProfileResponseDto';
 
 const createUser = async (command: CreateUserCommand) => {
   const alreadyUser = await User.findOne({
@@ -41,7 +42,6 @@ const loginUser = async (
       '존재하지 않는 email 입니다.'
     );
   }
-
   const isMatch = await compare(userLoginDto.password, user.hashedPassword);
   if (!isMatch) {
     throw new BadCredentialException('비밀번호가 일치하지 않습니다.');
@@ -53,4 +53,19 @@ const loginUser = async (
   return data;
 };
 
-export default { createUser, loginUser };
+const findUserById = async (
+  userId: String
+): Promise<UserProfileResponseDto> => {
+  const user = await User.findById(userId);
+  if (!user) {
+    throw new IllegalArgumentException('존재하지 않는 유저 입니다.');
+  }
+  const userProfileResponseDto: UserProfileResponseDto = {
+    name: user.name,
+    nickname: user.nickname,
+    email: user.email,
+    profileImageUrl: user.profileImageUrl
+  };
+  return userProfileResponseDto;
+};
+export default { createUser, loginUser, findUserById };
