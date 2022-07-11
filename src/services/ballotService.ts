@@ -7,7 +7,7 @@ import { BallotResult } from '../models/ballotResult';
 const createBallotResult = async (command: CreateBallotResultDto) => {
   const alreadyBallotResult = await BallotResult.findOne({
     ballotTopicId: command.ballotTopicId,
-    userId: command.userId
+    userId: command.user.id
   });
 
   if (alreadyBallotResult) {
@@ -24,7 +24,7 @@ const createBallotResult = async (command: CreateBallotResultDto) => {
   const newBallot = new BallotResult({
     ballotTopicId: ballotItem.ballotTopicId,
     ballotItemId: ballotItem._id,
-    userId: command.userId
+    userId: command.user.id
   });
   
   await newBallot.save();
