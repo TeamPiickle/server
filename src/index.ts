@@ -3,6 +3,7 @@ import connectDB from './loaders/db';
 import routes from './routes';
 import helmet from 'helmet';
 import config from './config';
+import errorHandler from './middlewares/errorHandler';
 
 const app = express();
 
@@ -22,19 +23,7 @@ app.use(helmet());
 app.use(routes); //라우터
 // error handler
 
-interface ErrorType {
-  message: string;
-  status: number;
-}
-
-app.use(function (err: ErrorType, req: Request, res: Response) {
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'production' ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
-});
+app.use(errorHandler);
 
 app
   .listen(config.port, () => {
