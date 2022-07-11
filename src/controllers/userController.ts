@@ -1,6 +1,6 @@
 import { NextFunction, Response } from 'express';
 import { validationResult } from 'express-validator';
-import Request, { PiickleError } from '../intefaces/common';
+import Request, { IllegalArgumentException } from '../intefaces/common';
 import CreateUserCommand from '../intefaces/createUserCommand';
 import message from '../modules/responseMessage';
 import statusCode from '../modules/statusCode';
@@ -20,7 +20,7 @@ const postUser = async (
   try {
     const error = validationResult(req);
     if (!error.isEmpty()) {
-      throw new PiickleError('필요한 값이 없습니다.');
+      throw new IllegalArgumentException('필요한 값이 없습니다.');
     }
     const createUserCommand: CreateUserCommand = req.body;
     await UserService.createUser(createUserCommand);

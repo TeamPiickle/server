@@ -1,5 +1,9 @@
 import { NextFunction, Response } from 'express';
-import Request, { PiickleError } from '../intefaces/common';
+import Request, {
+  IllegalArgumentException,
+  PiickleException
+} from '../intefaces/common';
+import message from '../modules/responseMessage';
 import statusCode from '../modules/statusCode';
 import util from '../modules/util';
 
@@ -10,7 +14,12 @@ export default (
   next: NextFunction
 ): void | Response => {
   console.log(err);
-  if (err instanceof PiickleError) {
+  if (err instanceof PiickleException) {
+    if (err instanceof IllegalArgumentException) {
+      return res
+        .status(statusCode.BAD_REQUEST)
+        .send(util.fail(statusCode.BAD_REQUEST, message.NULL_VALUE));
+    }
     return res
       .status(statusCode.BAD_REQUEST)
       .send(util.fail(statusCode.BAD_REQUEST, err.message));
