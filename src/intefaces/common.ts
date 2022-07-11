@@ -17,3 +17,4 @@ export class IllegalArgumentException extends PiickleException {}
 export class NullDataException extends PiickleException {}
 export class BadCredentialException extends PiickleException {}
 export class InternalAuthenticationServiceException extends PiickleException {}
+export class DuplicateException extends PiickleException {}

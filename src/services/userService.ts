@@ -6,7 +6,8 @@ import User from '../models/user';
 import {
   IllegalArgumentException,
   InternalAuthenticationServiceException,
-  BadCredentialException
+  BadCredentialException,
+  DuplicateException
 } from '../intefaces/common';
 import { UserLoginDto } from '../intefaces/user/UserLoginDto';
 import { PostBaseResponseDto } from '../intefaces/PostBaseResponseDto';
@@ -73,6 +74,14 @@ const updateNickname = async (userId: string, nickname: string) => {
   const user = await User.findById(userId);
   if (!user) {
     throw new IllegalArgumentException('존재하지 않는 사용자 입니다.');
+  }
+
+  const alreadyUseNickname = await User.findOne({
+    nickname: nickname
+  });
+
+  if (alreadyUseNickname) {
+    throw new DuplicateException('이미 사용중인 닉네임 입니다.');
   }
 
   await user.updateOne({
