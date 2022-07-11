@@ -8,7 +8,7 @@ const message = {
   INTERNAL_SERVER_ERROR: '서버 내부 오류',
 
   //카테고리
-  READ_CATEGORY_SUCCESS: '카테고리 종류 읽어오기 성공'
+  READ_CATEGORY_SUCCESS: '카테고리 종류 읽어오기 성공',
   USER_LOGIN_SUCCESS: '로그인 성공',
   EXPIRED_TOKEN: '만료된 토큰입니다.'
 };
