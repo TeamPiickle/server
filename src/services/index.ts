@@ -1,2 +1,3 @@
 import UserService from './userService';
-export { UserService };
+import CategoryService from './CategoryService';
+export { UserService, CategoryService };
