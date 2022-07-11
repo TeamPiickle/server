@@ -23,5 +23,11 @@ router.post(
 );
 
 router.get('', auth, UserController.getUserProfile);
+router.patch(
+  '/nickname',
+  [body('nickname').notEmpty()],
+  auth,
+  UserController.updateUserNickname
+);
 
 export default router;
