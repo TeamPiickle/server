@@ -1,6 +1,8 @@
 import { NextFunction, Response } from 'express';
 import Request, {
   IllegalArgumentException,
+  BadCredentialException,
+  InternalAuthenticationServiceException,
   PiickleException
 } from '../intefaces/common';
 import message from '../modules/responseMessage';
@@ -19,6 +21,16 @@ export default (
       return res
         .status(statusCode.BAD_REQUEST)
         .send(util.fail(statusCode.BAD_REQUEST, message.NULL_VALUE));
+    }
+    if (err instanceof BadCredentialException) {
+      return res
+        .status(statusCode.UNAUTHORIZED)
+        .send(util.fail(statusCode.UNAUTHORIZED, err.message));
+    }
+    if (err instanceof InternalAuthenticationServiceException) {
+      return res
+        .status(statusCode.UNAUTHORIZED)
+        .send(util.fail(statusCode.UNAUTHORIZED, err.message));
     }
     return res
       .status(statusCode.BAD_REQUEST)
