@@ -1,2 +1,2 @@
-//service index file
-export {};
+import UserService from './userService';
+export { UserService };
