@@ -15,10 +15,9 @@ import { CategoryService } from '../services';
 const getCategory = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const data = await CategoryService.getCategory();
-    if (!data)
-      res
-        .status(statusCode.NO_CONTENT)
-        .send(util.fail(statusCode.NO_CONTENT, message.NOT_FOUND));
+    if (!data) {
+      throw new NullDataException('데이터가 없습니다.');
+    }
 
     res
       .status(statusCode.OK)
