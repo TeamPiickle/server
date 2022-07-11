@@ -1,3 +1,4 @@
 import UserService from './userService';
 import CategoryService from './CategoryService';
-export { UserService, CategoryService };
+import BallotService from './ballotService';
+export { UserService, CategoryService, BallotService };
