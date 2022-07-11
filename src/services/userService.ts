@@ -42,7 +42,7 @@ const loginUser = async (
     );
   }
 
-  const isMatch = await compare(user.hashedPassword, userLoginDto.password);
+  const isMatch = await compare(userLoginDto.password, user.hashedPassword);
   if (!isMatch) {
     throw new BadCredentialException('비밀번호가 일치하지 않습니다.');
   }

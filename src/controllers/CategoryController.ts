@@ -1,6 +1,6 @@
 import { NextFunction, Response } from 'express';
 import { validationResult } from 'express-validator';
-import Request, { IllegalArgumentException } from '../intefaces/common';
+import Request, { NullDataException } from '../intefaces/common';
 import CategoryResponseDto from '../intefaces/CategoryResponseDto';
 import message from '../modules/responseMessage';
 import statusCode from '../modules/statusCode';
