@@ -13,7 +13,19 @@ import { UserService } from '../services';
  */
 const postUser = async (req: Request<CreateUserCommand>, res: Response) => {
   try {
-    const createUserCommand: CreateUserCommand = req.body;
+    const { name, email, password, nickname } = req.body;
+    if (!name || !email || !password || !nickname) {
+      res
+        .status(statusCode.BAD_REQUEST)
+        .send(util.fail(statusCode.BAD_REQUEST, message.NULL_VALUE));
+      return;
+    }
+    const createUserCommand: CreateUserCommand = {
+      name,
+      email,
+      password,
+      nickname
+    };
     await UserService.createUser(createUserCommand);
     res
       .status(statusCode.CREATED)
