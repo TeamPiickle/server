@@ -6,7 +6,7 @@ import message from '../modules/responseMessage';
 import util from '../modules/util';
 
 export default (req: Request, res: Response, next: NextFunction) => {
-  const token = req.headers['authorization']?.split(' ').reverse()[0];
+  const token = req.header('x-auth-token')?.split(' ').reverse()[0];
 
   if (!token) {
     return res
@@ -23,7 +23,7 @@ export default (req: Request, res: Response, next: NextFunction) => {
     if (error.name == 'TokenExpiredError') {
       return res
         .status(statusCode.UNAUTHORIZED)
-        .send(util.fail(statusCode.UNAUTHORIZED, message.NULL_VALUE_TOKEN));
+        .send(util.fail(statusCode.UNAUTHORIZED, message.EXPIRED_TOKEN));
     }
     return res
       .status(statusCode.INTERNAL_SERVER_ERROR)

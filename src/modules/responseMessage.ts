@@ -5,7 +5,8 @@ const message = {
   NOT_FOUND: '존재하지 않는 자원',
   BAD_REQUEST: '잘못된 요청',
   INTERNAL_SERVER_ERROR: '서버 내부 오류',
-  USER_LOGIN_SUCCESS: '로그인 성공'
+  USER_LOGIN_SUCCESS: '로그인 성공',
+  EXPIRED_TOKEN: '만료된 토큰입니다.'
 };
 
 export default message;
