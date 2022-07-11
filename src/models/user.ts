@@ -4,37 +4,34 @@ import { model, Schema } from 'mongoose';
 
 type UserDocument = IUser & IDocument;
 
-const userSchema = new Schema<UserDocument>({
-  email: {
-    type: String,
-    required: true
+const userSchema = new Schema<UserDocument>(
+  {
+    email: {
+      type: String,
+      required: true
+    },
+    name: {
+      type: String,
+      required: true
+    },
+    nickname: {
+      type: String,
+      required: true
+    },
+    hashedPassword: {
+      type: String,
+      required: true
+    },
+    profileImageUrl: {
+      type: String,
+      required: false
+    },
+    bookmarkIdList: [Schema.Types.ObjectId]
   },
-  name: {
-    type: String,
-    required: true
-  },
-  nickname: {
-    type: String,
-    required: true
-  },
-  hashedPassword: {
-    type: String,
-    required: true
-  },
-  profileImageUrl: {
-    type: String,
-    required: false
-  },
-  bookmarkIdList: [Schema.Types.ObjectId],
-  createdAt: {
-    type: Date,
-    default: Date.now
-  },
-  updatedAt: {
-    type: Date,
-    default: Date.now
+  {
+    timestamps: true
   }
-});
+);
 
 const User = model<UserDocument>('User', userSchema);
 
