@@ -1,5 +1,6 @@
 import { NextFunction, Response } from 'express';
-import Request from '../intefaces/common';
+import { validationResult } from 'express-validator';
+import Request, { PiickleError } from '../intefaces/common';
 import CreateUserCommand from '../intefaces/createUserCommand';
 import message from '../modules/responseMessage';
 import statusCode from '../modules/statusCode';
@@ -17,6 +18,10 @@ const postUser = async (
   next: NextFunction
 ): Promise<void | Response> => {
   try {
+    const error = validationResult(req);
+    if (!error.isEmpty()) {
+      throw new PiickleError('필요한 값이 없습니다.');
+    }
     const createUserCommand: CreateUserCommand = req.body;
     await UserService.createUser(createUserCommand);
     return res
