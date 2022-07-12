@@ -18,6 +18,7 @@ const postBallotResult = async (
 ): Promise<void | Response> => {
   try {
     const command: CreateBallotResultDto = req.body;
+    command.userId = req.user.id;
     await BallotService.createBallotResult(command);
     return res
       .status(statusCode.CREATED)
