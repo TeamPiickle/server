@@ -31,29 +31,19 @@ const getCategory = async (req: Request, res: Response, next: NextFunction) => {
  *  @desc Get Category Card
  *  @access Public
  */
-const getCards = async (req: Request, res: Response) => {
+const getCards = async (req: Request, res: Response, next: NextFunction) => {
   const { categoryId } = req.params;
 
   try {
     const data = await CategoryService.getCards(categoryId);
-    if (!data)
-      res
-        .status(statusCode.NOT_FOUND)
-        .send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
-
+    if (!data) {
+      throw new NullDataException('데이터가 없습니다.');
+    }
     res
       .status(statusCode.OK)
       .send(util.success(statusCode.OK, message.READ_CARD_SUCCESS, data));
   } catch (error) {
-    console.log(error);
-    res
-      .status(statusCode.INTERNAL_SERVER_ERROR)
-      .send(
-        util.fail(
-          statusCode.INTERNAL_SERVER_ERROR,
-          message.INTERNAL_SERVER_ERROR
-        )
-      );
+    next(error);
   }
 };
 

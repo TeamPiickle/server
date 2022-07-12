@@ -15,15 +15,10 @@ const getCategory = async (): Promise<Array<object> | null> => {
 const getCards = async (
   categoryId: string
 ): Promise<Array<CategoryResponseDto[]> | null> => {
-  try {
-    const cards = await Category.findById(categoryId);
-    if (!cards) return null;
-    console.log(cards);
-    return cards;
-  } catch (error) {
-    console.log(error);
-    throw error;
-  }
+  const cards = await Category.findById(categoryId);
+  if (!cards) return null;
+
+  return cards;
 };
 
 export default {
