@@ -53,34 +53,39 @@
 
 ## **💻 Github mangement**
 
-**서버** 들의 WorkFlow : **Gitflow Workflow**
+**피클** 들의 WorkFlow : **Gitflow Workflow**
 
 - Develop, Feature, Hotfix 브랜치
 
-  개발(develop): 기능들의 통합 브랜치
+- 개발(develop): 기능들의 통합 브랜치
 
-  기능 단위 개발(feature): 기능 단위 브랜치
+- 기능 단위 개발(feature): 기능 단위 브랜치
 
-  버그 수정 및 갑작스런 수정(hotfix): 수정 사항 발생 시 브랜치
+- 버그 수정 및 갑작스런 수정(hotfix): 수정 사항 발생 시 브랜치
 
-  개발 브랜치 아래 기능별 브랜치를 만들어 작성합니다.
+- 개발 브랜치 아래 기능별 브랜치를 만들어 작성합니다.
 
-- Gitflow 규칙
+## ✍🏻 Code Convention
 
-  - Develop에 직접적인 commit, push는 금지합니다.
-  - 커밋 메세지는 다른 사람들이 봐도 이해할 수 있게 써주세요.
-  - 작업 이전에 issue 작성 후 pullrequest 와 issue를 연동해 주세요.
-  - 풀리퀘스트를 통해 코드 리뷰를 전원이 코드리뷰를 진행합니다.
-  - 기능 개발 시 개발 브랜치에서 feat/기능 으로 브랜치를 파서 관리합니다.
-  - feat은 자세한 기능 한 가지를 담당하며, 기능 개발이 완료되면 각자의 브랜치로 Pull Request를 보냅니다.
-  - 각자가 기간 동안 맡은 역할을 전부 수행하면, 각자 브랜치에서 develop브랜치로 Pull Request를 보냅니다.  
-    **develop 브랜치로의 Pull Request는 상대방의 코드리뷰 후에 merge할 수 있습니다.**
+[에어비앤비 코드 컨벤션](https://github.com/airbnb/javascript)
 
-    - branch naming convention
-      - develop
-      - feature/issue_number or Short Description
-      - release/version_number
-      - hotfix/issue_number or Short Description
+## 📍 Gitflow 규칙
+
+- Develop에 직접적인 commit, push는 금지합니다.
+- 커밋 메세지는 다른 사람들이 봐도 이해할 수 있게 써주세요.
+- 작업 이전에 issue 작성 후 pullrequest 와 issue를 연동해 주세요.
+- 풀리퀘스트를 통해 코드 리뷰를 전원이 코드리뷰를 진행합니다.
+- 기능 개발 시 개발 브랜치에서 feat/기능 으로 브랜치를 파서 관리합니다.
+- feat은 자세한 기능 한 가지를 담당하며, 기능 개발이 완료되면 각자의 브랜치로 Pull Request를 보냅니다.
+- 각자가 기간 동안 맡은 역할을 전부 수행하면, 각자 브랜치에서 develop브랜치로 Pull Request를 보냅니다.  
+  **develop 브랜치로의 Pull Request는 상대방의 코드리뷰 후에 merge할 수 있습니다.**
+
+## ❗️ branch naming convention
+
+- develop
+- feature/issue_number or Short Description
+- release/version_number
+- hotfix/issue_number or Short Description
 
 ## 📋 Code Review Convention
 
@@ -106,6 +111,10 @@
  
 | 기능명 | 담당자 | 완료 여부 |
 | :-----: | :---: | :---: |
+| USER | 승빈 | ✅ |
+| BALLOT | 가영 | ✅ |
+| BOOKMARK | 동현 | ✅ |
+| CARD | 승빈 | ✅ |
  
 </div>
 </details>
@@ -114,8 +123,27 @@
 <summary>api 구현</summary>
 <div markdown="1">
 
-| 기능명 | 담당자 | 완료 여부 |
-| :----: | :----: | :-------: |
+|               기능명               | Method | 담당자 | 완료 여부 |
+| :--------------------------------: | :----: | :----: | :-------: |
+| 간편 대화주제 카테고리 리스트 조회 |  GET   | `승빈` |    ✅     |
+|  카테고리별 대화 주제 리스트 조회  |  GET   | `승빈` |    ✅     |
+|               로그인               |  POST  | `동현` |  진행중   |
+|            북마크 생성             |  POST  | `승빈` |  진행중   |
+|            북마크 삭제             | DELETE | `승빈` |  진행중   |
+|          유저 프로필 조회          |  GET   | `동현` |    ✅     |
+|           투표 현황 조회           |  GET   | `동현` |  진행중   |
+|          프로필 사진 수정          | PATCH  | `동현` |    ✅     |
+|              투표하기              |  POST  | `가영` |    ✅     |
+|         북마크 리스트 조회         |  GET   | `동현` |  진행중   |
+|            닉네임 수정             | PATCH  | `동현` |    ✅     |
+|     Monthly 베스트 5 피클 조회     |  GET   | `가영` |  진행중   |
+|          비밀번호 재설정           | PATCH  | `가영` |  진행중   |
+|              회원가입              |  POST  | `가영` |    ✅     |
+|          인증메일 보내기           |  POST  | `가영` |  진행중   |
+|           인증 번호 확인           | PATCH  | `가영` |  진행중   |
+|        공지사항 리스트 조회        |  GET   | `승빈` |  진행중   |
+|         공지사항 상세 조회         |  GET   | `승빈` |  진행중   |
+|       투표 주제 리스트 조회        |  GET   | `가영` |  진행중   |
 
 </div>
 </details>
@@ -123,3 +151,8 @@
 # Developers
 
 | 윤가영 | 이동현 | 최승빈 |
+
+|                                                                      윤가영                                                                       |                                                                        이동현                                                                        |                                                                      최승빈                                                                       |
+| :-----------------------------------------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------------------------------------: |
+| <img src="https://user-images.githubusercontent.com/55686088/178482585-33b6b683-42a4-4313-8e01-1a7ee094c2a9.jpeg" width="200px" height="200px" /> | <img src ="https://user-images.githubusercontent.com/55686088/178481391-5945e354-0549-43e8-b3de-cafafae76ae5.jpeg" width = "200px" height="200px" /> | <img src="https://user-images.githubusercontent.com/55686088/178481805-fc9f3aee-46d0-4bbf-bf4f-7b962a051ab7.jpeg" width="200px" height="200px" /> |
+|                                                        [kyY00n](https://github.com/kyY00n)                                                        |                                                      [donglee99](https://github.com/donglee99)                                                       |                                                       [csb9427](https://github.com/csb9427)                                                       |
