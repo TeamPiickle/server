@@ -1,7 +1,6 @@
 import { NextFunction, Response } from 'express';
 import { validationResult } from 'express-validator';
 import Request, { NullDataException } from '../intefaces/common';
-import CategoryResponseDto from '../intefaces/CategoryResponseDto';
 import message from '../modules/responseMessage';
 import statusCode from '../modules/statusCode';
 import util from '../modules/util';
@@ -27,6 +26,38 @@ const getCategory = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
+/**
+ *  @route GET /category/:categoryId
+ *  @desc Get Category Card
+ *  @access Public
+ */
+const getCards = async (req: Request, res: Response) => {
+  const { categoryId } = req.params;
+
+  try {
+    const data = await CategoryService.getCards(categoryId);
+    if (!data)
+      res
+        .status(statusCode.NOT_FOUND)
+        .send(util.fail(statusCode.NOT_FOUND, message.NOT_FOUND));
+
+    res
+      .status(statusCode.OK)
+      .send(util.success(statusCode.OK, message.READ_CARD_SUCCESS, data));
+  } catch (error) {
+    console.log(error);
+    res
+      .status(statusCode.INTERNAL_SERVER_ERROR)
+      .send(
+        util.fail(
+          statusCode.INTERNAL_SERVER_ERROR,
+          message.INTERNAL_SERVER_ERROR
+        )
+      );
+  }
+};
+
 export default {
-  getCategory
+  getCategory,
+  getCards
 };
