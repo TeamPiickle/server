@@ -1,5 +1,3 @@
-import { JwtPayloadInfo } from '../JwtPayloadInfo';
-
-export interface UserUpdateNicknameDto extends JwtPayloadInfo {
+export interface UserUpdateNicknameDto {
   nickname: string;
 }
