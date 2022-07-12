@@ -1,5 +1,4 @@
-import { hashSync } from 'bcrypt';
-import { compare } from 'bcrypt';
+import { hashSync, compare } from 'bcrypt';
 import config from '../config';
 import CreateUserCommand from '../intefaces/createUserCommand';
 import User from '../models/user';
@@ -19,6 +18,12 @@ const createUser = async (command: CreateUserCommand) => {
   });
   if (alreadyUser) {
     throw new IllegalArgumentException('이미 존재하는 이메일입니다.');
+  }
+  const alreadyNickname = await User.findOne({
+    nickname: command.nickname
+  });
+  if (alreadyNickname) {
+    throw new DuplicateException('이미 존재하는 닉네임입니다.');
   }
   const hashedPassword = hashSync(command.password, 10);
   const user = new User({
@@ -55,7 +60,7 @@ const loginUser = async (
 };
 
 const findUserById = async (
-  userId: String
+  userId: string
 ): Promise<UserProfileResponseDto> => {
   const user = await User.findById(userId);
   if (!user) {
@@ -70,7 +75,7 @@ const findUserById = async (
   return userProfileResponseDto;
 };
 
-const updateNickname = async (userId: String, nickname: string) => {
+const updateNickname = async (userId: string, nickname: string) => {
   const user = await User.findById(userId);
   if (!user) {
     throw new IllegalArgumentException('존재하지 않는 사용자 입니다.');
