@@ -11,9 +11,10 @@ const cardSchema = new Schema<CardDocument>({
   },
   tags: [String],
   category: [Schema.Types.ObjectId],
-  intimacy: {
-    type: Number,
-    required: true
+  filter: [String],
+  userList: {
+    type: [Schema.Types.ObjectId],
+    ref: 'User'
   }
 });
 
