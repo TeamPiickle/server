@@ -12,6 +12,7 @@ import {
 import { UserLoginDto } from '../intefaces/user/UserLoginDto';
 import { PostBaseResponseDto } from '../intefaces/PostBaseResponseDto';
 import { UserProfileResponseDto } from '../intefaces/user/UserProfileResponseDto';
+import { UserProfileImageUrlDto } from '../intefaces/user/UserProfileImageUrlDto';
 
 const createUser = async (command: CreateUserCommand) => {
   const alreadyUser = await User.findOne({
@@ -70,7 +71,7 @@ const findUserById = async (
   return userProfileResponseDto;
 };
 
-const updateNickname = async (userId: String, nickname: string) => {
+const updateNickname = async (userId: string, nickname: string) => {
   const user = await User.findById(userId);
   if (!user) {
     throw new IllegalArgumentException('존재하지 않는 사용자 입니다.');
@@ -89,4 +90,19 @@ const updateNickname = async (userId: String, nickname: string) => {
   });
 };
 
-export default { createUser, loginUser, findUserById, updateNickname };
+const updateUserProfileImage = async (userId: string, location: string) => {
+  const user: User = await User.findById(userId);
+  if (!user) {
+    throw new IllegalArgumentException('존재하지 않는 유저 입니다.');
+  }
+  await user.updateOne({ profileImageUrl: location });
+  return { profileImage: location };
+};
+
+export default {
+  createUser,
+  loginUser,
+  findUserById,
+  updateNickname,
+  updateUserProfileImage
+};

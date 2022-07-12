@@ -13,6 +13,7 @@ import { UserService } from '../services';
 import { UserProfileResponseDto } from '../intefaces/user/UserProfileResponseDto';
 import { JwtPayloadInfo } from '../intefaces/JwtPayloadInfo';
 import { UserUpdateNicknameDto } from '../intefaces/user/UserUpdateNicknameDto';
+import { UserProfileImageUrlDto } from '../intefaces/user/UserProfileImageUrlDto';
 
 /**
  *  @route /users
@@ -116,4 +117,49 @@ const updateUserNickname = async (
     next(err);
   }
 };
-export default { postUser, loginUser, getUserProfile, updateUserNickname };
+
+/**
+ *  @route patch /profile-image
+ *  @desc 유저 프로필 이미지 수정
+ *  @access
+ */
+const updateUserProfileImage = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    if (!req.file) {
+      return res
+        .status(statusCode.BAD_REQUEST)
+        .send(util.fail(statusCode.BAD_REQUEST, message.NULL_VALUE));
+    }
+    const image: Express.MulterS3.File = req.file as Express.MulterS3.File;
+    const { originalname, location } = image;
+    console.log(image);
+    console.log(req.user.id);
+    const data = await UserService.updateUserProfileImage(
+      req.user.id,
+      location
+    );
+    return res
+      .status(statusCode.OK)
+      .send(
+        util.success(
+          statusCode.OK,
+          message.USER_PROFILEIMAGE_UPDATE_SUCCESS,
+          data
+        )
+      );
+  } catch (err) {
+    next(err);
+  }
+};
+
+export default {
+  postUser,
+  loginUser,
+  getUserProfile,
+  updateUserNickname,
+  updateUserProfileImage
+};
