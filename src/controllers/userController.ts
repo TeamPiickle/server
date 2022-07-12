@@ -78,7 +78,7 @@ const getUserProfile = async (
   res: Response,
   next: NextFunction
 ) => {
-  const userId = req.body.user.id;
+  const userId = req.user.id;
   try {
     const data: UserProfileResponseDto = await UserService.findUserById(userId);
     return res
@@ -106,8 +106,7 @@ const updateUserNickname = async (
     if (!error.isEmpty()) {
       throw new IllegalArgumentException('필요한 값이 없습니다.');
     }
-    console.log(req.body);
-    const userId = req.body.user.id;
+    const userId = req.user.id;
     const nickname: string = req.body.nickname;
     await UserService.updateNickname(userId, nickname);
     return res
@@ -130,14 +129,10 @@ const updateUserProfileImage = async (
 ) => {
   try {
     if (!req.file) {
-      return res
-        .status(statusCode.BAD_REQUEST)
-        .send(util.fail(statusCode.BAD_REQUEST, message.NULL_VALUE));
+      throw new IllegalArgumentException('필요한 값이 없습니다.');
     }
     const image: Express.MulterS3.File = req.file as Express.MulterS3.File;
     const { originalname, location } = image;
-    console.log(image);
-    console.log(req.user.id);
     const data = await UserService.updateUserProfileImage(
       req.user.id,
       location

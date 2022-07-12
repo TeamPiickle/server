@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { body } from 'express-validator';
+import { body, check } from 'express-validator';
 import { UserController } from '../controllers';
 import auth from '../middlewares/auth';
 import upload from '../config/multer';
@@ -35,7 +35,7 @@ router.patch(
 router.patch(
   '/nickname',
   auth,
-  [body('nickname').notEmpty(), body('user').notEmpty()],
+  [body('nickname').notEmpty()],
   UserController.updateUserNickname
 );
 
