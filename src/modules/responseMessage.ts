@@ -14,6 +14,9 @@ const message = {
   USER_LOGIN_SUCCESS: '로그인 성공',
   EXPIRED_TOKEN: '만료된 토큰입니다.',
 
+  //카드
+  READ_CARD_SUCCESS: '카테고리에 해당 카드 읽어오기 성공',
+
   // 투표
   BALLOT_RESULT_CREATED: '투표 성공'
 };

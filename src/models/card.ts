@@ -9,8 +9,7 @@ const cardSchema = new Schema<CardDocument>({
     type: String,
     required: true
   },
-  gender: [Number],
-  ageGroup: [Number],
+  tags: [String],
   category: [Schema.Types.ObjectId],
   intimacy: {
     type: Number,

@@ -1,7 +1,5 @@
-import mongoose from 'mongoose';
 import Category from '../models/category';
-import config from '../config';
-import { NullDataException } from '../intefaces/common';
+import CategoryResponseDto from '../intefaces/CategoryResponseDto';
 
 const getCategory = async (): Promise<Array<object> | null> => {
   const categories = await Category.find({}, { title: 1 });
@@ -10,6 +8,18 @@ const getCategory = async (): Promise<Array<object> | null> => {
   return categories;
 };
 
+const getCards = async (
+  categoryId: string
+): Promise<CategoryResponseDto | null> => {
+  const cards: CategoryResponseDto | null = await Category.findById(
+    categoryId
+  ).populate('cardIdList');
+  if (!cards) return null;
+
+  return cards;
+};
+
 export default {
-  getCategory
+  getCategory,
+  getCards
 };
