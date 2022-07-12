@@ -4,6 +4,7 @@ import { CategoryController } from '../controllers';
 const router: Router = Router();
 
 router.get('/', CategoryController.getCategory);
+router.get('/cards', CategoryController.getCardsBySearch);
 router.get('/:categoryId', CategoryController.getCards);
 
 export default router;
