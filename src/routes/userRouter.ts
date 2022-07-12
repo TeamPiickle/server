@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { body, check } from 'express-validator';
+import { body } from 'express-validator';
 import { UserController } from '../controllers';
 import auth from '../middlewares/auth';
 import upload from '../config/multer';

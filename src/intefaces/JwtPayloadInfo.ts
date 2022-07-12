@@ -1,7 +1,13 @@
 import { Types } from 'mongoose';
 
-export interface JwtPayloadInfo {
+interface JwtPayloadInfo {
   user: {
     id: Types.ObjectId;
   };
 }
+
+interface User {
+  id: Types.ObjectId;
+}
+
+export { JwtPayloadInfo, User };

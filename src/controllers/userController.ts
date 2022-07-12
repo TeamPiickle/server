@@ -4,16 +4,13 @@ import Request, { IllegalArgumentException } from '../intefaces/common';
 import CreateUserCommand from '../intefaces/createUserCommand';
 import { PostBaseResponseDto } from '../intefaces/PostBaseResponseDto';
 import { UserLoginDto } from '../intefaces/user/UserLoginDto';
-import User from '../models/user';
 import getToken from '../modules/jwtHandler';
 import message from '../modules/responseMessage';
 import statusCode from '../modules/statusCode';
 import util from '../modules/util';
 import { UserService } from '../services';
 import { UserProfileResponseDto } from '../intefaces/user/UserProfileResponseDto';
-import { JwtPayloadInfo } from '../intefaces/JwtPayloadInfo';
 import { UserUpdateNicknameDto } from '../intefaces/user/UserUpdateNicknameDto';
-import { UserProfileImageUrlDto } from '../intefaces/user/UserProfileImageUrlDto';
 
 /**
  *  @route /users
@@ -45,7 +42,11 @@ const postUser = async (
  *  @desc 로그인 api
  *  @access Public
  */
-const loginUser = async (req: Request, res: Response, next: NextFunction) => {
+const loginUser = async (
+  req: Request<UserLoginDto>,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const error = validationResult(req);
     if (!error.isEmpty()) {
@@ -55,9 +56,9 @@ const loginUser = async (req: Request, res: Response, next: NextFunction) => {
     const result: PostBaseResponseDto = await UserService.loginUser(
       userLoginDto
     );
-    const accessToken = getToken((result as PostBaseResponseDto)._id);
+    const accessToken = getToken(result._id);
     const data = {
-      _id: (result as PostBaseResponseDto)._id,
+      _id: result._id,
       accessToken
     };
     return res
@@ -92,8 +93,8 @@ const getUserProfile = async (
 };
 
 /**
- *  @route patch /users
- *  @desc 유저 프로필 조회
+ *  @route patch /users/nickname
+ *  @desc 유저 닉네임 변경
  *  @access
  */
 const updateUserNickname = async (
@@ -107,7 +108,7 @@ const updateUserNickname = async (
       throw new IllegalArgumentException('필요한 값이 없습니다.');
     }
     const userId = req.user.id;
-    const nickname: string = req.body.nickname;
+    const { nickname } = req.body;
     await UserService.updateNickname(userId, nickname);
     return res
       .status(statusCode.OK)
@@ -131,8 +132,8 @@ const updateUserProfileImage = async (
     if (!req.file) {
       throw new IllegalArgumentException('필요한 값이 없습니다.');
     }
-    const image: Express.MulterS3.File = req.file as Express.MulterS3.File;
-    const { originalname, location } = image;
+    const image: Express.MulterS3.File = req.file;
+    const { location } = image;
     const data = await UserService.updateUserProfileImage(
       req.user.id,
       location

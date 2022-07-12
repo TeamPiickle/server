@@ -1,9 +1,10 @@
-import express, { Request, Response, NextFunction } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import config from '../config';
 import statusCode from '../modules/statusCode';
 import message from '../modules/responseMessage';
 import util from '../modules/util';
+import { JwtPayloadInfo } from '../intefaces/JwtPayloadInfo';
 
 export default (req: Request, res: Response, next: NextFunction) => {
   const token = req.header('x-auth-token')?.split(' ').reverse()[0];
@@ -15,10 +16,10 @@ export default (req: Request, res: Response, next: NextFunction) => {
   }
 
   try {
-    const decoded = jwt.verify(token, config.jwtSecret);
-    req.user = (decoded as any).user;
+    const decoded = jwt.verify(token, config.jwtSecret) as JwtPayloadInfo;
+    req.user = decoded.user;
     next();
-  } catch (error: any) {
+  } catch (error) {
     console.log(error);
     if (error.name == 'TokenExpiredError') {
       return res
