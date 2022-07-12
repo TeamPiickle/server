@@ -11,9 +11,8 @@ const cardSchema = new Schema<CardDocument>({
   },
   tags: [String],
   category: [Schema.Types.ObjectId],
-  intimacy: {
-    type: Number,
-    required: true
+  filter: {
+    type: [String]
   }
 });
 
