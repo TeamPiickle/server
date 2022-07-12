@@ -6,7 +6,7 @@ interface IUser {
   nickname: string;
   hashedPassword: string;
   profileImageUrl: string;
-  bookmarkIdList: Types.ObjectId[];
+  cardIdList: Types.ObjectId[];
 }
 
 export default IUser;

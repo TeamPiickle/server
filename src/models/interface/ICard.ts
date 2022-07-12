@@ -4,5 +4,5 @@ export default interface ICard {
   content: string;
   tags: string[];
   category: Types.ObjectId[];
-  intimacy: number;
+  filter: string[];
 }

@@ -27,7 +27,7 @@ const userSchema = new Schema<UserDocument>(
       type: String,
       required: false
     },
-    bookmarkIdList: [Schema.Types.ObjectId]
+    cardIdList: [Schema.Types.ObjectId]
   },
   {
     timestamps: true
