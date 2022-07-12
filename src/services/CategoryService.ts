@@ -2,7 +2,7 @@ import Category from '../models/category';
 import CategoryResponseDto from '../intefaces/CategoryResponseDto';
 
 const getCategory = async (): Promise<Array<object> | null> => {
-  const categories = await Category.find({}, { title: 1 });
+  const categories = await Category.find({}, { title: 1, content: 2 });
   if (!categories) return null;
 
   return categories;
