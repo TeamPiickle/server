@@ -9,14 +9,9 @@ const cardSchema = new Schema<CardDocument>({
     type: String,
     required: true
   },
-  category: Schema.Types.ObjectId,
-  tags: {
-    type: [String]
-  },
-  intimacy: {
-    type: Number,
-    required: true
-  }
+  tags: [String],
+  category: [Schema.Types.ObjectId],
+  filter: [Number]
 });
 
 const Card = model<CardDocument>('Card', cardSchema);
