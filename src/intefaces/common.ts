@@ -1,4 +1,5 @@
 export default interface Request<B = any, Q = any, P = any, C = any> {
+  file: any;
   body: B;
   query: Q;
   params: P;

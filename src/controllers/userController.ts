@@ -13,6 +13,7 @@ import { UserService } from '../services';
 import { UserProfileResponseDto } from '../intefaces/user/UserProfileResponseDto';
 import { JwtPayloadInfo } from '../intefaces/JwtPayloadInfo';
 import { UserUpdateNicknameDto } from '../intefaces/user/UserUpdateNicknameDto';
+import { UserProfileImageUrlDto } from '../intefaces/user/UserProfileImageUrlDto';
 
 /**
  *  @route /users
@@ -77,7 +78,7 @@ const getUserProfile = async (
   res: Response,
   next: NextFunction
 ) => {
-  const userId = req.body.user.id;
+  const userId = req.user.id;
   try {
     const data: UserProfileResponseDto = await UserService.findUserById(userId);
     return res
@@ -105,8 +106,7 @@ const updateUserNickname = async (
     if (!error.isEmpty()) {
       throw new IllegalArgumentException('필요한 값이 없습니다.');
     }
-    console.log(req.body);
-    const userId = req.body.user.id;
+    const userId = req.user.id;
     const nickname: string = req.body.nickname;
     await UserService.updateNickname(userId, nickname);
     return res
@@ -116,4 +116,45 @@ const updateUserNickname = async (
     next(err);
   }
 };
-export default { postUser, loginUser, getUserProfile, updateUserNickname };
+
+/**
+ *  @route patch /profile-image
+ *  @desc 유저 프로필 이미지 수정
+ *  @access
+ */
+const updateUserProfileImage = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    if (!req.file) {
+      throw new IllegalArgumentException('필요한 값이 없습니다.');
+    }
+    const image: Express.MulterS3.File = req.file as Express.MulterS3.File;
+    const { originalname, location } = image;
+    const data = await UserService.updateUserProfileImage(
+      req.user.id,
+      location
+    );
+    return res
+      .status(statusCode.OK)
+      .send(
+        util.success(
+          statusCode.OK,
+          message.USER_PROFILEIMAGE_UPDATE_SUCCESS,
+          data
+        )
+      );
+  } catch (err) {
+    next(err);
+  }
+};
+
+export default {
+  postUser,
+  loginUser,
+  getUserProfile,
+  updateUserNickname,
+  updateUserProfileImage
+};
