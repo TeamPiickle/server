@@ -7,7 +7,7 @@ import util from '../modules/util';
 import { CategoryService } from '../services';
 
 /**
- *  @route Get /category
+ *  @route Get /categories
  *  @desc Get Category
  *  @access Public
  */
@@ -27,7 +27,7 @@ const getCategory = async (req: Request, res: Response, next: NextFunction) => {
 };
 
 /**
- *  @route GET /category/:categoryId
+ *  @route GET /categories/:categoryId
  *  @desc Get Category Card
  *  @access Public
  */

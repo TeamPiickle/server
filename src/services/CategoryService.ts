@@ -4,6 +4,7 @@ import Card from '../models/card';
 import config from '../config';
 import { NullDataException } from '../intefaces/common';
 import { CardResponseDto } from '../intefaces/CardResponseDto';
+import CategoryResponseDto from '../intefaces/CategoryResponseDto';
 
 const getCategory = async (): Promise<Array<object> | null> => {
   const categories = await Category.find({}, { title: 1 });
@@ -14,8 +15,8 @@ const getCategory = async (): Promise<Array<object> | null> => {
 
 const getCards = async (
   categoryId: string
-): Promise<Array<CategoryResponseDto[]> | null> => {
-  const cards = await Category.findById(categoryId);
+): Promise<CategoryResponseDto[] | null> => {
+  const cards = await Category.findById(categoryId).populate('cardIdList');
   if (!cards) return null;
 
   return cards;
