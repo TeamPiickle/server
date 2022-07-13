@@ -47,7 +47,33 @@ const getCards = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
+/**
+ * @route GET /categories/cards?search=
+ * @desc Get filter cards
+ * @access public
+ */
+const getCardsBySearch = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { search } = req.query;
+
+  try {
+    const data = await CategoryService.getCardsBySearch(search);
+    if (!data) {
+      throw new NullDataException('데이터가 없습니다.');
+    }
+    res
+      .status(statusCode.OK)
+      .send(util.success(statusCode.OK, message.SEARCH_CARDS_SUCCESS, data));
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   getCategory,
-  getCards
+  getCards,
+  getCardsBySearch
 };
