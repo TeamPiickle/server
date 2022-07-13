@@ -16,6 +16,7 @@ const message = {
   EXPIRED_TOKEN: '만료된 토큰입니다.',
 
   //카드
+  SEARCH_CARDS_SUCCESS: '필터에 해당하는 카드들 읽어오기 성공',
   READ_CARD_SUCCESS: '카테고리에 해당 카드 읽어오기 성공',
 
   // 투표
