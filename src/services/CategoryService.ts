@@ -23,11 +23,7 @@ const getCards = async (
 const getCardsBySearch = async (
   search: string[]
 ): Promise<CardResponseDto[]> => {
-  // const regex = (pattern: string) => new RegExp(`.*${pattern}.*`);
-
   try {
-    //const filterRegex = search.map(e => regex(e)); // regex array
-
     const cards = await Card.find({ filter: { $all: search } });
 
     return cards;
