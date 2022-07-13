@@ -13,7 +13,13 @@ const cardSchema = new Schema<CardDocument>({
   category: [Schema.Types.ObjectId],
   filter: {
     type: [String]
-  }
+  },
+  bookmarkUser: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'User'
+    }
+  ]
 });
 
 const Card = model<CardDocument>('Card', cardSchema);

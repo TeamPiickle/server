@@ -5,4 +5,5 @@ export default interface ICard {
   tags: string[];
   category: Types.ObjectId[];
   filter: string[];
+  bookmarkUser: Types.ObjectId[];
 }
