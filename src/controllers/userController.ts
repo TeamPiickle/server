@@ -11,6 +11,7 @@ import util from '../modules/util';
 import { UserService } from '../services';
 import { UserProfileResponseDto } from '../intefaces/user/UserProfileResponseDto';
 import { UserUpdateNicknameDto } from '../intefaces/user/UserUpdateNicknameDto';
+import { UserBookmarksDto } from '../intefaces/user/UserBookmarksDto';
 
 /**
  *  @route /users
@@ -152,10 +153,34 @@ const updateUserProfileImage = async (
   }
 };
 
+/**
+ *  @route get /users/bookmarks
+ *  @desc 유저 북마크 조회
+ *  @access
+ */
+const getBookmarks = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const userId = req.user.id;
+  try {
+    const data: UserBookmarksDto[] = await UserService.getBookmarks(userId);
+    return res
+      .status(statusCode.OK)
+      .send(
+        util.success(statusCode.OK, message.USER_BOOKMARKS_VIEW_SUCCESS, data)
+      );
+  } catch (err) {
+    next(err);
+  }
+};
+
 export default {
   postUser,
   loginUser,
   getUserProfile,
   updateUserNickname,
-  updateUserProfileImage
+  updateUserProfileImage,
+  getBookmarks
 };

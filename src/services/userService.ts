@@ -6,13 +6,16 @@ import {
   IllegalArgumentException,
   InternalAuthenticationServiceException,
   BadCredentialException,
-  DuplicateException
+  DuplicateException,
+  NullDataException
 } from '../intefaces/common';
 import { UserLoginDto } from '../intefaces/user/UserLoginDto';
 import { PostBaseResponseDto } from '../intefaces/PostBaseResponseDto';
 import { UserProfileResponseDto } from '../intefaces/user/UserProfileResponseDto';
 import { UserProfileImageUrlDto } from '../intefaces/user/UserProfileImageUrlDto';
 import { Types } from 'mongoose';
+import { UserBookmarksDto } from '../intefaces/user/UserBookmarksDto';
+import { contentSecurityPolicy } from 'helmet';
 
 const createUser = async (command: CreateUserCommand) => {
   const alreadyUser = await User.findOne({
@@ -108,10 +111,32 @@ const updateUserProfileImage = async (
   return { profileImageUrl: location };
 };
 
+const getBookmarks = async (
+  userId: Types.ObjectId
+): Promise<UserBookmarksDto[]> => {
+  const user = await User.findById(userId).populate('cardIdList');
+
+  if (!user) {
+    throw new IllegalArgumentException('존재하지 않는 유저 입니다.');
+  }
+
+  const data = await Promise.all(
+    user.cardIdList.map((card: any) => {
+      const result = {
+        cardId: card._id,
+        content: card.content
+      };
+      return result;
+    })
+  );
+  return data;
+};
+
 export default {
   createUser,
   loginUser,
   findUserById,
   updateNickname,
-  updateUserProfileImage
+  updateUserProfileImage,
+  getBookmarks
 };
