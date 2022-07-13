@@ -48,7 +48,7 @@ const getCards = async (req: Request, res: Response, next: NextFunction) => {
 };
 
 /**
- * @route GET /categories/cards?search=&option=
+ * @route GET /categories/cards?search=
  * @desc Get filter cards
  * @access public
  */
