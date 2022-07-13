@@ -11,7 +11,7 @@ import util from '../modules/util';
 import { UserService } from '../services';
 import { UserProfileResponseDto } from '../intefaces/user/UserProfileResponseDto';
 import { UserUpdateNicknameDto } from '../intefaces/user/UserUpdateNicknameDto';
-import { UserBookmarksDto } from '../intefaces/user/UserBookmarksDto';
+import { UserBookmarkDto } from '../intefaces/user/UserBookmarkDto';
 
 /**
  *  @route /users
@@ -165,7 +165,7 @@ const getBookmarks = async (
 ) => {
   const userId = req.user.id;
   try {
-    const data: UserBookmarksDto[] = await UserService.getBookmarks(userId);
+    const data: UserBookmarkDto[] = await UserService.getBookmarks(userId);
     return res
       .status(statusCode.OK)
       .send(

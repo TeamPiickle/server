@@ -1,5 +1,5 @@
 import Types from 'mongoose';
-export interface UserBookmarksDto {
+export interface UserBookmarkDto {
   cardId: Types.ObjectId;
   content: {
     type: string;

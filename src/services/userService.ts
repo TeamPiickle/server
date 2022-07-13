@@ -14,7 +14,7 @@ import { PostBaseResponseDto } from '../intefaces/PostBaseResponseDto';
 import { UserProfileResponseDto } from '../intefaces/user/UserProfileResponseDto';
 import { UserProfileImageUrlDto } from '../intefaces/user/UserProfileImageUrlDto';
 import { Types } from 'mongoose';
-import { UserBookmarksDto } from '../intefaces/user/UserBookmarksDto';
+import { UserBookmarkDto } from '../intefaces/user/UserBookmarkDto';
 import { contentSecurityPolicy } from 'helmet';
 
 const createUser = async (command: CreateUserCommand) => {
@@ -113,14 +113,14 @@ const updateUserProfileImage = async (
 
 const getBookmarks = async (
   userId: Types.ObjectId
-): Promise<UserBookmarksDto[]> => {
+): Promise<UserBookmarkDto[]> => {
   const user = await User.findById(userId).populate('cardIdList');
 
   if (!user) {
     throw new IllegalArgumentException('존재하지 않는 유저 입니다.');
   }
 
-  const data = await Promise.all(
+  const bookmarks = await Promise.all(
     user.cardIdList.map((card: any) => {
       const result = {
         cardId: card._id,
@@ -129,7 +129,7 @@ const getBookmarks = async (
       return result;
     })
   );
-  return data;
+  return bookmarks;
 };
 
 export default {
