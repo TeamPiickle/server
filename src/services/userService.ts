@@ -120,15 +120,13 @@ const getBookmarks = async (
     throw new IllegalArgumentException('존재하지 않는 유저 입니다.');
   }
 
-  const bookmarks = await Promise.all(
-    user.cardIdList.map((card: any) => {
-      const result = {
-        cardId: card._id,
-        content: card.content
-      };
-      return result;
-    })
-  );
+  const bookmarks = await user.cardIdList.map((card: any) => {
+    const result = {
+      cardId: card._id,
+      content: card.content
+    };
+    return result;
+  });
   return bookmarks;
 };
 
