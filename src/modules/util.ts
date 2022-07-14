@@ -13,6 +13,11 @@ const util = {
       success: false,
       message
     };
+  },
+  getLastMonth: (): Date => {
+    const beforeAMonth = new Date();
+    beforeAMonth.setMonth(beforeAMonth.getMonth() - 1);
+    return beforeAMonth;
   }
 };
 
