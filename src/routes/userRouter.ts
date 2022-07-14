@@ -25,6 +25,7 @@ router.post(
 
 router.get('', auth, UserController.getUserProfile);
 router.get('/bookmarks', auth, UserController.getBookmarks);
+router.post('/bookmarks', auth, UserController.getBookmarks);
 
 router.patch(
   '/profile-image',
