@@ -11,9 +11,7 @@ const cardSchema = new Schema<CardDocument>({
   },
   tags: [String],
   category: [Schema.Types.ObjectId],
-  filter: {
-    type: [String]
-  }
+  filter: [String]
 });
 
 const Card = model<CardDocument>('Card', cardSchema);

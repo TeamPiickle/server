@@ -15,6 +15,13 @@ const findBestCards = async (size: number) => {
       return Card.findById(c._id, '_id category content');
     })
   );
-  return cards;
+
+  let extraCard;
+  if (cards.length < size) {
+    extraCard = await Card.find({ _id: { $nin: cards.map(c => c._id) } }).limit(
+      size - cards.length
+    );
+  }
+  return [...cards, ...extraCard];
 };
 export { findBestCards };
