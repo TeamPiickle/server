@@ -12,7 +12,7 @@ const findBestCards = async (size: number) => {
     .limit(size);
   const cards = await Promise.all(
     cardIdAndCnt.map(async c => {
-      return Card.findById(c._id);
+      return Card.findById(c._id, '_id category content');
     })
   );
   return cards;
