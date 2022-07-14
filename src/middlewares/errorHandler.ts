@@ -1,22 +1,21 @@
-import { NextFunction, Response } from 'express';
-import Request, {
+import { NextFunction, Request, Response } from 'express';
+import {
   IllegalArgumentException,
   BadCredentialException,
   InternalAuthenticationServiceException,
   NullDataException,
   PiickleException,
   DuplicateException
-} from '../intefaces/common';
-import message from '../modules/responseMessage';
+} from '../intefaces/exception';
 import statusCode from '../modules/statusCode';
 import util from '../modules/util';
 
-export default (
-  err: Error,
+const errHandler = (
+  err: any,
   req: Request,
   res: Response,
   next: NextFunction
-): void | Response => {
+) => {
   console.log(err);
   if (err instanceof PiickleException) {
     if (err instanceof IllegalArgumentException) {
@@ -50,5 +49,7 @@ export default (
   }
   return res
     .status(statusCode.INTERNAL_SERVER_ERROR)
-    .send(util.fail(statusCode.INTERNAL_SERVER_ERROR, err.message));
+    .send(util.fail(statusCode.INTERNAL_SERVER_ERROR, (err as Error).message));
 };
+
+export default errHandler;

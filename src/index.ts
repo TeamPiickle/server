@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
 import connectDB from './loaders/db';
 import routes from './routes';
 import helmet from 'helmet';
@@ -19,10 +19,7 @@ connectDB()
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(helmet());
-
-app.use(routes); //라우터
-// error handler
-
+app.use(routes);
 app.use(errorHandler);
 
 app

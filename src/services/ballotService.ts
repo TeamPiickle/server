@@ -1,4 +1,4 @@
-import { IllegalArgumentException } from '../intefaces/common';
+import { IllegalArgumentException } from '../intefaces/exception';
 import CreateBallotResultDto from '../intefaces/CreateBallotResultDto';
 import BallotItem from '../models/ballotItem';
 import { BallotResult } from '../models/ballotResult';
@@ -35,4 +35,4 @@ const createBallotResult = async (command: CreateBallotResultDto) => {
   await newBallot.save();
 };
 
-export default { createBallotResult };
+export { createBallotResult };

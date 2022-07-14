@@ -6,6 +6,10 @@ import message from '../modules/responseMessage';
 import util from '../modules/util';
 import { JwtPayloadInfo } from '../intefaces/JwtPayloadInfo';
 
+interface JwtError extends Error {
+  name: string;
+}
+
 export default (req: Request, res: Response, next: NextFunction) => {
   const token = req.header('x-auth-token')?.split(' ').reverse()[0];
 
@@ -21,7 +25,7 @@ export default (req: Request, res: Response, next: NextFunction) => {
     next();
   } catch (error) {
     console.log(error);
-    if (error.name == 'TokenExpiredError') {
+    if ((error as JwtError).name == 'TokenExpiredError') {
       return res
         .status(statusCode.UNAUTHORIZED)
         .send(util.fail(statusCode.UNAUTHORIZED, message.EXPIRED_TOKEN));
