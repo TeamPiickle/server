@@ -40,4 +40,10 @@ router.patch(
   UserController.updateUserNickname
 );
 
+router.patch(
+  '/me/password',
+  auth,
+  [body('newPassword').notEmpty()],
+  UserController.patchUserPassword
+);
 export default router;
