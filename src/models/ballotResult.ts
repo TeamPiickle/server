@@ -32,4 +32,4 @@ const BallotResult = model<BallotResultDocument>(
   ballotResultSchema
 );
 
-export { IBallotResult, BallotResult };
+export default BallotResult;
