@@ -7,4 +7,4 @@ const s3: AWS.S3 = new AWS.S3({
   region: 'ap-northeast-2'
 });
 
-export default s3;
+export { s3 };
