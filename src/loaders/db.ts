@@ -35,6 +35,13 @@ const connectDB = async () => {
     .catch(err => {
       console.log(err);
     });
+  Bookmark.createCollection()
+    .then(() => {
+      console.log('Bookmark collection created.');
+    })
+    .catch(err => {
+      console.log(err);
+    });
   BallotTopic.createCollection()
     .then(() => {
       console.log('BallotTopic collection created.');
