@@ -13,6 +13,7 @@ import { UserProfileResponseDto } from '../intefaces/user/UserProfileResponseDto
 import { UserUpdateNicknameDto } from '../intefaces/user/UserUpdateNicknameDto';
 import { UserBookmarkDto } from '../intefaces/user/UserBookmarkDto';
 import { Types } from 'mongoose';
+import { TypedRequest } from '../types/TypedRequest';
 
 /**
  *  @route /users
@@ -20,7 +21,7 @@ import { Types } from 'mongoose';
  *  @access Public
  */
 const postUser = async (
-  req: Request<any, any, CreateUserCommand>,
+  req: TypedRequest<CreateUserCommand>,
   res: Response,
   next: NextFunction
 ): Promise<void | Response> => {
@@ -45,7 +46,7 @@ const postUser = async (
  *  @access Public
  */
 const loginUser = async (
-  req: Request<any, any, UserLoginDto>,
+  req: TypedRequest<UserLoginDto>,
   res: Response,
   next: NextFunction
 ) => {
@@ -100,7 +101,7 @@ const getUserProfile = async (
  *  @access
  */
 const updateUserNickname = async (
-  req: Request<any, any, UserUpdateNicknameDto>,
+  req: TypedRequest<UserUpdateNicknameDto>,
   res: Response,
   next: NextFunction
 ) => {

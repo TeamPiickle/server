@@ -1,10 +1,11 @@
 import { Types } from 'mongoose';
-import { NextFunction, Request, Response } from 'express';
+import { NextFunction, Response } from 'express';
 import CreateBallotResultDto from '../intefaces/CreateBallotResultDto';
 import message from '../modules/responseMessage';
 import statusCode from '../modules/statusCode';
 import util from '../modules/util';
 import { BallotService } from '../services';
+import { TypedRequest } from '../types/TypedRequest';
 
 /**
  *  @route POST /ballots
@@ -12,7 +13,7 @@ import { BallotService } from '../services';
  *  @access Public
  */
 const postBallotResult = async (
-  req: Request<any, any, CreateBallotResultDto>,
+  req: TypedRequest<CreateBallotResultDto>,
   res: Response,
   next: NextFunction
 ): Promise<void | Response> => {
