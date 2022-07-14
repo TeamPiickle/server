@@ -22,7 +22,8 @@ const message = {
   READ_BEST_CARDS_SUCCESS: '베스트 카드 읽어오기 성공',
 
   // 투표
-  BALLOT_RESULT_CREATED: '투표 성공'
+  BALLOT_RESULT_CREATED: '투표 성공',
+  BALLOT_STATUS_VIEW_SUCCESS: '투표 현황 조회 성공'
 };
 
 export default message;
