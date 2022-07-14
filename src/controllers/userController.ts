@@ -1,6 +1,6 @@
-import { NextFunction, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { validationResult } from 'express-validator';
-import Request, { IllegalArgumentException } from '../intefaces/common';
+import { IllegalArgumentException } from '../intefaces/exception';
 import CreateUserCommand from '../intefaces/createUserCommand';
 import { PostBaseResponseDto } from '../intefaces/PostBaseResponseDto';
 import { UserLoginDto } from '../intefaces/user/UserLoginDto';
@@ -12,6 +12,7 @@ import { UserService } from '../services';
 import { UserProfileResponseDto } from '../intefaces/user/UserProfileResponseDto';
 import { UserUpdateNicknameDto } from '../intefaces/user/UserUpdateNicknameDto';
 import { UserBookmarkDto } from '../intefaces/user/UserBookmarkDto';
+import { Types } from 'mongoose';
 
 /**
  *  @route /users
@@ -19,7 +20,7 @@ import { UserBookmarkDto } from '../intefaces/user/UserBookmarkDto';
  *  @access Public
  */
 const postUser = async (
-  req: Request<CreateUserCommand>,
+  req: Request<any, any, CreateUserCommand>,
   res: Response,
   next: NextFunction
 ): Promise<void | Response> => {
@@ -44,7 +45,7 @@ const postUser = async (
  *  @access Public
  */
 const loginUser = async (
-  req: Request<UserLoginDto>,
+  req: Request<any, any, UserLoginDto>,
   res: Response,
   next: NextFunction
 ) => {
@@ -80,7 +81,7 @@ const getUserProfile = async (
   res: Response,
   next: NextFunction
 ) => {
-  const userId = req.user.id;
+  const userId = req.user.id as Types.ObjectId;
   try {
     const data: UserProfileResponseDto = await UserService.findUserById(userId);
     return res
@@ -99,7 +100,7 @@ const getUserProfile = async (
  *  @access
  */
 const updateUserNickname = async (
-  req: Request<UserUpdateNicknameDto>,
+  req: Request<any, any, UserUpdateNicknameDto>,
   res: Response,
   next: NextFunction
 ) => {
@@ -108,7 +109,7 @@ const updateUserNickname = async (
     if (!error.isEmpty()) {
       throw new IllegalArgumentException('필요한 값이 없습니다.');
     }
-    const userId = req.user.id;
+    const userId = req.user.id as Types.ObjectId;
     const { nickname } = req.body;
     await UserService.updateNickname(userId, nickname);
     return res
@@ -133,10 +134,10 @@ const updateUserProfileImage = async (
     if (!req.file) {
       throw new IllegalArgumentException('필요한 값이 없습니다.');
     }
-    const image: Express.MulterS3.File = req.file;
+    const image = req.file as Express.MulterS3.File;
     const { location } = image;
     const data = await UserService.updateUserProfileImage(
-      req.user.id,
+      req.user.id as Types.ObjectId,
       location
     );
     return res
@@ -163,7 +164,7 @@ const getBookmarks = async (
   res: Response,
   next: NextFunction
 ) => {
-  const userId = req.user.id;
+  const userId = req.user.id as Types.ObjectId;
   try {
     const data: UserBookmarkDto[] = await UserService.getBookmarks(userId);
     return res
@@ -176,7 +177,7 @@ const getBookmarks = async (
   }
 };
 
-export default {
+export {
   postUser,
   loginUser,
   getUserProfile,

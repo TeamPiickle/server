@@ -1,5 +1,5 @@
-import { NextFunction, Response } from 'express';
-import Request from '../intefaces/common';
+import { Types } from 'mongoose';
+import { NextFunction, Request, Response } from 'express';
 import CreateBallotResultDto from '../intefaces/CreateBallotResultDto';
 import message from '../modules/responseMessage';
 import statusCode from '../modules/statusCode';
@@ -12,13 +12,13 @@ import { BallotService } from '../services';
  *  @access Public
  */
 const postBallotResult = async (
-  req: Request<CreateBallotResultDto>,
+  req: Request<any, any, CreateBallotResultDto>,
   res: Response,
   next: NextFunction
 ): Promise<void | Response> => {
   try {
     const command: CreateBallotResultDto = req.body;
-    command.userId = req.user.id;
+    command.userId = req.user.id as Types.ObjectId;
     await BallotService.createBallotResult(command);
     return res
       .status(statusCode.CREATED)
@@ -28,6 +28,4 @@ const postBallotResult = async (
   }
 };
 
-export default {
-  postBallotResult
-};
+export { postBallotResult };

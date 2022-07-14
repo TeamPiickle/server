@@ -6,16 +6,14 @@ import {
   IllegalArgumentException,
   InternalAuthenticationServiceException,
   BadCredentialException,
-  DuplicateException,
-  NullDataException
-} from '../intefaces/common';
+  DuplicateException
+} from '../intefaces/exception';
 import { UserLoginDto } from '../intefaces/user/UserLoginDto';
 import { PostBaseResponseDto } from '../intefaces/PostBaseResponseDto';
 import { UserProfileResponseDto } from '../intefaces/user/UserProfileResponseDto';
 import { UserProfileImageUrlDto } from '../intefaces/user/UserProfileImageUrlDto';
 import { Types } from 'mongoose';
 import { UserBookmarkDto } from '../intefaces/user/UserBookmarkDto';
-import { contentSecurityPolicy } from 'helmet';
 
 const createUser = async (command: CreateUserCommand) => {
   const alreadyUser = await User.findOne({
@@ -120,7 +118,7 @@ const getBookmarks = async (
     throw new IllegalArgumentException('존재하지 않는 유저 입니다.');
   }
 
-  const bookmarks = await user.cardIdList.map((card: any) => {
+  const bookmarks = user.cardIdList.map((card: any) => {
     const result = {
       cardId: card._id,
       content: card.content
@@ -130,7 +128,7 @@ const getBookmarks = async (
   return bookmarks;
 };
 
-export default {
+export {
   createUser,
   loginUser,
   findUserById,

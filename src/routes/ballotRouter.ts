@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { body } from 'express-validator';
-import ballotController from '../controllers/ballotController';
+import { BallotController } from '../controllers';
 import auth from '../middlewares/auth';
 
 const router = Router();
@@ -9,7 +9,7 @@ router.post(
   '',
   auth,
   [body('ballotTopicId').notEmpty(), body('ballotItemId').notEmpty()],
-  ballotController.postBallotResult
+  BallotController.postBallotResult
 );
 
 export default router;

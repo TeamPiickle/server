@@ -1,6 +1,5 @@
-import { NextFunction, Response } from 'express';
-import { validationResult } from 'express-validator';
-import Request, { NullDataException } from '../intefaces/common';
+import { NextFunction, Request, Response } from 'express';
+import { NullDataException } from '../intefaces/exception';
 import message from '../modules/responseMessage';
 import statusCode from '../modules/statusCode';
 import util from '../modules/util';
@@ -11,14 +10,18 @@ import { CategoryService } from '../services';
  *  @desc Get Category
  *  @access Public
  */
-const getCategory = async (req: Request, res: Response, next: NextFunction) => {
+const getCategory = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void | Response> => {
   try {
     const data = await CategoryService.getCategory();
     if (!data) {
       throw new NullDataException('데이터가 없습니다.');
     }
 
-    res
+    return res
       .status(statusCode.OK)
       .send(util.success(statusCode.OK, message.READ_CATEGORY_SUCCESS, data));
   } catch (error) {
@@ -31,7 +34,11 @@ const getCategory = async (req: Request, res: Response, next: NextFunction) => {
  *  @desc Get Category Card
  *  @access Public
  */
-const getCards = async (req: Request, res: Response, next: NextFunction) => {
+const getCards = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void | Response> => {
   const { categoryId } = req.params;
 
   try {
@@ -39,7 +46,7 @@ const getCards = async (req: Request, res: Response, next: NextFunction) => {
     if (!data) {
       throw new NullDataException('데이터가 없습니다.');
     }
-    res
+    return res
       .status(statusCode.OK)
       .send(util.success(statusCode.OK, message.READ_CARD_SUCCESS, data));
   } catch (error) {
@@ -56,15 +63,15 @@ const getCardsBySearch = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+): Promise<void | Response> => {
   const { search } = req.query;
 
   try {
-    const data = await CategoryService.getCardsBySearch(search);
+    const data = await CategoryService.getCardsBySearch(search as string[]);
     if (!data) {
       throw new NullDataException('데이터가 없습니다.');
     }
-    res
+    return res
       .status(statusCode.OK)
       .send(util.success(statusCode.OK, message.SEARCH_CARDS_SUCCESS, data));
   } catch (error) {
@@ -72,8 +79,4 @@ const getCardsBySearch = async (
   }
 };
 
-export default {
-  getCategory,
-  getCards,
-  getCardsBySearch
-};
+export { getCategory, getCards, getCardsBySearch };

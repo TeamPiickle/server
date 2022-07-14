@@ -22,10 +22,9 @@ const getCards = async (
 
 const getCardsBySearch = async (
   search: string[]
-): Promise<CardResponseDto[]> => {
+): Promise<CardResponseDto[] | null> => {
   try {
     const cards = await Card.find({ filter: { $all: search } });
-
     return cards;
   } catch (error) {
     console.log(error);
@@ -33,8 +32,4 @@ const getCardsBySearch = async (
   }
 };
 
-export default {
-  getCategory,
-  getCards,
-  getCardsBySearch
-};
+export { getCategory, getCards, getCardsBySearch };

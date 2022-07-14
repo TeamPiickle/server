@@ -1,5 +1,5 @@
-import UserController from './userController';
-import CategoryController from './CategoryController';
-import ballotController from './ballotController';
+import * as UserController from './userController';
+import * as CategoryController from './CategoryController';
+import * as BallotController from './ballotController';
 
-export { UserController, CategoryController, ballotController };
+export { UserController, CategoryController, BallotController };
