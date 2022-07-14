@@ -1,5 +1,4 @@
-import { NextFunction, Response } from 'express';
-import Request from '../intefaces/common';
+import { NextFunction, Request, Response } from 'express';
 import message from '../modules/responseMessage';
 import statusCode from '../modules/statusCode';
 import util from '../modules/util';
@@ -12,7 +11,7 @@ import { CardService } from '../services';
  */
 const getBest5 = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const cards = await CardService.findBestCards();
+    const cards = await CardService.findBestCards(5);
     return res
       .status(statusCode.OK)
       .send(
@@ -24,4 +23,4 @@ const getBest5 = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export default { getBest5 };
+export { getBest5 };
