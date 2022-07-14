@@ -128,11 +128,22 @@ const getBookmarks = async (
   return bookmarks;
 };
 
+const updatePassword = async (userId: Types.ObjectId, newPassword: string) => {
+  const user = await User.findById(userId);
+  if (!user) {
+    throw new IllegalArgumentException('존재하지 않는 유저 id 입니다.');
+  }
+  const hashedPassword = hashSync(newPassword, 10);
+  user.hashedPassword = hashedPassword;
+  await user.save();
+};
+
 export {
   createUser,
   loginUser,
   findUserById,
   updateNickname,
   updateUserProfileImage,
-  getBookmarks
+  getBookmarks,
+  updatePassword
 };
