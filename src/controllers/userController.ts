@@ -178,11 +178,32 @@ const getBookmarks = async (
   }
 };
 
+/**
+ *  @route /users/me/password
+ *  @desc 비밀번호 수정 API
+ *  @access Public
+ */
+const patchUserPassword = async (
+  req: TypedRequest<{ newPassword: string }>,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { newPassword } = req.body;
+    const userId = <Types.ObjectId>req.user.id;
+    await UserService.updatePassword(userId, newPassword);
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
+
 export {
   postUser,
   loginUser,
   getUserProfile,
   updateUserNickname,
   updateUserProfileImage,
-  getBookmarks
+  getBookmarks,
+  patchUserPassword
 };
