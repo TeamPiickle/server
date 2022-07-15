@@ -2,7 +2,8 @@ import { IllegalArgumentException } from '../intefaces/exception';
 import CreateBallotResultDto from '../intefaces/CreateBallotResultDto';
 import BallotItem from '../models/ballotItem';
 import { BallotResult } from '../models/ballotResult';
-import BallotTopic from '../models/ballotTopic';
+import { BallotTopic, BallotTopicDocument } from '../models/ballotTopic';
+import mongoose from 'mongoose';
 
 const createBallotResult = async (command: CreateBallotResultDto) => {
   const ballotTopic = await BallotTopic.findById(command.ballotTopicId);
@@ -35,4 +36,20 @@ const createBallotResult = async (command: CreateBallotResultDto) => {
   await newBallot.save();
 };
 
-export { createBallotResult };
+const getMainBallotList = async (
+  userId: mongoose.Types.ObjectId | null
+): Promise<BallotTopicDocument[]> => {
+  if (userId) {
+    const completedBallotTopicIds: mongoose.Types.ObjectId[] =
+      await BallotResult.find({ userId }, 'ballotTopicId');
+    const randomBallotTopicsExcludeCompleted = await BallotTopic.find({
+      _id: { $nin: completedBallotTopicIds }
+    }).limit(4);
+    return randomBallotTopicsExcludeCompleted;
+  } else {
+    const randomBallotTopics = await BallotTopic.find().limit(4);
+    return randomBallotTopics;
+  }
+};
+
+export { createBallotResult, getMainBallotList };
