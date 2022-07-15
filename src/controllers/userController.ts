@@ -12,7 +12,7 @@ import { UserService } from '../services';
 import { UserProfileResponseDto } from '../intefaces/user/UserProfileResponseDto';
 import { UserUpdateNicknameDto } from '../intefaces/user/UserUpdateNicknameDto';
 import { UserBookmarkDto } from '../intefaces/user/UserBookmarkDto';
-import { UserCreateBookmarkDto } from '../intefaces/user/UsercreatebookmarkDto';
+import { UserBookmarkInfo } from '../intefaces/user/UserBookmarkInfo';
 import { Types } from 'mongoose';
 import { TypedRequest } from '../types/TypedRequest';
 import Bookmark from '../models/bookmark';
@@ -200,7 +200,7 @@ const createBookmark = async (
   const userId = req.user.id as Types.ObjectId;
   const cardId = req.body.cardId;
 
-  const input: UserCreateBookmarkDto = {
+  const input: UserBookmarkInfo = {
     userId,
     cardId
   };

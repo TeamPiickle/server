@@ -14,7 +14,7 @@ import { UserProfileResponseDto } from '../intefaces/user/UserProfileResponseDto
 import { UserProfileImageUrlDto } from '../intefaces/user/UserProfileImageUrlDto';
 import { Types } from 'mongoose';
 import { UserBookmarkDto } from '../intefaces/user/UserBookmarkDto';
-import { UserCreateBookmarkDto } from '../intefaces/user/UserCreateBookmarkDto';
+import { UserBookmarkInfo } from '../intefaces/user/UserBookmarkInfo';
 import Bookmark from '../models/bookmark';
 
 const createUser = async (command: CreateUserCommand) => {
@@ -137,7 +137,7 @@ const getBookmarks = async (
  * 2. 유저의 카드리스트에 이미 존재하는지 중복 검사.
  * 3. 존재하면 삭제 존재하지 않으면 추가 추가할 때 유저에 카드 아이디 리스트에 카드 아이디를 추가하고 북마크에 카드아이디와 유저 아이디를 저장한 도큐먼트를 추가한다.
  */
-const createBookmark = async (input: UserCreateBookmarkDto) => {
+const createBookmark = async (input: UserBookmarkInfo) => {
   const { userId, cardId } = input;
   const user = await User.findById(userId);
   if (user == null) {
