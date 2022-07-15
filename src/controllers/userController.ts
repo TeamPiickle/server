@@ -12,8 +12,11 @@ import { UserService } from '../services';
 import { UserProfileResponseDto } from '../intefaces/user/UserProfileResponseDto';
 import { UserUpdateNicknameDto } from '../intefaces/user/UserUpdateNicknameDto';
 import { UserBookmarkDto } from '../intefaces/user/UserBookmarkDto';
+import { UserCreateBookmarkDto } from '../intefaces/user/UsercreatebookmarkDto';
 import { Types } from 'mongoose';
 import { TypedRequest } from '../types/TypedRequest';
+import Bookmark from '../models/bookmark';
+import { UserBookmarkCreateDto } from '../intefaces/user/UserBookmarkCreateDto';
 
 /**
  *  @route /users
@@ -178,11 +181,53 @@ const getBookmarks = async (
   }
 };
 
+/**
+ *  @route POST /users/bookmarks
+ *  @desc 유저 북마크 생성
+ *  @access Public
+ */
+
+const createBookmark = async (
+  req: TypedRequest<{ cardId: Types.ObjectId }>,
+  res: Response,
+  next: NextFunction
+) => {
+  const error = validationResult(req);
+  if (!error.isEmpty()) {
+    return res
+      .status(statusCode.BAD_REQUEST)
+      .send(util.fail(statusCode.BAD_REQUEST, message.BAD_REQUEST));
+  }
+  const userId = req.user.id as Types.ObjectId;
+  const cardId = req.body.cardId;
+
+  const input: UserCreateBookmarkDto = {
+    userId,
+    cardId
+  };
+  try {
+    const created = await UserService.createBookmark(input);
+    res
+      .status(statusCode.CREATED)
+      .send(
+        util.success(
+          statusCode.CREATED,
+          created
+            ? message.USER_BOOKMARK_CREATE_SUCCESS
+            : message.USER_BOOKMARK_DELETE_SUCCESS
+        )
+      );
+  } catch (err) {
+    next(err);
+  }
+};
+
 export {
   postUser,
   loginUser,
   getUserProfile,
   updateUserNickname,
   updateUserProfileImage,
-  getBookmarks
+  getBookmarks,
+  createBookmark
 };

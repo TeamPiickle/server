@@ -25,7 +25,13 @@ router.post(
 
 router.get('', auth, UserController.getUserProfile);
 router.get('/bookmarks', auth, UserController.getBookmarks);
-router.post('/bookmarks', auth, UserController.getBookmarks);
+
+router.post(
+  '/bookmarks',
+  auth,
+  [body('cardId').notEmpty()],
+  UserController.createBookmark
+);
 
 router.patch(
   '/profile-image',
