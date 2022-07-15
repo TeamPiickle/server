@@ -16,6 +16,7 @@ import { Types } from 'mongoose';
 import { UserBookmarkDto } from '../intefaces/user/UserBookmarkDto';
 import { UserBookmarkInfo } from '../intefaces/user/UserBookmarkInfo';
 import Bookmark from '../models/bookmark';
+import Card from '../models/card';
 
 const createUser = async (command: CreateUserCommand) => {
   const alreadyUser = await User.findOne({
@@ -135,6 +136,10 @@ const createdeleteBookmark = async (input: UserBookmarkInfo) => {
   const user = await User.findById(userId);
   if (user == null) {
     throw new IllegalArgumentException('해당 id의 유저가 존재하지 않습니다.');
+  }
+  const cardCheck = await Card.findById(cardId);
+  if (cardCheck == null) {
+    throw new IllegalArgumentException('해당 id의 카드가 존재하지 않습니다.');
   }
   const card = user.cardIdList;
   const cardIndex = card.indexOf(cardId);

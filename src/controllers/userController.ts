@@ -181,7 +181,7 @@ const getBookmarks = async (
 };
 
 /**
- *  @route POST /users/bookmarks
+ *  @route PUT /users/bookmarks
  *  @desc 유저 북마크 생성
  *  @access Public
  */
