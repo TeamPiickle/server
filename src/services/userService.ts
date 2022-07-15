@@ -130,14 +130,7 @@ const getBookmarks = async (
   return bookmarks;
 };
 
-/**
- *
- * 1. userId로 유저를 먼저 찾는다
- * 1-2. user가 존재하는지 체크
- * 2. 유저의 카드리스트에 이미 존재하는지 중복 검사.
- * 3. 존재하면 삭제 존재하지 않으면 추가 추가할 때 유저에 카드 아이디 리스트에 카드 아이디를 추가하고 북마크에 카드아이디와 유저 아이디를 저장한 도큐먼트를 추가한다.
- */
-const createBookmark = async (input: UserBookmarkInfo) => {
+const createdeleteBookmark = async (input: UserBookmarkInfo) => {
   const { userId, cardId } = input;
   const user = await User.findById(userId);
   if (user == null) {
@@ -145,12 +138,11 @@ const createBookmark = async (input: UserBookmarkInfo) => {
   }
   const card = user.cardIdList;
   const cardIndex = card.indexOf(cardId);
-  // 1. 카드아이디의 인덱스를 찾는다. indexOf로 그리고 찾은 후 저장해둔다.
+
   if (cardIndex == -1) {
-    // 카드를 유저 카드리스트에 추가
     user.cardIdList.push(cardId);
     await user.save();
-    // 새로운 북마크 도큐먼트를 저장
+
     const newBookmark = new Bookmark({
       user: user._id,
       card: cardId
@@ -172,5 +164,5 @@ export {
   updateNickname,
   updateUserProfileImage,
   getBookmarks,
-  createBookmark
+  createdeleteBookmark
 };

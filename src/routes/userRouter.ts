@@ -30,7 +30,7 @@ router.put(
   '/bookmarks',
   auth,
   [body('cardId').notEmpty()],
-  UserController.createBookmark
+  UserController.createdeleteBookmark
 );
 
 router.patch(

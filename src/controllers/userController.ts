@@ -186,7 +186,7 @@ const getBookmarks = async (
  *  @access Public
  */
 
-const createBookmark = async (
+const createdeleteBookmark = async (
   req: TypedRequest<{ cardId: Types.ObjectId }>,
   res: Response,
   next: NextFunction
@@ -205,7 +205,7 @@ const createBookmark = async (
     cardId
   };
   try {
-    const created = await UserService.createBookmark(input);
+    const created = await UserService.createdeleteBookmark(input);
     res
       .status(statusCode.CREATED)
       .send(
@@ -228,5 +228,5 @@ export {
   updateUserNickname,
   updateUserProfileImage,
   getBookmarks,
-  createBookmark
+  createdeleteBookmark
 };
