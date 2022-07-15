@@ -14,6 +14,9 @@ import { UserProfileResponseDto } from '../intefaces/user/UserProfileResponseDto
 import { UserProfileImageUrlDto } from '../intefaces/user/UserProfileImageUrlDto';
 import { Types } from 'mongoose';
 import { UserBookmarkDto } from '../intefaces/user/UserBookmarkDto';
+import { UserBookmarkInfo } from '../intefaces/user/UserBookmarkInfo';
+import Bookmark from '../models/bookmark';
+import Card from '../models/card';
 
 const createUser = async (command: CreateUserCommand) => {
   const alreadyUser = await User.findOne({
@@ -128,11 +131,43 @@ const getBookmarks = async (
   return bookmarks;
 };
 
+const createdeleteBookmark = async (input: UserBookmarkInfo) => {
+  const { userId, cardId } = input;
+  const user = await User.findById(userId);
+  if (user == null) {
+    throw new IllegalArgumentException('해당 id의 유저가 존재하지 않습니다.');
+  }
+  const cardCheck = await Card.findById(cardId);
+  if (cardCheck == null) {
+    throw new IllegalArgumentException('해당 id의 카드가 존재하지 않습니다.');
+  }
+  const card = user.cardIdList;
+  const cardIndex = card.indexOf(cardId);
+
+  if (cardIndex == -1) {
+    user.cardIdList.push(cardId);
+    await user.save();
+
+    const newBookmark = new Bookmark({
+      user: user._id,
+      card: cardId
+    });
+    await newBookmark.save();
+    return 1;
+  } else {
+    user.cardIdList.splice(cardIndex);
+    await user.save();
+    await Bookmark.findOneAndDelete({ user: userId, card: cardId });
+    return 0;
+  }
+};
+
 export {
   createUser,
   loginUser,
   findUserById,
   updateNickname,
   updateUserProfileImage,
-  getBookmarks
+  getBookmarks,
+  createdeleteBookmark
 };

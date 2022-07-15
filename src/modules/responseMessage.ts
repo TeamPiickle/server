@@ -3,6 +3,8 @@ const message = {
   USER_NICKNAME_UPDATE_SUCCESS: '유저 닉네임 변경 성공',
   USER_PROFILEIMAGE_UPDATE_SUCCESS: '유저 프로필 이미지 변경 성공',
   USER_BOOKMARKS_VIEW_SUCCESS: '유저 북마크 조회 성공',
+  USER_BOOKMARK_CREATE_SUCCESS: '유저 북마크 생성 성공',
+  USER_BOOKMARK_DELETE_SUCCESS: '유저 북마크 삭제 성공',
   USER_CREATED: '회원가입 성공',
   NULL_VALUE: '필요한 값이 없습니다.',
   NULL_VALUE_TOKEN: '토큰이 유효하지 않습니다.',
