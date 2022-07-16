@@ -12,4 +12,6 @@ router.post(
   BallotController.postBallotResult
 );
 
+router.get('', BallotController.getMainBallotList);
+
 export default router;

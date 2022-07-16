@@ -1,5 +1,5 @@
 import { Types } from 'mongoose';
-import { NextFunction, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import CreateBallotResultDto from '../intefaces/CreateBallotResultDto';
 import message from '../modules/responseMessage';
 import statusCode from '../modules/statusCode';
@@ -29,4 +29,32 @@ const postBallotResult = async (
   }
 };
 
-export { postBallotResult };
+/**
+ *  @route GET /ballots
+ *  @desc 메인 투표 주제 리스트 조회
+ *  @access Public
+ */
+const getMainBallotList = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const userId = req?.user?.id;
+    const ballotList = await BallotService.getMainBallotList(userId);
+    res
+      .status(statusCode.OK)
+      .send(
+        util.success(
+          statusCode.OK,
+          message.READ_MAIN_BALLOTS_SUCCESS,
+          ballotList
+        )
+      );
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
+
+export { postBallotResult, getMainBallotList };
