@@ -4,8 +4,10 @@ import routes from './routes';
 import helmet from 'helmet';
 import config from './config';
 import errorHandler from './middlewares/errorHandler';
+import cors from 'cors';
 
 const app = express();
+app.use(cors());
 
 connectDB()
   .then(() => {
