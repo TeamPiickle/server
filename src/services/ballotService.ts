@@ -39,18 +39,21 @@ const createBallotResult = async (command: CreateBallotResultDto) => {
 };
 
 const getBallotStatus = async (ballotTopicId: Types.ObjectId) => {
+  const ballotTopic = await BallotTopic.findById(ballotTopicId);
+  if (!ballotTopic) {
+    throw new IllegalArgumentException('올바르지 않은 투표 주제 id 입니다.');
+  }
   const ballotItems = await BallotItem.find({
     BallotTopicId: ballotTopicId
   });
-  const ballotCount = await BallotResult.find(ballotTopicId).count();
-  const ballotStatus = await Promise.all(
-    ballotItems.map(async (item: any) => {
+  const ballotStatus = 
+    ballotItems.map((item: any) => {
       const result = {
         _id: item._id,
         content: item.name
       };
       return result;
-    })
+    }
   );
   const data = {
     ballotItems: ballotStatus
@@ -101,5 +104,6 @@ const getBallotStatusAndUserSelect = async (
   };
   return data;
 };
+
 
 export { createBallotResult, getBallotStatus, getBallotStatusAndUserSelect };
