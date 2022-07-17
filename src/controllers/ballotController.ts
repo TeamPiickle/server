@@ -40,16 +40,16 @@ const getBallotStatus = async (
   next: NextFunction
 ): Promise<void | Response> => {
   try {
-    const userId = <Types.ObjectId | undefined >req.user?.id;
+    const userId = <Types.ObjectId | undefined>req.user?.id;
     const ballotId = new Types.ObjectId(req.params.ballotTopicId);
     const getStatus = async (
       userId: Types.ObjectId | undefined,
       ballotId: Types.ObjectId
     ) => {
       if (!userId) {
-        return await BallotService.getBallotStatus(ballotId);
+        return BallotService.getBallotStatus(ballotId);
       }
-      return await BallotService.getBallotStatusAndUserSelect(userId, ballotId);
+      return BallotService.getBallotStatusAndUserSelect(userId, ballotId);
     };
     const data = await getStatus(userId, ballotId);
     return res
@@ -61,4 +61,33 @@ const getBallotStatus = async (
     next(err);
   }
 };
-export { postBallotResult, getBallotStatus };
+
+/**
+ *  @route GET /ballots
+ *  @desc 메인 투표 주제 리스트 조회
+ *  @access Public
+ */
+const getMainBallotList = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const userId = req?.user?.id;
+    const ballotList = await BallotService.getMainBallotList(userId);
+    res
+      .status(statusCode.OK)
+      .send(
+        util.success(
+          statusCode.OK,
+          message.READ_MAIN_BALLOTS_SUCCESS,
+          ballotList
+        )
+      );
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
+
+export { postBallotResult, getBallotStatus, getMainBallotList };
