@@ -110,9 +110,19 @@ const getMainBallotList = async (
       { userId },
       'ballotTopicId'
     );
+    const completedIds = completedBallotTopic.map(e => e.ballotTopicId);
     const randomBallotTopicsExcludeCompleted = await BallotTopic.find({
-      _id: { $nin: completedBallotTopic.map(e => e.ballotTopicId) }
+      _id: { $nin: completedIds }
     }).limit(4);
+    if (randomBallotTopicsExcludeCompleted.length < 4) {
+      const randomBallotTopicsCompleted = await BallotTopic.find({
+        _id: { $in: completedIds }
+      }).limit(4 - randomBallotTopicsExcludeCompleted.length);
+      return [
+        ...randomBallotTopicsExcludeCompleted,
+        ...randomBallotTopicsCompleted
+      ];
+    }
     return randomBallotTopicsExcludeCompleted;
   } else {
     const randomBallotTopics = await BallotTopic.find().limit(4);
