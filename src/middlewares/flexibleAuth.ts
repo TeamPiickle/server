@@ -14,9 +14,6 @@ export default (req: Request, res: Response, next: NextFunction) => {
   const token = req.header('x-auth-token')?.split(' ').reverse()[0];
 
   if (!token) {
-    req.user = {
-      id: null
-    };
     return next();
   }
 

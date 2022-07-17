@@ -40,10 +40,10 @@ const getBallotStatus = async (
   next: NextFunction
 ): Promise<void | Response> => {
   try {
-    const userId = req.user.id as Types.ObjectId;
+    const userId = <Types.ObjectId | undefined >req.user?.id;
     const ballotId = new Types.ObjectId(req.params.ballotTopicId);
     const getStatus = async (
-      userId: Types.ObjectId,
+      userId: Types.ObjectId | undefined,
       ballotId: Types.ObjectId
     ) => {
       if (!userId) {
