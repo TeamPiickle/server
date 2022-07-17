@@ -9,7 +9,7 @@ const categorySchema = new Schema<CategoryDocument>({
     type: String,
     required: true
   },
-  content: String,
+  imgurl: String,
   cardIdList: [
     {
       type: Schema.Types.ObjectId,
@@ -20,4 +20,4 @@ const categorySchema = new Schema<CategoryDocument>({
 
 const Category = model<CategoryDocument>('Category', categorySchema);
 
-export default Category;
+export { CategoryDocument, Category };

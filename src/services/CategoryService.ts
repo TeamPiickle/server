@@ -1,10 +1,22 @@
-import Category from '../models/category';
+import { Category, CategoryDocument } from '../models/category';
 import Card from '../models/card';
 import CategoryResponseDto from '../intefaces/CategoryResponseDto';
 import { CardResponseDto } from '../intefaces/CardResponseDto';
+
+const shuffleCategories = (arr: CategoryDocument[]) => {
+  arr.sort(() => Math.random() - 0.5);
+};
+
 const getCategory = async (): Promise<Array<object> | null> => {
-  const categories = await Category.find({}, { title: 1, content: 2 });
+  const categories: CategoryDocument[] = await Category.find(
+    {},
+    {
+      title: 1,
+      imgurl: 2
+    }
+  );
   if (!categories) return null;
+  shuffleCategories(categories);
 
   return categories;
 };
