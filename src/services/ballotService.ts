@@ -1,8 +1,9 @@
 import { IllegalArgumentException } from '../intefaces/exception';
 import CreateBallotResultDto from '../intefaces/CreateBallotResultDto';
 import BallotItem from '../models/ballotItem';
-import { BallotResult } from '../models/ballotResult';
+import BallotResult from '../models/ballotResult';
 import BallotTopic from '../models/ballotTopic';
+import { Types } from 'mongoose';
 
 const createBallotResult = async (command: CreateBallotResultDto) => {
   const ballotTopic = await BallotTopic.findById(command.ballotTopicId);
@@ -35,4 +36,61 @@ const createBallotResult = async (command: CreateBallotResultDto) => {
   await newBallot.save();
 };
 
-export { createBallotResult };
+const getBallotStatus = async (ballotTopicId: Types.ObjectId) => {
+  const ballotItems = await BallotItem.find({
+    BallotTopicId: ballotTopicId
+  });
+  const ballotCount = await BallotResult.find(ballotTopicId).count();
+  const ballotStatus = await Promise.all(
+    ballotItems.map(async (item: any) => {
+      const result = {
+        _id: item._id,
+        content: item.name
+      };
+      return result;
+    })
+  );
+  const data = {
+    ballotItems: ballotStatus
+  };
+  return data;
+};
+
+const getBallotStatusAndUserSelect = async (
+  userId: Types.ObjectId,
+  ballotTopicId: Types.ObjectId
+) => {
+  const ballotItems = await BallotItem.find({
+    BallotTopicId: ballotTopicId
+  });
+  const ballotCount = await BallotResult.find(ballotTopicId).count();
+  const ballotStatus = await Promise.all(
+    ballotItems.map(async (item: any) => {
+      const result = {
+        _id: item._id,
+        status: Math.floor(
+          ((await BallotResult.find({
+            ballotItemId: item._id
+          }).count()) *
+            100) /
+            ballotCount
+        ),
+        content: item.name
+      };
+      return result;
+    })
+  );
+  const data = {
+    ballotItems: ballotStatus,
+    userSelect: await BallotResult.findOne(
+      {
+        userId: userId,
+        ballotTopicId: ballotTopicId
+      },
+      { ballotItemId: 1 }
+    )
+  };
+  return data;
+};
+
+export { createBallotResult, getBallotStatus, getBallotStatusAndUserSelect };
