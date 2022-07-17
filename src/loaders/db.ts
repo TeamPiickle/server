@@ -7,7 +7,7 @@ import User from '../models/user';
 import EmailAuth from '../models/emailAuth';
 import BallotTopic from '../models/ballotTopic';
 import BallotItem from '../models/ballotItem';
-import { BallotResult } from '../models/ballotResult';
+import BallotResult from '../models/ballotResult';
 
 const connectDB = async () => {
   await mongoose.connect(config.mongoURI);

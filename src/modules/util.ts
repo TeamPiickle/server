@@ -1,3 +1,8 @@
+import { Integer } from "aws-sdk/clients/apigateway";
+import BallotItem from "../models/ballotItem";
+import BallotResult from "../models/ballotResult";
+import { Types } from 'mongoose';
+
 const util = {
   success: (status: number, message: string, data?: any) => {
     return {
@@ -18,7 +23,17 @@ const util = {
     const beforeAMonth = new Date();
     beforeAMonth.setMonth(beforeAMonth.getMonth() - 1);
     return beforeAMonth;
-  }
+  },
+  
+  getStatus: async (ballotCount: number, ballotItemId: Types.ObjectId): Promise<number> => {
+    return Math.floor(
+      ((await BallotResult.find({
+        ballotItemId: ballotItemId
+      }).count()) *
+        100) /
+        ballotCount
+    )
+  } 
 };
 
 export default util;

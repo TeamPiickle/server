@@ -1,5 +1,5 @@
 import { Types } from 'mongoose';
-import { NextFunction, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import CreateBallotResultDto from '../intefaces/CreateBallotResultDto';
 import message from '../modules/responseMessage';
 import statusCode from '../modules/statusCode';
@@ -29,4 +29,36 @@ const postBallotResult = async (
   }
 };
 
-export { postBallotResult };
+/**
+ *  @route Get /ballots/:ballotTopicId
+ *  @desc 투표현황 조회 api
+ *  @access Public
+ */
+const getBallotStatus = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void | Response> => {
+  try {
+    const userId = <Types.ObjectId | undefined >req.user?.id;
+    const ballotId = new Types.ObjectId(req.params.ballotTopicId);
+    const getStatus = async (
+      userId: Types.ObjectId | undefined,
+      ballotId: Types.ObjectId
+    ) => {
+      if (!userId) {
+        return await BallotService.getBallotStatus(ballotId);
+      }
+      return await BallotService.getBallotStatusAndUserSelect(userId, ballotId);
+    };
+    const data = await getStatus(userId, ballotId);
+    return res
+      .status(statusCode.OK)
+      .send(
+        util.success(statusCode.OK, message.BALLOT_STATUS_VIEW_SUCCESS, data)
+      );
+  } catch (err) {
+    next(err);
+  }
+};
+export { postBallotResult, getBallotStatus };

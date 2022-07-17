@@ -1,8 +1,11 @@
 import { IllegalArgumentException } from '../intefaces/exception';
 import CreateBallotResultDto from '../intefaces/CreateBallotResultDto';
 import BallotItem from '../models/ballotItem';
-import { BallotResult } from '../models/ballotResult';
+import BallotResult from '../models/ballotResult';
 import BallotTopic from '../models/ballotTopic';
+import { Types } from 'mongoose';
+import util from '../modules/util';
+
 
 const createBallotResult = async (command: CreateBallotResultDto) => {
   const ballotTopic = await BallotTopic.findById(command.ballotTopicId);
@@ -35,4 +38,72 @@ const createBallotResult = async (command: CreateBallotResultDto) => {
   await newBallot.save();
 };
 
-export { createBallotResult };
+const getBallotStatus = async (ballotTopicId: Types.ObjectId) => {
+  const ballotTopic = await BallotTopic.findById(ballotTopicId);
+  if (!ballotTopic) {
+    throw new IllegalArgumentException('올바르지 않은 투표 주제 id 입니다.');
+  }
+  const ballotItems = await BallotItem.find({
+    BallotTopicId: ballotTopicId
+  });
+  const ballotStatus = 
+    ballotItems.map((item: any) => {
+      const result = {
+        _id: item._id,
+        content: item.name
+      };
+      return result;
+    }
+  );
+  const data = {
+    ballotItems: ballotStatus
+  };
+  return data;
+};
+
+const getBallotStatusAndUserSelect = async (
+  userId: Types.ObjectId,
+  ballotTopicId: Types.ObjectId
+) => {
+  const ballotSelectCheck = await BallotResult.findOne({
+    userId: userId,
+    ballotTopicId: ballotTopicId
+  })
+  const ballotTopic = await BallotTopic.findById(ballotTopicId);
+  if (!ballotTopic) {
+    throw new IllegalArgumentException('올바르지 않은 투표 주제 id 입니다.');
+  }
+  if (!ballotSelectCheck) {
+    return getBallotStatus(ballotTopicId);
+  }
+
+  const ballotItems = await BallotItem.find({
+    BallotTopicId: ballotTopicId
+  });
+
+  const ballotCount = await BallotResult.find(ballotTopicId).count();
+  const ballotStatus = await Promise.all(
+    ballotItems.map(async (item: any) => {
+      const result = {
+        _id: item._id,
+        status: await util.getStatus(ballotCount, item._id),
+        content: item.name
+      };
+      return result;
+    })
+  );
+  const data = {
+    ballotItems: ballotStatus,
+    userSelect: await BallotResult.findOne(
+      {
+        userId: userId,
+        ballotTopicId: ballotTopicId
+      },
+      { ballotItemId: 1 }
+    )
+  };
+  return data;
+};
+
+
+export { createBallotResult, getBallotStatus, getBallotStatusAndUserSelect };
