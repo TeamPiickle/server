@@ -7,7 +7,15 @@ import errorHandler from './middlewares/errorHandler';
 import cors from 'cors';
 
 const app = express();
-app.use(cors());
+
+const allowedOrigins = ['ec2-54-180-116-184.ap-northeast-2.compute.amazonaws.com'];
+
+const options: cors.CorsOptions = {
+  origin: '*',
+  methods: '*'
+};
+
+app.use(cors(options));
 
 connectDB()
   .then(() => {
