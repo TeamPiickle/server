@@ -106,12 +106,12 @@ const getMainBallotList = async (
   userId: Types.ObjectId | null
 ): Promise<BallotTopicDocument[]> => {
   if (userId) {
-    const completedBallotTopicIds: Types.ObjectId[] = await BallotResult.find(
+    const completedBallotTopic = await BallotResult.find(
       { userId },
       'ballotTopicId'
     );
     const randomBallotTopicsExcludeCompleted = await BallotTopic.find({
-      _id: { $nin: completedBallotTopicIds }
+      _id: { $nin: completedBallotTopic.map(e => e.ballotTopicId) }
     }).limit(4);
     return randomBallotTopicsExcludeCompleted;
   } else {
