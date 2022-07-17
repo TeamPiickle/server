@@ -56,6 +56,10 @@ const getBallotStatus = async (ballotTopicId: Types.ObjectId) => {
     }
   );
   const data = {
+    ballotTopic: {
+      _id: ballotTopicId,
+      ballotTopicContent: ballotTopic.topic
+    },
     ballotItems: ballotStatus
   };
   return data;
@@ -93,6 +97,10 @@ const getBallotStatusAndUserSelect = async (
     })
   );
   const data = {
+    ballotTopic: {
+      _id: ballotTopicId,
+      ballotTopicContent: ballotTopic.topic
+    },
     ballotItems: ballotStatus,
     userSelect: await BallotResult.findOne(
       {
