@@ -3,6 +3,7 @@ import message from '../modules/responseMessage';
 import statusCode from '../modules/statusCode';
 import util from '../modules/util';
 import { CardService } from '../services';
+import { Types } from 'mongoose';
 
 /**
  *  @route /cards/best
@@ -15,7 +16,8 @@ const getBestCardList = async (
   next: NextFunction
 ) => {
   try {
-    const cards = await CardService.findBestCards(30);
+    const userId = <Types.ObjectId | undefined> req.user?.id;
+    const cards = await CardService.findBestCards(userId, 30);
     return res
       .status(statusCode.OK)
       .send(
