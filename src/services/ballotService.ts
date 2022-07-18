@@ -67,7 +67,7 @@ const getBallotStatus = async (ballotTopicId: Types.ObjectId) => {
 };
 
 const getBallotStatusAndUserSelect = async (
-  userId: Types.ObjectId,
+  userId: Types.ObjectId | undefined,
   ballotTopicId: Types.ObjectId
 ) => {
   const ballotSelectCheck = await BallotResult.findOne({
