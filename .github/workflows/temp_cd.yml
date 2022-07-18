@@ -17,6 +17,7 @@ jobs:
         with:
           cmd: build # will run `yarn build` command
   deploy:
+    needs: build
     name: PM2
     runs-on: self-hosted
     steps:
