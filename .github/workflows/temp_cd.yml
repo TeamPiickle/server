@@ -1,0 +1,30 @@
+name: Deploy EC2 Server
+# on:
+#   push:
+#     branches:
+#       - develop
+on: pull_request
+jobs:
+  build:
+    name: Yarn build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: borales/actions-yarn@v3.0.0
+        with:
+          cmd: install # will run `yarn install` command
+      - uses: borales/actions-yarn@v3.0.0
+        with:
+          cmd: build # will run `yarn build` command
+  deploy:
+    name: PM2
+    runs-on: self-hosted
+    steps:
+      - name: git pull
+        run: |
+          cd /home/ubuntu/server
+          git pull
+      - name: build
+        run: yarn build
+      - name: pm2
+        run: pm2 restart dist
