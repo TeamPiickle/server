@@ -1,4 +1,7 @@
-import { IllegalArgumentException } from '../intefaces/exception';
+import {
+  IllegalArgumentException,
+  NullDataException
+} from '../intefaces/exception';
 import CreateBallotResultDto from '../intefaces/CreateBallotResultDto';
 import BallotItem from '../models/ballotItem';
 import { Types } from 'mongoose';
@@ -57,7 +60,8 @@ const getBallotStatus = async (ballotTopicId: Types.ObjectId) => {
       _id: ballotTopicId,
       ballotTopicContent: ballotTopic.topic
     },
-    ballotItems: ballotStatus
+    ballotItems: ballotStatus,
+    userSelect: null
   };
   return data;
 };
@@ -102,11 +106,13 @@ const getBallotStatusAndUserSelect = async (
     userSelect: await BallotResult.findOne(
       {
         userId: userId,
+
         ballotTopicId: ballotTopicId
       },
       { ballotItemId: 1 }
     )
   };
+
   return data;
 };
 

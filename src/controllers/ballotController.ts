@@ -46,9 +46,6 @@ const getBallotStatus = async (
       userId: Types.ObjectId | undefined,
       ballotId: Types.ObjectId
     ) => {
-      if (!userId) {
-        return BallotService.getBallotStatus(ballotId);
-      }
       return BallotService.getBallotStatusAndUserSelect(userId, ballotId);
     };
     const data = await getStatus(userId, ballotId);
