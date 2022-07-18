@@ -3,7 +3,9 @@ import { NullDataException } from '../intefaces/exception';
 import message from '../modules/responseMessage';
 import statusCode from '../modules/statusCode';
 import util from '../modules/util';
+import Types from 'mongoose';
 import { CategoryService } from '../services';
+import { getCardsWithIsBookmark } from '../services/CategoryService';
 
 /**
  *  @route Get /categories
@@ -20,7 +22,6 @@ const getCategory = async (
     if (!data) {
       throw new NullDataException('데이터가 없습니다.');
     }
-
     return res
       .status(statusCode.OK)
       .send(util.success(statusCode.OK, message.READ_CATEGORY_SUCCESS, data));
@@ -40,9 +41,10 @@ const getCards = async (
   next: NextFunction
 ): Promise<void | Response> => {
   const { categoryId } = req.params;
-
+  const userId = <Types.ObjectId | undefined>req.user?.id;
   try {
-    const data = await CategoryService.getCards(categoryId);
+    const data = await getCardsWithIsBookmark(userId, categoryId);
+
     if (!data) {
       throw new NullDataException('데이터가 없습니다.');
     }
@@ -65,9 +67,9 @@ const getCardsBySearch = async (
   next: NextFunction
 ): Promise<void | Response> => {
   const { search } = req.query;
-
+  const userId = <Types.ObjectId | undefined> req.user?.id;
   try {
-    const data = await CategoryService.getCardsBySearch(search as string[]);
+    const data = await CategoryService.getCardsBySearch(search as string[], userId);
     if (!data) {
       throw new NullDataException('데이터가 없습니다.');
     }

@@ -6,4 +6,5 @@ export interface CardResponseDto {
   tags: string[];
   category: Types.ObjectId[];
   filter: string[];
+  isBookmark?: boolean;
 }

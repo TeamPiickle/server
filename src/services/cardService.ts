@@ -8,18 +8,27 @@ interface CardIdAndCnt {
   count: number;
 }
 
-const findBestCards = async (size: number) => {
+const findBestCards = async (userId: Types.ObjectId | undefined, size: number) => {
   const cardIdAndCnt = <CardIdAndCnt[]>await Bookmark.aggregate([
     { $match: { createdAt: { $gte: util.getLastMonth() } } }
   ])
     .sortByCount('card')
     .limit(size);
-
+  console.log(userId);
   const cards = <CardResponseDto[]>await Promise.all(
     cardIdAndCnt.map(async c => {
       return Card.findById(c._id, '_id category content');
     })
   );
+  const cardList = await Promise.all(cards.map(async (item: any) => {
+    const isBookmark = await Bookmark.find({ user : userId , card: item._id }).count() > 0 ? true : false; 
+    return { _id: item._id,
+      content: item.content,
+      tags: item.tags,
+      category: item.Category,
+      filter: item.filter,
+      isBookmark: isBookmark};
+  }));
 
   let extraCard: CardResponseDto[] = [];
   if (cards.length < size) {
@@ -27,6 +36,16 @@ const findBestCards = async (size: number) => {
       size - cards.length
     );
   }
-  return [...cards, ...extraCard];
+
+  const extraCardList = await Promise.all(extraCard.map(async (item: any) => {
+    const isBookmark = await Bookmark.find({ user : userId , card: item._id }).count() > 0 ? true : false; 
+    return { _id: item._id,
+      content: item.content,
+      tags: item.tags,
+      category: item.Category,
+      filter: item.filter,
+      isBookmark: isBookmark};
+  }));
+  return [...cardList, ...extraCardList];
 };
 export { findBestCards };
