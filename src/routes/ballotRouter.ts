@@ -14,4 +14,6 @@ router.post(
 );
 
 router.get('/:ballotTopicId', flexibleAuth, BallotController.getBallotStatus);
+router.get('', flexibleAuth, BallotController.getMainBallotList);
+
 export default router;

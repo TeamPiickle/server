@@ -1,11 +1,10 @@
 import { IllegalArgumentException } from '../intefaces/exception';
 import CreateBallotResultDto from '../intefaces/CreateBallotResultDto';
 import BallotItem from '../models/ballotItem';
-import BallotResult from '../models/ballotResult';
-import BallotTopic from '../models/ballotTopic';
 import { Types } from 'mongoose';
 import util from '../modules/util';
-
+import { BallotResult } from '../models/ballotResult';
+import { BallotTopic, BallotTopicDocument } from '../models/ballotTopic';
 
 const createBallotResult = async (command: CreateBallotResultDto) => {
   const ballotTopic = await BallotTopic.findById(command.ballotTopicId);
@@ -46,15 +45,13 @@ const getBallotStatus = async (ballotTopicId: Types.ObjectId) => {
   const ballotItems = await BallotItem.find({
     BallotTopicId: ballotTopicId
   });
-  const ballotStatus = 
-    ballotItems.map((item: any) => {
-      const result = {
-        _id: item._id,
-        content: item.name
-      };
-      return result;
-    }
-  );
+  const ballotStatus = ballotItems.map((item: any) => {
+    const result = {
+      _id: item._id,
+      content: item.name
+    };
+    return result;
+  });
   const data = {
     ballotTopic: {
       _id: ballotTopicId,
@@ -72,7 +69,7 @@ const getBallotStatusAndUserSelect = async (
   const ballotSelectCheck = await BallotResult.findOne({
     userId: userId,
     ballotTopicId: ballotTopicId
-  })
+  });
   const ballotTopic = await BallotTopic.findById(ballotTopicId);
   if (!ballotTopic) {
     throw new IllegalArgumentException('올바르지 않은 투표 주제 id 입니다.');
@@ -113,5 +110,37 @@ const getBallotStatusAndUserSelect = async (
   return data;
 };
 
+const getMainBallotList = async (
+  userId: Types.ObjectId | null
+): Promise<BallotTopicDocument[]> => {
+  if (userId) {
+    const completedBallotTopic = await BallotResult.find(
+      { userId },
+      'ballotTopicId'
+    );
+    const completedIds = completedBallotTopic.map(e => e.ballotTopicId);
+    const randomBallotTopicsExcludeCompleted = await BallotTopic.find({
+      _id: { $nin: completedIds }
+    }).limit(4);
+    if (randomBallotTopicsExcludeCompleted.length < 4) {
+      const randomBallotTopicsCompleted = await BallotTopic.find({
+        _id: { $in: completedIds }
+      }).limit(4 - randomBallotTopicsExcludeCompleted.length);
+      return [
+        ...randomBallotTopicsExcludeCompleted,
+        ...randomBallotTopicsCompleted
+      ];
+    }
+    return randomBallotTopicsExcludeCompleted;
+  } else {
+    const randomBallotTopics = await BallotTopic.find().limit(4);
+    return randomBallotTopics;
+  }
+};
 
-export { createBallotResult, getBallotStatus, getBallotStatusAndUserSelect };
+export {
+  createBallotResult,
+  getMainBallotList,
+  getBallotStatusAndUserSelect,
+  getBallotStatus
+};

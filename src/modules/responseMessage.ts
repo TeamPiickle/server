@@ -25,7 +25,8 @@ const message = {
 
   // 투표
   BALLOT_RESULT_CREATED: '투표 성공',
-  BALLOT_STATUS_VIEW_SUCCESS: '투표 현황 조회 성공'
+  BALLOT_STATUS_VIEW_SUCCESS: '투표 현황 조회 성공',
+  READ_MAIN_BALLOTS_SUCCESS: '메인 투표 주제 조회 성공'
 };
 
 export default message;

@@ -16,4 +16,4 @@ const BallotTopic = model<BallotTopicDocument>(
   ballotTopicSchema
 );
 
-export default BallotTopic;
+export { BallotTopic, BallotTopicDocument };
