@@ -69,10 +69,6 @@ const getCardsBySearch = async (
     if (!cards) return null;
     const cardList = await Promise.all(cards.map(async (item: any) => {
     const isBookmark = await Bookmark.find({ user : userId , card: item._id }).count() > 0 ? true : false; 
-    // console.log(isBookmark);
-    // console.log(userId);
-    // console.log(item._id);
-    // console.log(item.content);
     return { _id: item._id,
       content: item.content,
       tags: item.tags,
