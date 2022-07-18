@@ -11,7 +11,7 @@ interface JwtError extends Error {
 }
 
 export default (req: Request, res: Response, next: NextFunction) => {
-  const token = req.header('x-auth-token')?.split(' ').reverse()[0];
+  const token = req.header('x-auth-token')?.split(' ')[1];
 
   if (!token) {
     return next();
@@ -22,6 +22,10 @@ export default (req: Request, res: Response, next: NextFunction) => {
     req.user = decoded.user;
     next();
   } catch (error) {
+    if ((error as Error).message == 'jwt malformed') {
+      next();
+      return;
+    }
     console.log(error);
     if ((error as JwtError).name == 'TokenExpiredError') {
       return res

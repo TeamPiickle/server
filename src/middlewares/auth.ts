@@ -11,7 +11,7 @@ interface JwtError extends Error {
 }
 
 export default (req: Request, res: Response, next: NextFunction) => {
-  const token = req.header('x-auth-token')?.split(' ').reverse()[0];
+  const token = req.header('x-auth-token')?.split(' ')[1];
 
   if (!token) {
     return res
