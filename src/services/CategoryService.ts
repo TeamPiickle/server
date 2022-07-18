@@ -12,7 +12,8 @@ const getCategory = async (): Promise<Array<object> | null> => {
     {},
     {
       title: 1,
-      imgurl: 2
+      content: 2,
+      imgurl: 3
     }
   );
   if (!categories) return null;

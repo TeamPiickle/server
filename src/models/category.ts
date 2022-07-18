@@ -9,6 +9,7 @@ const categorySchema = new Schema<CategoryDocument>({
     type: String,
     required: true
   },
+  content: String,
   imgurl: String,
   cardIdList: [
     {
