@@ -3,6 +3,6 @@ import { CardController } from '../controllers';
 
 const router = Router();
 
-router.get('/best-5', CardController.getBest5);
+router.get('/best', CardController.getBestCardList);
 
 export default router;

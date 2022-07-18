@@ -5,13 +5,17 @@ import util from '../modules/util';
 import { CardService } from '../services';
 
 /**
- *  @route /cards/best-5
- *  @desc 이번 달의 베스트 피클을 가져옵니다.
+ *  @route /cards/best
+ *  @desc 이번 달의 베스트 피클 30개를 가져옵니다.
  *  @access Public
  */
-const getBest5 = async (req: Request, res: Response, next: NextFunction) => {
+const getBestCardList = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
-    const cards = await CardService.findBestCards(5);
+    const cards = await CardService.findBestCards(30);
     return res
       .status(statusCode.OK)
       .send(
@@ -23,4 +27,4 @@ const getBest5 = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export { getBest5 };
+export { getBestCardList };
