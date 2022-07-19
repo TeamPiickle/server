@@ -17,3 +17,4 @@ const cardSchema = new Schema<CardDocument>({
 const Card = model<CardDocument>('Card', cardSchema);
 
 export default Card;
+export { CardDocument };

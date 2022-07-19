@@ -1,5 +1,5 @@
 import Bookmark from '../models/bookmark';
-import Card from '../models/card';
+import Card, { CardDocument } from '../models/card';
 import util from '../modules/util';
 import { Types } from 'mongoose';
 import { CardResponseDto } from '../intefaces/CardResponseDto';
@@ -17,28 +17,31 @@ const findBestCards = async (
   ])
     .sortByCount('card')
     .limit(size);
-  console.log(userId);
-  const cards = <CardResponseDto[]>await Promise.all(
-    cardIdAndCnt.map(async c => {
-      return Card.findById(c._id);
-    })
-  );
-  const cardList = await Promise.all(
-    cards.map(async (item: any) => {
-      const isBookmark =
-        (await Bookmark.find({ user: userId, card: item._id }).count()) > 0
-          ? true
-          : false;
-      return {
-        _id: item._id,
-        content: item.content,
-        tags: item.tags,
-        category: item.Category,
-        filter: item.filter,
-        isBookmark: isBookmark
-      };
-    })
-  );
+  let cards: CardDocument[] = [];
+  let cardList: CardResponseDto[] = [];
+  if (cardIdAndCnt.length > 0) {
+    cards = <CardDocument[]>await Promise.all(
+      cardIdAndCnt.map(async c => {
+        return Card.findById(c._id);
+      })
+    );
+    cardList = await Promise.all(
+      cards.map(async (item: any) => {
+        const isBookmark =
+          (await Bookmark.find({ user: userId, card: item._id }).count()) > 0
+            ? true
+            : false;
+        return {
+          _id: item._id,
+          content: item.content,
+          tags: item.tags,
+          category: item.Category,
+          filter: item.filter,
+          isBookmark: isBookmark
+        };
+      })
+    );
+  }
 
   let extraCard: CardResponseDto[] = [];
   if (cards.length < size) {
