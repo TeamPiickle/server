@@ -6,6 +6,9 @@ import { CardResponseDto } from '../intefaces/CardResponseDto';
 const shuffleCategories = (arr: CategoryDocument[]) => {
   arr.sort(() => Math.random() - 0.5);
 };
+const shuffleCards = (arr: CardResponseDto[]) => {
+  arr.sort(() => Math.random() - 0.5);
+};
 
 const getCategory = async (): Promise<Array<object> | null> => {
   const categories: CategoryDocument[] = await Category.find(
@@ -29,7 +32,6 @@ const getCards = async (
     categoryId
   ).populate('cardIdList');
   if (!cards) return null;
-
   return cards;
 };
 
@@ -38,6 +40,7 @@ const getCardsBySearch = async (
 ): Promise<CardResponseDto[] | null> => {
   try {
     const cards = await Card.find({ filter: { $all: search } });
+    shuffleCards(cards);
     return cards;
   } catch (error) {
     console.log(error);
