@@ -24,6 +24,7 @@ const createBallotResult = async (command: CreateBallotResultDto) => {
     await BallotResult.deleteOne({
       _id: alreadyBallotResult._id
     });
+    return;
   }
 
   const ballotItem = await BallotItem.findById(command.ballotItemId);
@@ -40,33 +41,6 @@ const createBallotResult = async (command: CreateBallotResultDto) => {
   await newBallot.save();
 };
 
-const getBallotStatus = async (ballotTopicId: Types.ObjectId) => {
-  const ballotTopic = await BallotTopic.findById(ballotTopicId);
-  if (!ballotTopic) {
-    throw new IllegalArgumentException('올바르지 않은 투표 주제 id 입니다.');
-  }
-  const ballotItems = await BallotItem.find({
-    ballotTopicId: ballotTopicId
-  });
-
-  const ballotStatus = ballotItems.map((item: any) => {
-    const result = {
-      _id: item._id,
-      content: item.name
-    };
-    return result;
-  });
-  const data = {
-    ballotTopic: {
-      _id: ballotTopicId,
-      ballotTopicContent: ballotTopic.topic
-    },
-    ballotItems: ballotStatus,
-    userSelect: null
-  };
-  return data;
-};
-
 const getBallotStatusAndUserSelect = async (
   userId: Types.ObjectId | undefined,
   ballotTopicId: Types.ObjectId
@@ -78,9 +52,6 @@ const getBallotStatusAndUserSelect = async (
   const ballotTopic = await BallotTopic.findById(ballotTopicId);
   if (!ballotTopic) {
     throw new IllegalArgumentException('올바르지 않은 투표 주제 id 입니다.');
-  }
-  if (!ballotSelectCheck) {
-    return getBallotStatus(ballotTopicId);
   }
 
   const ballotItems = await BallotItem.find({
@@ -98,20 +69,26 @@ const getBallotStatusAndUserSelect = async (
       return result;
     })
   );
-  const data = {
-    ballotTopic: {
-      _id: ballotTopicId,
-      ballotTopicContent: ballotTopic.topic
-    },
-    ballotItems: ballotStatus,
-    userSelect: await BallotResult.findOne(
+  let userSelect = null;
+
+  if (ballotSelectCheck) {
+    userSelect = await BallotResult.findOne(
       {
         userId: userId,
 
         ballotTopicId: ballotTopicId
       },
       { ballotItemId: 1 }
-    )
+    );
+  }
+
+  const data = {
+    ballotTopic: {
+      _id: ballotTopicId,
+      ballotTopicContent: ballotTopic.topic
+    },
+    ballotItems: ballotStatus,
+    userSelect: userSelect
   };
 
   return data;
