@@ -6,9 +6,6 @@ import { CardResponseDto } from '../intefaces/CardResponseDto';
 import Bookmark from '../models/bookmark';
 import { IllegalArgumentException } from '../intefaces/exception';
 
-const shuffleCategories = (arr: CategoryDocument[]) => {
-  arr.sort(() => Math.random() - 0.5);
-};
 const shuffleCards = (arr: CardResponseDto[]) => {
   arr.sort(() => Math.random() - 0.5);
 };
@@ -23,7 +20,6 @@ const getCategory = async (): Promise<Array<object> | null> => {
     }
   );
   if (!categories) return null;
-  shuffleCategories(categories);
 
   return categories;
 };
