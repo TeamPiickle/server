@@ -21,9 +21,21 @@ const createBallotResult = async (command: CreateBallotResultDto) => {
   });
 
   if (alreadyBallotResult) {
-    await BallotResult.deleteOne({
-      _id: alreadyBallotResult._id
-    });
+    if (
+      alreadyBallotResult.ballotItemId.toString() ==
+      command.ballotItemId.toString()
+    ) {
+      await BallotResult.deleteOne({
+        _id: alreadyBallotResult._id
+      });
+      return;
+    }
+    await BallotResult.findByIdAndUpdate(
+      {
+        _id: alreadyBallotResult._id
+      },
+      { ballotItemId: command.ballotItemId }
+    );
     return;
   }
 
