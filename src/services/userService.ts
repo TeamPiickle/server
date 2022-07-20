@@ -121,13 +121,23 @@ const getBookmarks = async (
     throw new IllegalArgumentException('존재하지 않는 유저 입니다.');
   }
 
-  const bookmarks = user.cardIdList.map((card: any) => {
-    const result = {
-      cardId: card._id,
-      content: card.content
-    };
-    return result;
-  });
+  const bookmarks = await Promise.all(
+    user.cardIdList.map(async (item: any) => {
+      const isBookmark =
+        (await Bookmark.find({ user: userId, card: item._id }).count()) > 0
+          ? true
+          : false;
+      return {
+        cardId: item._id,
+        content: item.content,
+        tags: item.tags,
+        category: item.Category,
+        filter: item.filter,
+        isBookmark: isBookmark
+      };
+    })
+  );
+
   return bookmarks;
 };
 
