@@ -21,9 +21,22 @@ const createBallotResult = async (command: CreateBallotResultDto) => {
   });
 
   if (alreadyBallotResult) {
-    await BallotResult.deleteOne({
-      _id: alreadyBallotResult._id
-    });
+    if (
+      alreadyBallotResult.ballotItemId.toString() ==
+      command.ballotItemId.toString()
+    ) {
+      await BallotResult.deleteOne({
+        _id: alreadyBallotResult._id
+      });
+      return;
+    }
+    await BallotResult.findByIdAndUpdate(
+      {
+        _id: alreadyBallotResult._id
+      },
+      { ballotItemId: command.ballotItemId }
+    );
+    return;
   }
 
   const ballotItem = await BallotItem.findById(command.ballotItemId);
@@ -40,33 +53,6 @@ const createBallotResult = async (command: CreateBallotResultDto) => {
   await newBallot.save();
 };
 
-const getBallotStatus = async (ballotTopicId: Types.ObjectId) => {
-  const ballotTopic = await BallotTopic.findById(ballotTopicId);
-  if (!ballotTopic) {
-    throw new IllegalArgumentException('올바르지 않은 투표 주제 id 입니다.');
-  }
-  const ballotItems = await BallotItem.find({
-    ballotTopicId: ballotTopicId
-  });
-
-  const ballotStatus = ballotItems.map((item: any) => {
-    const result = {
-      _id: item._id,
-      content: item.name
-    };
-    return result;
-  });
-  const data = {
-    ballotTopic: {
-      _id: ballotTopicId,
-      ballotTopicContent: ballotTopic.topic
-    },
-    ballotItems: ballotStatus,
-    userSelect: null
-  };
-  return data;
-};
-
 const getBallotStatusAndUserSelect = async (
   userId: Types.ObjectId | undefined,
   ballotTopicId: Types.ObjectId
@@ -79,9 +65,6 @@ const getBallotStatusAndUserSelect = async (
   if (!ballotTopic) {
     throw new IllegalArgumentException('올바르지 않은 투표 주제 id 입니다.');
   }
-  if (!ballotSelectCheck) {
-    return getBallotStatus(ballotTopicId);
-  }
 
   const ballotItems = await BallotItem.find({
     ballotTopicId: ballotTopicId
@@ -90,28 +73,38 @@ const getBallotStatusAndUserSelect = async (
   const ballotCount = await BallotResult.find(ballotTopicId).count();
   const ballotStatus = await Promise.all(
     ballotItems.map(async (item: any) => {
+      let status = await util.getStatus(ballotCount, item._id);
+      if (!status) {
+        status = 0;
+      }
       const result = {
         _id: item._id,
-        status: await util.getStatus(ballotCount, item._id),
+        status: status,
         content: item.name
       };
       return result;
     })
   );
-  const data = {
-    ballotTopic: {
-      _id: ballotTopicId,
-      ballotTopicContent: ballotTopic.topic
-    },
-    ballotItems: ballotStatus,
-    userSelect: await BallotResult.findOne(
+  let userSelect = null;
+
+  if (ballotSelectCheck) {
+    userSelect = await BallotResult.findOne(
       {
         userId: userId,
 
         ballotTopicId: ballotTopicId
       },
       { ballotItemId: 1 }
-    )
+    );
+  }
+
+  const data = {
+    ballotTopic: {
+      _id: ballotTopicId,
+      ballotTopicContent: ballotTopic.topic
+    },
+    ballotItems: ballotStatus,
+    userSelect: userSelect
   };
 
   return data;
@@ -145,9 +138,4 @@ const getMainBallotList = async (
   }
 };
 
-export {
-  createBallotResult,
-  getMainBallotList,
-  getBallotStatusAndUserSelect,
-  getBallotStatus
-};
+export { createBallotResult, getMainBallotList, getBallotStatusAndUserSelect };
