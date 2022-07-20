@@ -138,9 +138,4 @@ const getMainBallotList = async (
   }
 };
 
-export {
-  createBallotResult,
-  getMainBallotList,
-  getBallotStatusAndUserSelect,
-  getBallotStatus
-};
+export { createBallotResult, getMainBallotList, getBallotStatusAndUserSelect };
