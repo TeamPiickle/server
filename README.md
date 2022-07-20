@@ -11,6 +11,28 @@
 ![img](https://img.shields.io/badge/Mongoose-5.13.2-yellowgreen)
 ![img](https://img.shields.io/badge/Express-v4.18.1-green)
 
+# ✉️ 프로젝트 폴더 구조
+
+```
+.
+├── tsconfig.json
+├── nodemone.json
+├── package.json
+└── src
+    ├── config
+    ├── controllers
+    ├── interfaces
+    ├── loaders
+    ├── middlewares
+    ├── models
+          └── interface
+    ├── modules
+    ├── routes
+    ├── services
+    ├── types
+    └──  index.ts
+```
+
 # 📧API 명세서
 
 [API 명세서 링크](https://joyous-ghost-8c7.notion.site/API-a2efdef81ae34b9c98bcf0d96cd5dd4f)
