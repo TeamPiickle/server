@@ -46,8 +46,9 @@ const getBallotStatus = async (ballotTopicId: Types.ObjectId) => {
     throw new IllegalArgumentException('올바르지 않은 투표 주제 id 입니다.');
   }
   const ballotItems = await BallotItem.find({
-    BallotTopicId: ballotTopicId
+    ballotTopicId: ballotTopicId
   });
+
   const ballotStatus = ballotItems.map((item: any) => {
     const result = {
       _id: item._id,
@@ -83,7 +84,7 @@ const getBallotStatusAndUserSelect = async (
   }
 
   const ballotItems = await BallotItem.find({
-    BallotTopicId: ballotTopicId
+    ballotTopicId: ballotTopicId
   });
 
   const ballotCount = await BallotResult.find(ballotTopicId).count();
