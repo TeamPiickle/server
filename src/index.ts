@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import connectDB from './loaders/db';
 import routes from './routes';
 import helmet from 'helmet';
@@ -11,6 +11,10 @@ app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(helmet());
+
+app.use('', (req: Request, res: Response) => {
+  res.status(200).send();
+});
 app.use(routes);
 app.use(errorHandler);
 
