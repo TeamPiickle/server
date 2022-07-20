@@ -5,4 +5,7 @@ export interface UserBookmarkDto {
     type: string;
     required: true;
   };
+  tags: [String];
+  category: [Types.ObjectId];
+  filter: [String];
 }
