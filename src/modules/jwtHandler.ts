@@ -11,7 +11,7 @@ const getToken = (userId: Types.ObjectId): string => {
   };
 
   const accessToken: string = jwt.sign(payload, config.jwtSecret, {
-    expiresIn: '24h'
+    expiresIn: '365d'
   });
 
   return accessToken;
