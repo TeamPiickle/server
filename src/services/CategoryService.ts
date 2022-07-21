@@ -77,25 +77,31 @@ const getCardsBySearch = async (
   userId: Types.ObjectId | undefined
 ): Promise<CardResponseDto[] | null> => {
   try {
-    const cards = await Card.find({ filter: { $all: search } });
-    shuffleCards(cards);
-    if (!cards) return null;
-    const cardList = await Promise.all(
-      cards.map(async (item: any) => {
-        const isBookmark =
-          (await Bookmark.find({ user: userId, card: item._id }).count()) > 0
-            ? true
-            : false;
-        return {
-          _id: item._id,
-          content: item.content,
-          tags: item.tags,
-          category: item.Category,
-          filter: item.filter,
-          isBookmark: isBookmark
-        };
-      })
-    );
+    const cardDocuments = await Card.find({ filter: { $all: search } });
+    shuffleCards(cardDocuments);
+    if (!cardDocuments.length) return null;
+
+    const cardIds = cardDocuments.map(e => e._id);
+    const bookmarks = await Bookmark.find({
+      user: userId,
+      card: { $in: cardIds }
+    }).then(res => {
+      return res.map(e => e.card.toString());
+    });
+    const cardList = cardDocuments.map((card: any) => {
+      let isBookmark = false;
+      if (userId) {
+        isBookmark = bookmarks.indexOf(card._id.toString()) != -1;
+      }
+      return {
+        _id: card._id,
+        content: card.content,
+        tags: card.tags,
+        category: card.Category,
+        filter: card.filter,
+        isBookmark: isBookmark
+      };
+    });
     return cardList;
   } catch (error) {
     console.log(error);
