@@ -10,7 +10,15 @@ import BallotItem from '../models/ballotItem';
 import { BallotResult } from '../models/ballotResult';
 
 const connectDB = async () => {
-  await mongoose.connect(config.mongoURI);
+  let mongoURI: string;
+  if (config.env === 'production') {
+    mongoURI = config.mongoURI;
+  } else if (config.env === 'development') {
+    mongoURI = config.mongoURI;
+  } else {
+    mongoURI = config.mongoTestURI;
+  }
+  await mongoose.connect(mongoURI);
   mongoose.set('autoCreate', true);
   console.log('Mongoose Connected ...');
 

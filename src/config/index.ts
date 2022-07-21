@@ -1,7 +1,6 @@
 import dotenv from 'dotenv';
 
 // Set the NODE_ENV to 'development' by default
-process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 const envFound = dotenv.config();
 if (envFound.error) {
@@ -14,6 +13,8 @@ export default {
   /**
    * Your favorite port
    */
+
+  env: process.env.NODE_ENV as string,
   port: parseInt(process.env.PORT as string, 10),
 
   /**
@@ -34,6 +35,6 @@ export default {
   bucketName: process.env.BUCKET_NAME as string,
 
   mongoURI: process.env.MONGODB_URI as string,
-
+  mongoTestURI: process.env.MONGODB_TEST_URI as string,
   defaultProfileImgUrl: process.env.DEFAULT_PROFILE_IMG_URL as string
 };
