@@ -5,8 +5,9 @@ import Types from 'mongoose';
 import { CardResponseDto } from '../intefaces/CardResponseDto';
 import Bookmark from '../models/bookmark';
 import { IllegalArgumentException } from '../intefaces/exception';
+import { CategoryInfoDto } from '../intefaces/CategoryInfoDto';
 
-const shuffleCard = (arr: CategoryResponseDto[]) => {
+const shuffleCard = (arr: CategoryInfoDto[]) => {
   arr.sort(() => Math.random() - 0.5);
 };
 
