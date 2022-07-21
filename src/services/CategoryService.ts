@@ -5,6 +5,11 @@ import Types from 'mongoose';
 import { CardResponseDto } from '../intefaces/CardResponseDto';
 import Bookmark from '../models/bookmark';
 import { IllegalArgumentException } from '../intefaces/exception';
+import { CategoryInfoDto } from '../intefaces/CategoryInfoDto';
+
+const shuffleCard = (arr: CategoryInfoDto[]) => {
+  arr.sort(() => Math.random() - 0.5);
+};
 
 const shuffleCards = (arr: CardResponseDto[]) => {
   arr.sort(() => Math.random() - 0.5);
@@ -58,6 +63,7 @@ const getCardsWithIsBookmark = async (
       };
     })
   );
+  shuffleCard(cardList);
 
   return {
     _id: cards._id,
