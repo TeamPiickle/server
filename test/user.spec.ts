@@ -1,62 +1,28 @@
 import User from '../src/models/user';
-import { UserService } from '../src/services';
-import CreateUserCommand from '../src/intefaces/createUserCommand';
-import { UserLoginDto } from '../src/intefaces/user/UserLoginDto';
 import { expect } from 'chai';
+import { before, after } from 'mocha';
 import request from 'supertest';
 import app from '../src/index';
+import mongoose from 'mongoose';
+import path from 'path';
+import config from '../src/config';
 
-// describe('UserService Tests', () => {
-//   // 단위 테스트 종료될때마다 서비스 관련 컬렉션 초기화
-//   afterEach(async () => {
-//     await User.collection.drop();
-//   });
-//   it('사용자 등록 테스트', async () => {
-//     // given
-//     const createUser: CreateUserCommand = {
-//       name: 'test',
-//       email: 'test@gmail.com',
-//       password: 'test',
-//       nickname: 'test'
-//     };
+let jwtToken = 'Bearar ';
+before(async () => {
+  console.log('Piickle server API Test');
+  try {
+    await mongoose.connect(config.mongoTestURI);
 
-//     // when
-//     const createdUser = await UserService.createUser(createUser);
+    console.log('Mongoose Connected ...');
+  } catch (err) {
+    console.error(err);
+    process.exit(1);
+  }
+});
 
-//     // then
-//     const user = await User.findOne({
-//       nickname: createUser.nickname
-//     });
-//     expect(user!.nickname).to.equal(createUser.nickname);
-//   });
-
-//   it('사용자 로그인 테스트', async () => {
-//     // given
-//     const createUser: CreateUserCommand = {
-//       name: 'test',
-//       email: 'test@gmail.com',
-//       password: 'test',
-//       nickname: 'test'
-//     };
-
-//     await UserService.createUser(createUser);
-
-//     const userLoginDto: UserLoginDto = {
-//       email: 'test@gmail.com',
-//       password: 'test'
-//     };
-//     // when
-//     const result = await UserService.loginUser(userLoginDto);
-
-//     // then
-//     const user = await User.findById(result._id);
-//     expect(user!._id).to.deep.equal(result!._id);
-//   });
-// });
-
-describe('POST /users', () => {
-  it('콘텐츠 조회 토글 체크 성공', done => {
-    request(app)
+describe('POST /users 유저 생성 API', () => {
+  it('유저 생성 성공', async () => {
+    await request(app)
       .post('/users') // api 요청
       .set('Content-Type', 'application/json')
       .send({
@@ -64,17 +30,145 @@ describe('POST /users', () => {
         email: 'test@gmail.com',
         password: 'test',
         nickname: 'test'
-      }) // request body
-      .expect(200) // 예측 상태 코드
-      .expect('Content-Type', /json/) // 예측 content-type
-      .then(res => {
-        expect(res.body.status).to.equal(200);
-        expect(res.body.message).to.equal('회원가입 성공'); // response body 예측값 검증
-        done();
       })
-      .catch(err => {
-        console.error('######Error >>', err);
-        done(err);
-      });
+      .expect(201) // 예측 상태 코드
+      .expect('Content-Type', /json/); // 예측 content-type
+  });
+  it('유저 생성 실패', async () => {
+    await request(app)
+      .post('/users') // api 요청
+      .set('Content-Type', 'application/json')
+      .expect(400) // 예측 상태 코드
+      .expect('Content-Type', /json/); // 예측 content-type
   });
 });
+
+describe('POST /users/login 유저 로그인 API', () => {
+  it('유저 로그인 성공', async () => {
+    await request(app)
+      .post('/users/login') // api 요청
+      .set('Content-Type', 'application/json')
+      .send({
+        email: 'test@gmail.com',
+        password: 'test'
+      })
+      .expect(res => {
+        jwtToken = jwtToken + res.body.data.accessToken;
+      })
+      .expect(200) // 예측 상태 코드
+      .expect('Content-Type', /json/); // 예측 content-type
+  });
+  it('유저 로그인 실패', async () => {
+    await request(app)
+      .post('/users/login') // api 요청
+      .set('Content-Type', 'application/json')
+      .expect(400) // 예측 상태 코드
+      .expect('Content-Type', /json/);
+  });
+});
+
+describe('GET /users 유저 프로필 조회 API', () => {
+  it('유저 프로필 조회 성공', async () => {
+    await request(app)
+      .get('/users') // api 요청
+      .set('Content-Type', 'application/json')
+      .set('x-auth-token', jwtToken)
+      .expect(200) // 예측 상태 코드
+      .expect('Content-Type', /json/); // 예측 content-type
+  });
+  it('유저 프로필 조회 실패', async () => {
+    await request(app)
+      .get('/users') // api 요청
+      .set('Content-Type', 'application/json')
+      .expect(401) // 예측 상태 코드
+      .expect('Content-Type', /json/);
+  });
+});
+
+describe('PATCH /users/nickname 유저 닉네임 변경 API', () => {
+  it('유저 닉네임 변경 성공', async () => {
+    await request(app)
+      .patch('/users/nickname') // api 요청
+      .set('Content-Type', 'application/json')
+      .set('x-auth-token', jwtToken)
+      .send({
+        nickname: 'testNickname'
+      })
+      .expect(200) // 예측 상태 코드
+      .expect('Content-Type', /json/); // 예측 content-type
+  });
+  it('유저 닉네임 변경 실패', async () => {
+    await request(app)
+      .patch('/users/nickname') // api 요청
+      .set('Content-Type', 'application/json')
+      .expect(401) // 예측 상태 코드
+      .expect('Content-Type', /json/); // 예측 content-type
+  });
+});
+
+describe('PATCH /users/profile-image 유저 프로필 이미지 변경 API', () => {
+  it('유저 프로필 이미지 변경 성공', async () => {
+    await request(app)
+      .patch('/users/profile-image') // api 요청
+      .set('Content-Type', 'multipart/form-data')
+      .set('x-auth-token', jwtToken)
+      .attach('file', 'test/스크린샷 2022-07-04 오후 8.30.19.png')
+      .expect(200) // 예측 상태 코드
+      .expect('Content-Type', /json/);
+  });
+  it('유저 프로필 이미지 변경 실패', async () => {
+    await request(app)
+      .patch('/users/profile-image') // api 요청
+      .set('Content-Type', 'multipart/form-data')
+      .attach('file', 'test/스크린샷 2022-07-04 오후 8.30.19.png')
+      .expect(401) // 예측 상태 코드
+      .expect('Content-Type', /json/);
+  });
+});
+
+describe('GET /users/bookmarks 유저 북마크 조회 API', () => {
+  it('유저 북마크 조회 성공', async () => {
+    await request(app)
+      .get('/users/bookmarks') // api 요청
+      .set('Content-Type', 'application/json')
+      .set('x-auth-token', jwtToken)
+      .expect(200) // 예측 상태 코드
+      .expect('Content-Type', /json/); // 예측 content-type
+  });
+  it('유저 북마크 조회 실패', async () => {
+    await request(app)
+      .get('/users/bookmarks') // api 요청
+      .set('Content-Type', 'application/json')
+      .expect(401) // 예측 상태 코드
+      .expect('Content-Type', /json/); // 예측 content-type
+  });
+});
+
+describe('PUT /users/bookmarks 유저 북마크 생성 API', () => {
+  it('유저 북마크 생성 성공', async () => {
+    await request(app)
+      .put('/users/bookmarks') // api 요청
+      .set('Content-Type', 'application/json')
+      .set('x-auth-token', jwtToken)
+      .send({
+        cardId: '62ce8ecc5b1e11673a0a875c'
+      })
+      .expect(201) // 예측 상태 코드
+      .expect('Content-Type', /json/); // 예측 content-type
+  });
+  it('유저 북마크 생성 실패', async () => {
+    await request(app)
+      .put('/users/bookmarks') // api 요청
+      .set('Content-Type', 'application/json')
+      .set('x-auth-token', jwtToken)
+      .expect(400) // 예측 상태 코드
+      .expect('Content-Type', /json/); // 예측 content-type
+  });
+});
+
+after(async () => {
+  await User.collection.drop();
+  console.log('Piickle server Test Success');
+});
+
+export default jwtToken;
