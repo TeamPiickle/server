@@ -6,6 +6,10 @@ import { CardResponseDto } from '../intefaces/CardResponseDto';
 import Bookmark from '../models/bookmark';
 import { IllegalArgumentException } from '../intefaces/exception';
 
+const shuffleCard = (arr: CategoryResponseDto[]) => {
+  arr.sort(() => Math.random() - 0.5);
+};
+
 const shuffleCards = (arr: CardResponseDto[]) => {
   arr.sort(() => Math.random() - 0.5);
 };
@@ -58,6 +62,7 @@ const getCardsWithIsBookmark = async (
       };
     })
   );
+  shuffleCard(cardList);
 
   return {
     _id: cards._id,
