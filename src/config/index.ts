@@ -2,7 +2,6 @@ import dotenv from 'dotenv';
 
 // Set the NODE_ENV to 'development' by default
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
-
 const envFound = dotenv.config();
 if (envFound.error) {
   // This error should crash whole process
@@ -14,6 +13,7 @@ export default {
   /**
    * Your favorite port
    */
+
   port: parseInt(process.env.PORT as string, 10),
 
   /**
@@ -33,7 +33,9 @@ export default {
   s3SecretKey: process.env.S3_SECRET_KEY as string,
   bucketName: process.env.BUCKET_NAME as string,
 
-  mongoURI: process.env.MONGODB_URI as string,
+  slackWebHookUrl: process.env.SLACK_WEBHOOK as string,
 
+  mongoURI: process.env.MONGODB_URI as string,
+  mongoTestURI: process.env.MONGODB_TEST_URI as string,
   defaultProfileImgUrl: process.env.DEFAULT_PROFILE_IMG_URL as string
 };

@@ -24,7 +24,6 @@ const getBestCardList = async (
         util.success(statusCode.OK, message.READ_BEST_CARDS_SUCCESS, cards)
       );
   } catch (err) {
-    console.log(err);
     next(err);
   }
 };

@@ -82,7 +82,6 @@ const getMainBallotList = async (
         )
       );
   } catch (err) {
-    console.log(err);
     next(err);
   }
 };
