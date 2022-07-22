@@ -73,9 +73,6 @@ const getCardsBySearch = async (
       search as string[],
       userId
     );
-    if (!data) {
-      throw new NullDataException('데이터가 없습니다.');
-    }
     return res
       .status(statusCode.OK)
       .send(util.success(statusCode.OK, message.SEARCH_CARDS_SUCCESS, data));
