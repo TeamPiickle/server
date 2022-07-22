@@ -7,7 +7,7 @@ import util from '../modules/util';
 import { BallotService } from '../services';
 import { TypedRequest } from '../types/TypedRequest';
 import { slackMessage } from '../modules/returnToSlack';
-import { sendMessagesToSlack } from '../modules/slackAPI';
+import { sendMessagesToSlack } from '../modules/slackApi';
 
 /**
  *  @route POST /ballots

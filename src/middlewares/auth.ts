@@ -7,7 +7,7 @@ import { NullDataException } from '../intefaces/exception';
 import util from '../modules/util';
 import { JwtPayloadInfo } from '../intefaces/JwtPayloadInfo';
 import { slackMessage } from '../modules/returnToSlack';
-import { sendMessagesToSlack } from '../modules/slackAPI';
+import { sendMessagesToSlack } from '../modules/slackApi';
 
 interface JwtError extends Error {
   name: string;

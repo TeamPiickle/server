@@ -5,7 +5,7 @@ import util from '../modules/util';
 import { CardService } from '../services';
 import { Types } from 'mongoose';
 import { slackMessage } from '../modules/returnToSlack';
-import { sendMessagesToSlack } from '../modules/slackAPI';
+import { sendMessagesToSlack } from '../modules/slackApi';
 
 /**
  *  @route /cards/best
@@ -33,7 +33,6 @@ const getBestCardList = async (
       req.user?.id
     );
     sendMessagesToSlack(errorMessage);
-    next(err);
     next(err);
   }
 };

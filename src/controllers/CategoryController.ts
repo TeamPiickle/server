@@ -7,7 +7,7 @@ import Types from 'mongoose';
 import { CategoryService } from '../services';
 import { getCardsWithIsBookmark } from '../services/CategoryService';
 import { slackMessage } from '../modules/returnToSlack';
-import { sendMessagesToSlack } from '../modules/slackAPI';
+import { sendMessagesToSlack } from '../modules/slackApi';
 
 /**
  *  @route Get /categories

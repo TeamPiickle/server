@@ -10,7 +10,7 @@ import {
 import statusCode from '../modules/statusCode';
 import util from '../modules/util';
 import { slackMessage } from '../modules/returnToSlack';
-import { sendMessagesToSlack } from '../modules/slackAPI';
+import { sendMessagesToSlack } from '../modules/slackApi';
 
 const errHandler = (
   err: any,

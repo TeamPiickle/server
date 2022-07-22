@@ -17,7 +17,7 @@ import { Types } from 'mongoose';
 import { TypedRequest } from '../types/TypedRequest';
 import Bookmark from '../models/bookmark';
 import { slackMessage } from '../modules/returnToSlack';
-import { sendMessagesToSlack } from '../modules/slackAPI';
+import { sendMessagesToSlack } from '../modules/slackApi';
 
 /**
  *  @route /users
