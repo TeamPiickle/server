@@ -4,8 +4,6 @@ import statusCode from '../modules/statusCode';
 import util from '../modules/util';
 import { CardService } from '../services';
 import { Types } from 'mongoose';
-import { slackMessage } from '../modules/returnToSlack';
-import { sendMessagesToSlack } from '../modules/slackApi';
 
 /**
  *  @route /cards/best
@@ -26,13 +24,6 @@ const getBestCardList = async (
         util.success(statusCode.OK, message.READ_BEST_CARDS_SUCCESS, cards)
       );
   } catch (err) {
-    const errorMessage: string = slackMessage(
-      req.method.toUpperCase(),
-      req.originalUrl,
-      err,
-      req.user?.id
-    );
-    sendMessagesToSlack(errorMessage);
     next(err);
   }
 };

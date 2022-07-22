@@ -6,8 +6,6 @@ import util from '../modules/util';
 import Types from 'mongoose';
 import { CategoryService } from '../services';
 import { getCardsWithIsBookmark } from '../services/CategoryService';
-import { slackMessage } from '../modules/returnToSlack';
-import { sendMessagesToSlack } from '../modules/slackApi';
 
 /**
  *  @route Get /categories
@@ -28,13 +26,6 @@ const getCategory = async (
       .status(statusCode.OK)
       .send(util.success(statusCode.OK, message.READ_CATEGORY_SUCCESS, data));
   } catch (error) {
-    const errorMessage: string = slackMessage(
-      req.method.toUpperCase(),
-      req.originalUrl,
-      error,
-      req.user?.id
-    );
-    sendMessagesToSlack(errorMessage);
     next(error);
   }
 };
@@ -61,13 +52,6 @@ const getCards = async (
       .status(statusCode.OK)
       .send(util.success(statusCode.OK, message.READ_CARD_SUCCESS, data));
   } catch (error) {
-    const errorMessage: string = slackMessage(
-      req.method.toUpperCase(),
-      req.originalUrl,
-      error,
-      req.user?.id
-    );
-    sendMessagesToSlack(errorMessage);
     next(error);
   }
 };
@@ -96,13 +80,6 @@ const getCardsBySearch = async (
       .status(statusCode.OK)
       .send(util.success(statusCode.OK, message.SEARCH_CARDS_SUCCESS, data));
   } catch (error) {
-    const errorMessage: string = slackMessage(
-      req.method.toUpperCase(),
-      req.originalUrl,
-      error,
-      req.user?.id
-    );
-    sendMessagesToSlack(errorMessage);
     next(error);
   }
 };
