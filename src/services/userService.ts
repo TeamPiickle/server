@@ -165,7 +165,7 @@ const createdeleteBookmark = async (input: UserBookmarkInfo) => {
     await newBookmark.save();
     return 1;
   } else {
-    user.cardIdList.splice(cardIndex);
+    user.cardIdList.splice(cardIndex, 1);
     await user.save();
     await Bookmark.findOneAndDelete({ user: userId, card: cardId });
     return 0;
