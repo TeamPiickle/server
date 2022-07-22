@@ -25,8 +25,8 @@ const errHandler = (
     }
     if (err instanceof NullDataException) {
       return res
-        .status(statusCode.NO_CONTENT)
-        .send(util.fail(statusCode.NO_CONTENT, err.message));
+        .status(statusCode.OK)
+        .send(util.fail(statusCode.OK, err.message));
     }
     if (err instanceof BadCredentialException) {
       return res
