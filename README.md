@@ -51,59 +51,56 @@
     ├── services
     ├── types
     └──  index.ts
+└── test
 ```
 
 # ⚙️ Dependencies
 
 ```json
-{
-  "name": "piickle-server",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "dev": "nodemon",
-    "build": "tsc",
-    "build-run": "tsc && node dist"
-  },
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "@types/cors": "^2.8.12",
-    "@types/express": "^4.17.13",
-    "@types/helmet": "^4.0.0",
-    "@types/jsonwebtoken": "^8.5.8",
-    "@types/mongoose": "^5.11.97",
-    "@types/multer": "^1.4.7",
-    "@types/multer-s3": "2",
-    "@types/node": "^17.0.25",
-    "@typescript-eslint/eslint-plugin": "^5.30.5",
-    "@typescript-eslint/parser": "^5.30.5",
-    "eslint": "^8.19.0",
-    "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-config-airbnb-typescript": "^17.0.0",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-prettier": "^4.2.1",
-    "nodemon": "^2.0.15",
-    "ts-node": "^10.7.0",
-    "typescript": "^4.6.3"
-  },
-  "dependencies": {
-    "@types/bcrypt": "^5.0.0",
-    "aws-sdk": "^2.1172.0",
-    "bcrypt": "^5.0.1",
-    "cors": "^2.8.5",
-    "dotenv": "^16.0.0",
-    "express": "^4.17.3",
-    "express-validator": "^6.14.0",
-    "helmet": "^5.1.0",
-    "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.3.1",
-    "multer": "^1.4.4",
-    "multer-s3": "2",
-    "prettier": "^2.7.1"
-  }
+"devDependencies": {
+  "@types/chai": "^4.3.1",
+  "@types/cors": "^2.8.12",
+  "@types/express": "^4.17.13",
+  "@types/helmet": "^4.0.0",
+  "@types/jsonwebtoken": "^8.5.8",
+  "@types/mocha": "^9.1.1",
+  "@types/mongoose": "^5.11.97",
+  "@types/multer": "^1.4.7",
+  "@types/multer-s3": "2",
+  "@types/node": "^18.0.6",
+  "@types/supertest": "^2.0.12",
+  "@typescript-eslint/eslint-plugin": "^5.30.5",
+  "@typescript-eslint/parser": "^5.30.5",
+  "chai": "^4.3.6",
+  "eslint": "^8.19.0",
+  "eslint-config-airbnb-base": "^15.0.0",
+  "eslint-config-airbnb-typescript": "^17.0.0",
+  "eslint-config-prettier": "^8.5.0",
+  "eslint-plugin-import": "^2.26.0",
+  "eslint-plugin-prettier": "^4.2.1",
+  "husky": "^8.0.1",
+  "mocha": "^10.0.0",
+  "nodemon": "^2.0.15",
+  "supertest": "^6.2.4",
+  "ts-node": "^10.9.1",
+  "typescript": "^4.7.4"
+},
+"dependencies": {
+  "@slack/client": "^5.0.2",
+  "@types/bcrypt": "^5.0.0",
+  "aws-sdk": "^2.1172.0",
+  "bcrypt": "^5.0.1",
+  "cors": "^2.8.5",
+  "dotenv": "^16.0.0",
+  "express": "^4.17.3",
+  "express-validator": "^6.14.0",
+  "helmet": "^5.1.0",
+  "jsonwebtoken": "^8.5.1",
+  "mongoose": "^6.3.1",
+  "multer": "^1.4.4",
+  "multer-s3": "2",
+  "prettier": "^2.7.1",
+  "slack-node": "^0.1.8"
 }
 ```
 
