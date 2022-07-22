@@ -75,11 +75,11 @@ const getCardsWithIsBookmark = async (
 const getCardsBySearch = async (
   search: string[],
   userId: Types.ObjectId | undefined
-): Promise<CardResponseDto[] | null> => {
+): Promise<CardResponseDto[]> => {
   try {
     const cardDocuments = await Card.find({ filter: { $all: search } });
     shuffleCards(cardDocuments);
-    if (!cardDocuments.length) return null;
+    if (!cardDocuments.length) return [];
 
     const cardIds = cardDocuments.map(e => e._id);
     const bookmarks = await Bookmark.find({

@@ -67,12 +67,12 @@ const getCardsBySearch = async (
   next: NextFunction
 ): Promise<void | Response> => {
   const { search } = req.query;
-  const userId = <Types.ObjectId | undefined> req.user?.id;
+  const userId = <Types.ObjectId | undefined>req.user?.id;
   try {
-    const data = await CategoryService.getCardsBySearch(search as string[], userId);
-    if (!data) {
-      throw new NullDataException('데이터가 없습니다.');
-    }
+    const data = await CategoryService.getCardsBySearch(
+      search as string[],
+      userId
+    );
     return res
       .status(statusCode.OK)
       .send(util.success(statusCode.OK, message.SEARCH_CARDS_SUCCESS, data));
