@@ -6,6 +6,8 @@ import statusCode from '../modules/statusCode';
 import util from '../modules/util';
 import { BallotService } from '../services';
 import { TypedRequest } from '../types/TypedRequest';
+import { slackMessage } from '../modules/returnToSlack';
+import { sendMessagesToSlack } from '../modules/slackAPI';
 
 /**
  *  @route POST /ballots
@@ -25,6 +27,13 @@ const postBallotResult = async (
       .status(statusCode.CREATED)
       .send(util.success(statusCode.CREATED, message.BALLOT_RESULT_CREATED));
   } catch (err) {
+    const errorMessage: string = slackMessage(
+      req.method.toUpperCase(),
+      req.originalUrl,
+      err,
+      req.user?.id
+    );
+    sendMessagesToSlack(errorMessage);
     next(err);
   }
 };
@@ -55,6 +64,13 @@ const getBallotStatus = async (
         util.success(statusCode.OK, message.BALLOT_STATUS_VIEW_SUCCESS, data)
       );
   } catch (err) {
+    const errorMessage: string = slackMessage(
+      req.method.toUpperCase(),
+      req.originalUrl,
+      err,
+      req.user?.id
+    );
+    sendMessagesToSlack(errorMessage);
     next(err);
   }
 };
@@ -82,7 +98,13 @@ const getMainBallotList = async (
         )
       );
   } catch (err) {
-    console.log(err);
+    const errorMessage: string = slackMessage(
+      req.method.toUpperCase(),
+      req.originalUrl,
+      err,
+      req.user?.id
+    );
+    sendMessagesToSlack(errorMessage);
     next(err);
   }
 };

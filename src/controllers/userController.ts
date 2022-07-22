@@ -16,6 +16,8 @@ import { UserBookmarkInfo } from '../intefaces/user/UserBookmarkInfo';
 import { Types } from 'mongoose';
 import { TypedRequest } from '../types/TypedRequest';
 import Bookmark from '../models/bookmark';
+import { slackMessage } from '../modules/returnToSlack';
+import { sendMessagesToSlack } from '../modules/slackAPI';
 
 /**
  *  @route /users
@@ -38,6 +40,13 @@ const postUser = async (
       .status(statusCode.CREATED)
       .send(util.success(statusCode.CREATED, message.USER_CREATED));
   } catch (err) {
+    const errorMessage: string = slackMessage(
+      req.method.toUpperCase(),
+      req.originalUrl,
+      err,
+      req.user?.id
+    );
+    sendMessagesToSlack(errorMessage);
     next(err);
   }
 };
@@ -70,6 +79,13 @@ const loginUser = async (
       .status(statusCode.OK)
       .send(util.success(statusCode.OK, message.USER_LOGIN_SUCCESS, data));
   } catch (err) {
+    const errorMessage: string = slackMessage(
+      req.method.toUpperCase(),
+      req.originalUrl,
+      err,
+      req.user?.id
+    );
+    sendMessagesToSlack(errorMessage);
     next(err);
   }
 };
@@ -93,6 +109,13 @@ const getUserProfile = async (
         util.success(statusCode.OK, message.USER_PROFILE_VIEW_SUCCESS, data)
       );
   } catch (err) {
+    const errorMessage: string = slackMessage(
+      req.method.toUpperCase(),
+      req.originalUrl,
+      err,
+      req.user?.id
+    );
+    sendMessagesToSlack(errorMessage);
     next(err);
   }
 };
@@ -119,6 +142,13 @@ const updateUserNickname = async (
       .status(statusCode.OK)
       .send(util.success(statusCode.OK, message.USER_NICKNAME_UPDATE_SUCCESS));
   } catch (err) {
+    const errorMessage: string = slackMessage(
+      req.method.toUpperCase(),
+      req.originalUrl,
+      err,
+      req.user?.id
+    );
+    sendMessagesToSlack(errorMessage);
     next(err);
   }
 };
@@ -153,6 +183,13 @@ const updateUserProfileImage = async (
         )
       );
   } catch (err) {
+    const errorMessage: string = slackMessage(
+      req.method.toUpperCase(),
+      req.originalUrl,
+      err,
+      req.user?.id
+    );
+    sendMessagesToSlack(errorMessage);
     next(err);
   }
 };
@@ -176,6 +213,13 @@ const getBookmarks = async (
         util.success(statusCode.OK, message.USER_BOOKMARKS_VIEW_SUCCESS, data)
       );
   } catch (err) {
+    const errorMessage: string = slackMessage(
+      req.method.toUpperCase(),
+      req.originalUrl,
+      err,
+      req.user?.id
+    );
+    sendMessagesToSlack(errorMessage);
     next(err);
   }
 };
@@ -217,6 +261,13 @@ const createdeleteBookmark = async (
         )
       );
   } catch (err) {
+    const errorMessage: string = slackMessage(
+      req.method.toUpperCase(),
+      req.originalUrl,
+      err,
+      req.user?.id
+    );
+    sendMessagesToSlack(errorMessage);
     next(err);
   }
 };

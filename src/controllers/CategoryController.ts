@@ -6,6 +6,8 @@ import util from '../modules/util';
 import Types from 'mongoose';
 import { CategoryService } from '../services';
 import { getCardsWithIsBookmark } from '../services/CategoryService';
+import { slackMessage } from '../modules/returnToSlack';
+import { sendMessagesToSlack } from '../modules/slackAPI';
 
 /**
  *  @route Get /categories
@@ -26,6 +28,13 @@ const getCategory = async (
       .status(statusCode.OK)
       .send(util.success(statusCode.OK, message.READ_CATEGORY_SUCCESS, data));
   } catch (error) {
+    const errorMessage: string = slackMessage(
+      req.method.toUpperCase(),
+      req.originalUrl,
+      error,
+      req.user?.id
+    );
+    sendMessagesToSlack(errorMessage);
     next(error);
   }
 };
@@ -52,6 +61,13 @@ const getCards = async (
       .status(statusCode.OK)
       .send(util.success(statusCode.OK, message.READ_CARD_SUCCESS, data));
   } catch (error) {
+    const errorMessage: string = slackMessage(
+      req.method.toUpperCase(),
+      req.originalUrl,
+      error,
+      req.user?.id
+    );
+    sendMessagesToSlack(errorMessage);
     next(error);
   }
 };
@@ -67,9 +83,12 @@ const getCardsBySearch = async (
   next: NextFunction
 ): Promise<void | Response> => {
   const { search } = req.query;
-  const userId = <Types.ObjectId | undefined> req.user?.id;
+  const userId = <Types.ObjectId | undefined>req.user?.id;
   try {
-    const data = await CategoryService.getCardsBySearch(search as string[], userId);
+    const data = await CategoryService.getCardsBySearch(
+      search as string[],
+      userId
+    );
     if (!data) {
       throw new NullDataException('데이터가 없습니다.');
     }
@@ -77,6 +96,13 @@ const getCardsBySearch = async (
       .status(statusCode.OK)
       .send(util.success(statusCode.OK, message.SEARCH_CARDS_SUCCESS, data));
   } catch (error) {
+    const errorMessage: string = slackMessage(
+      req.method.toUpperCase(),
+      req.originalUrl,
+      error,
+      req.user?.id
+    );
+    sendMessagesToSlack(errorMessage);
     next(error);
   }
 };

@@ -7,7 +7,7 @@
     "dev": "nodemon",
     "build": "tsc",
     "build-run": "tsc && node dist",
-    "test": "yarn mocha test/**/*.ts -r ts-node/register",
+    "test": "yarn mocha test/**/*.ts -r ts-node/register --exit",
     "prepare": "husky install"
   },
   "author": "",

@@ -33,6 +33,8 @@ export default {
   s3SecretKey: process.env.S3_SECRET_KEY as string,
   bucketName: process.env.BUCKET_NAME as string,
 
+  slackWebHookUrl: process.env.SLACK_WEBHOOK as string,
+
   mongoURI: process.env.MONGODB_URI as string,
   mongoTestURI: process.env.MONGODB_TEST_URI as string,
   defaultProfileImgUrl: process.env.DEFAULT_PROFILE_IMG_URL as string

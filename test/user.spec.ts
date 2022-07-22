@@ -167,7 +167,7 @@ describe('PUT /users/bookmarks 유저 북마크 생성 API', () => {
 });
 
 after(async () => {
-  await User.findByIdAndDelete({
+  const user = await User.findOneAndDelete({
     email: 'test@gmail.com'
   });
   console.log('Piickle server Test Success');
