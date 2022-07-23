@@ -1,7 +1,4 @@
-import {
-  IllegalArgumentException,
-  NullDataException
-} from '../intefaces/exception';
+import { IllegalArgumentException } from '../intefaces/exception';
 import CreateBallotResultDto from '../intefaces/CreateBallotResultDto';
 import BallotItem from '../models/ballotItem';
 import { Types } from 'mongoose';

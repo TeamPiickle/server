@@ -34,7 +34,7 @@ const getCardsWithIsBookmark = async (
   categoryId: string
 ): Promise<CategoryResponseDto | null> => {
   const cards = await Category.findById(categoryId)
-    .populate('cardIdList')
+    .populate({ path: 'cardIdList', options: { limit: 30 } })
     .then(item => {
       if (!item) {
         throw new IllegalArgumentException('해당 id의 카테고리가 없습니다.');
