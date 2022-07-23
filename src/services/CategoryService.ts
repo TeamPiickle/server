@@ -77,7 +77,9 @@ const getCardsBySearch = async (
   userId: Types.ObjectId | undefined
 ): Promise<CardResponseDto[]> => {
   try {
-    const cardDocuments = await Card.find({ filter: { $all: search } });
+    const cardDocuments = await Card.find({ filter: { $all: search } }).limit(
+      30
+    );
     shuffleCards(cardDocuments);
     if (!cardDocuments.length) return [];
 
