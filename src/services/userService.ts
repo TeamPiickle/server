@@ -1,4 +1,4 @@
-import { hashSync, compare } from 'bcrypt';
+import { hashSync, compare } from 'bcryptjs';
 import config from '../config';
 import CreateUserCommand from '../intefaces/createUserCommand';
 import User from '../models/user';
