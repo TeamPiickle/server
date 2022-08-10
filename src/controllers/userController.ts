@@ -15,7 +15,6 @@ import { UserBookmarkDto } from '../intefaces/user/UserBookmarkDto';
 import { UserBookmarkInfo } from '../intefaces/user/UserBookmarkInfo';
 import { Types } from 'mongoose';
 import { TypedRequest } from '../types/TypedRequest';
-import Bookmark from '../models/bookmark';
 
 /**
  *  @route /users

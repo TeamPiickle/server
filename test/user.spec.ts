@@ -1,5 +1,4 @@
 import User from '../src/models/user';
-import { expect } from 'chai';
 import { before, after } from 'mocha';
 import request from 'supertest';
 import app from '../src/index';
@@ -11,7 +10,7 @@ let jwtToken = 'Bearar ';
 before(async () => {
   console.log('Piickle server API Test');
   try {
-    await mongoose.connect(config.mongoTestURI);
+    await mongoose.createConnection(config.mongoTestURI);
 
     console.log('Mongoose Connected ...');
   } catch (err) {

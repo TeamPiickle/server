@@ -67,7 +67,7 @@ const getBallotStatusAndUserSelect = async (
     ballotTopicId: ballotTopicId
   });
 
-  const ballotCount = await BallotResult.find(ballotTopicId).count();
+  const ballotCount = await BallotResult.find({ ballotTopicId }).count();
   const ballotStatus = await Promise.all(
     ballotItems.map(async (item: any) => {
       let status = await util.getStatus(ballotCount, item._id);
