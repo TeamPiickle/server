@@ -27,9 +27,10 @@ const util = {
     ballotCount: number,
     ballotItemId: Types.ObjectId
   ): Promise<number> => {
+    if (ballotCount == 0) return 0;
     return Math.floor(
       ((await BallotResult.find({
-        ballotItemId: ballotItemId
+        ballotItemId
       }).count()) *
         100) /
         ballotCount
