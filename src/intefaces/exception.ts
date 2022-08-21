@@ -11,3 +11,10 @@ export class NullDataException extends PiickleException {}
 export class BadCredentialException extends PiickleException {}
 export class InternalAuthenticationServiceException extends PiickleException {}
 export class DuplicateException extends PiickleException {}
+
+export class InternalServerError extends Error {
+  constructor(msg: string) {
+    super();
+    super.message = msg;
+  }
+}
