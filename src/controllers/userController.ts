@@ -56,10 +56,6 @@ const sendEmailVerification = async (
  */
 const verifyEmail = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const error = validationResult(req);
-    if (!error.isEmpty()) {
-      throw new IllegalArgumentException('필요한 값이 없습니다.');
-    }
     const { oobCode } = req.query;
     if (!oobCode) {
       throw new IllegalArgumentException('히이잉');
