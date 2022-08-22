@@ -1,16 +1,32 @@
-export class PiickleException extends Error {
+import statusCode from '../modules/statusCode';
+
+export abstract class PiickleException extends Error {
   constructor(msg: string) {
     super();
     super.message = msg;
   }
+
+  abstract statusCode: number;
 }
 
-export class IllegalArgumentException extends PiickleException {}
-export class IllegalStateException extends PiickleException {}
-export class NullDataException extends PiickleException {}
-export class BadCredentialException extends PiickleException {}
-export class InternalAuthenticationServiceException extends PiickleException {}
-export class DuplicateException extends PiickleException {}
+export class IllegalArgumentException extends PiickleException {
+  statusCode = statusCode.BAD_REQUEST;
+}
+export class IllegalStateException extends PiickleException {
+  statusCode = statusCode.BAD_REQUEST;
+}
+export class NullDataException extends PiickleException {
+  statusCode = statusCode.OK;
+}
+export class BadCredentialException extends PiickleException {
+  statusCode = statusCode.UNAUTHORIZED;
+}
+export class InternalAuthenticationServiceException extends PiickleException {
+  statusCode = statusCode.UNAUTHORIZED;
+}
+export class DuplicateException extends PiickleException {
+  statusCode = statusCode.BAD_REQUEST;
+}
 
 export class InternalServerError extends Error {
   constructor(msg: string) {

@@ -1,5 +1,3 @@
-import { Types } from 'mongoose';
-
 type User = {
   id: Types.ObjectId;
 };

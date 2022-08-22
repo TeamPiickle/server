@@ -3,8 +3,7 @@ import { validationResult } from 'express-validator';
 import {
   EmptyMailCodeException,
   IllegalArgumentException,
-  IllegalStateException,
-  InternalServerError
+  IllegalStateException
 } from '../intefaces/exception';
 import CreateUserCommand from '../intefaces/createUserCommand';
 import { PostBaseResponseDto } from '../intefaces/PostBaseResponseDto';
@@ -56,7 +55,11 @@ const sendEmailVerification = async (
  * @desc 이메일 인증하기 api
  * @access Public
  */
-const verifyEmail = async (req: Request, res: Response, next: NextFunction) => {
+const verifyEmail = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   try {
     const { oobCode } = req.query;
     if (!oobCode) {

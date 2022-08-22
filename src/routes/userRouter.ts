@@ -12,11 +12,7 @@ router.post(
   UserController.sendEmailVerification
 );
 
-router.get(
-  '/email-check',
-  [body('email').notEmpty()],
-  UserController.verifyEmail
-);
+router.get('/email-check', UserController.verifyEmail);
 router.post(
   '',
   [
