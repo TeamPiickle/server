@@ -1,8 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
 import { validationResult } from 'express-validator';
 import {
+  EmptyMailCodeException,
   IllegalArgumentException,
-  IllegalStateException
+  IllegalStateException,
+  InternalServerError
 } from '../intefaces/exception';
 import CreateUserCommand from '../intefaces/createUserCommand';
 import { PostBaseResponseDto } from '../intefaces/PostBaseResponseDto';
@@ -58,7 +60,9 @@ const verifyEmail = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { oobCode } = req.query;
     if (!oobCode) {
-      throw new IllegalArgumentException('히이잉');
+      throw new EmptyMailCodeException(
+        '유저 정보를 알 수 없습니다. 인증 메일을 새로 전송해주세요.'
+      );
     }
     const preUser = await AuthService.confirmEmailVerification(<string>oobCode);
     res.redirect(`http://www.piickle.link?kayoung=god&email=${preUser.email}`); // TODO: 웹에서 화면 만들어주면 붙이기

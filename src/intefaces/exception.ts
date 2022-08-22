@@ -18,3 +18,5 @@ export class InternalServerError extends Error {
     super.message = msg;
   }
 }
+
+export class EmptyMailCodeException extends InternalServerError {}
