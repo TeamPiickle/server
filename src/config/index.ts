@@ -25,6 +25,9 @@ export default {
   /**
    * MongoDB URI
    */
+  mongoURI: process.env.MONGODB_URI as string,
+  mongoTestURI: process.env.MONGODB_TEST_URI as string,
+  defaultProfileImgUrl: process.env.DEFAULT_PROFILE_IMG_URL as string,
 
   /**
    * s3
@@ -35,7 +38,13 @@ export default {
 
   slackWebHookUrl: process.env.SLACK_WEBHOOK as string,
 
-  mongoURI: process.env.MONGODB_URI as string,
-  mongoTestURI: process.env.MONGODB_TEST_URI as string,
-  defaultProfileImgUrl: process.env.DEFAULT_PROFILE_IMG_URL as string
+  firebase: {
+    apiKey: process.env.FIREBASE_API_KEY as string,
+    authDomain: process.env.FIREBASE_AUTH_DOMAIN as string,
+    projectId: process.env.FIREBASE_PROJECT_ID as string,
+    storageBucket: process.env.FIREBASE_STORAGE_BUCKET as string,
+    messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID as string,
+    appId: process.env.FIREBASE_APP_ID as string,
+    measurementId: process.env.FIREBASE_MEASUREMENT_ID as string
+  }
 };

@@ -6,6 +6,5 @@ export const sendMessagesToSlack = async (message: string): Promise<void> => {
     await axios.post(config.slackWebHookUrl, { text: message });
   } catch (error) {
     console.log(error);
-    throw error;
   }
 };

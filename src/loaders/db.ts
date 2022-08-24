@@ -8,12 +8,20 @@ import EmailAuth from '../models/emailAuth';
 import { BallotTopic } from '../models/ballotTopic';
 import BallotItem from '../models/ballotItem';
 import { BallotResult } from '../models/ballotResult';
+import PreUser from '../models/preUser';
 
 const connectDB = async () => {
   await mongoose.connect(config.mongoURI);
   mongoose.set('autoCreate', true);
   console.log('Mongoose Connected ...');
 
+  PreUser.createCollection()
+    .then(() => {
+      console.log('PreUser collection created.');
+    })
+    .catch(err => {
+      console.log(err);
+    });
   User.createCollection()
     .then(() => {
       console.log('User collection created.');
