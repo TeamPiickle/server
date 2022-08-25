@@ -49,6 +49,31 @@ const sendEmailVerification = async (
 };
 
 /**
+ *  @route GET /users/nickname
+ *  @desc 닉네임 중복 체크 api
+ *  @access Public
+ */
+const nicknameDuplicationCheck = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { nickname } = req.query;
+    console.log(nickname);
+    if (!nickname) {
+      throw new IllegalArgumentException('필요한 값이 없습니다.');
+    }
+    const result = await UserService.nicknameDuplicationCheck(<string>nickname);
+    res
+      .status(statusCode.OK)
+      .send(util.success(statusCode.OK, '닉네임 중복 체크 성공', result));
+  } catch (err) {
+    next(err);
+  }
+};
+
+/**
  *
  * @method GET
  * @route /email-check
@@ -311,5 +336,6 @@ export {
   getBookmarks,
   createdeleteBookmark,
   sendEmailVerification,
-  verifyEmail
+  verifyEmail,
+  nicknameDuplicationCheck
 };
