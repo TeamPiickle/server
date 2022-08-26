@@ -172,6 +172,15 @@ const createdeleteBookmark = async (input: UserBookmarkInfo) => {
   }
 };
 
+const nicknameDuplicationCheck = async (nickname: string) => {
+  const user = await User.findOne({
+    nickname: nickname
+  });
+  if (user) {
+    return true;
+  }
+  return false;
+};
 export {
   createUser,
   loginUser,
@@ -179,5 +188,6 @@ export {
   updateNickname,
   updateUserProfileImage,
   getBookmarks,
-  createdeleteBookmark
+  createdeleteBookmark,
+  nicknameDuplicationCheck
 };

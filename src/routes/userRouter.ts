@@ -13,6 +13,9 @@ router.post(
 );
 
 router.get('/email-check', UserController.verifyEmail);
+
+router.get('/nickname/is-exist', UserController.nicknameDuplicationCheck);
+
 router.post(
   '',
   [
