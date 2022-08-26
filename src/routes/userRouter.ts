@@ -27,7 +27,7 @@ router.post(
 router.post(
   '/login',
   [body('email').notEmpty(), body('password').notEmpty()],
-  UserController.loginUser
+  UserController.postUserLogin
 );
 
 router.get('', auth, UserController.getUserProfile);

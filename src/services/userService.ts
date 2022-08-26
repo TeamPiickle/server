@@ -6,7 +6,8 @@ import {
   IllegalArgumentException,
   InternalAuthenticationServiceException,
   BadCredentialException,
-  DuplicateException
+  DuplicateException,
+  EmailNotVerifiedException
 } from '../intefaces/exception';
 import { UserLoginDto } from '../intefaces/user/UserLoginDto';
 import { PostBaseResponseDto } from '../intefaces/PostBaseResponseDto';
@@ -16,6 +17,7 @@ import { Types } from 'mongoose';
 import { UserBookmarkDto } from '../intefaces/user/UserBookmarkDto';
 import { UserBookmarkInfo } from '../intefaces/user/UserBookmarkInfo';
 import Bookmark from '../models/bookmark';
+import PreUser from '../models/preUser';
 import Card from '../models/card';
 
 const createUser = async (command: CreateUserCommand) => {
@@ -24,6 +26,11 @@ const createUser = async (command: CreateUserCommand) => {
   });
   if (alreadyUser) {
     throw new IllegalArgumentException('이미 존재하는 이메일입니다.');
+  }
+
+  const preUser = await PreUser.findOne({ email: command.email });
+  if (!preUser?.emailVerified) {
+    throw new EmailNotVerifiedException('이메일 인증을 해주세요.');
   }
   const alreadyNickname = await User.findOne({
     nickname: command.nickname
@@ -131,7 +138,7 @@ const getBookmarks = async (
         cardId: item._id,
         content: item.content,
         tags: item.tags,
-        category: item.Category,
+        category: item.category,
         filter: item.filter,
         isBookmark: isBookmark
       };

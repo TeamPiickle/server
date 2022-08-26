@@ -28,6 +28,10 @@ export class DuplicateException extends PiickleException {
   statusCode = statusCode.BAD_REQUEST;
 }
 
+export class EmailNotVerifiedException extends PiickleException {
+  statusCode = statusCode.BAD_REQUEST;
+}
+
 export class InternalServerError extends Error {
   constructor(msg: string) {
     super();

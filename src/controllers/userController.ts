@@ -2,8 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { validationResult } from 'express-validator';
 import {
   EmptyMailCodeException,
-  IllegalArgumentException,
-  IllegalStateException
+  IllegalArgumentException
 } from '../intefaces/exception';
 import CreateUserCommand from '../intefaces/createUserCommand';
 import { PostBaseResponseDto } from '../intefaces/PostBaseResponseDto';
@@ -20,7 +19,6 @@ import { UserBookmarkInfo } from '../intefaces/user/UserBookmarkInfo';
 import { Types } from 'mongoose';
 import { TypedRequest } from '../types/TypedRequest';
 import EmailVerificationReqDto from '../intefaces/user/EmailVerificationReqDto';
-import PreUser from '../models/preUser';
 
 /**
  *  @route POST /email-verification
@@ -49,7 +47,6 @@ const sendEmailVerification = async (
 };
 
 /**
- *
  * @method GET
  * @route /email-check
  * @desc 이메일 인증하기 api
@@ -68,31 +65,9 @@ const verifyEmail = async (
       );
     }
     const preUser = await AuthService.confirmEmailVerification(<string>oobCode);
-    res.redirect(`http://www.piickle.link?kayoung=god&email=${preUser.email}`); // TODO: 웹에서 화면 만들어주면 붙이기
+    res.redirect(`http://www.piickle.link?email=${preUser.email}`); // TODO: 웹에서 화면 만들어주면 붙이기
   } catch (err) {
     next(err);
-  }
-};
-
-/**
- *
- * 이메일 인증 여부를 체크하는 함수, 회원가입 api 에서 유효한 이메일인지 알기 위해 사용한다.
- * @param email fcm 인증 여부를 확인할 이메일 주소
- */
-const checkIfEmailIsVerified = async (email: string) => {
-  const preUser = await PreUser.findOne({ email });
-  if (!preUser) {
-    throw new IllegalStateException('인증 메일을 전송하세요.');
-  }
-  const isUserEmailVerified = await AuthService.isUserEmailVerified(
-    preUser.email
-  );
-  if (!isUserEmailVerified) {
-    throw new IllegalStateException('인증이 완료되지 않은 이메일입니다.');
-  }
-  if (!preUser.emailVerified) {
-    preUser.emailVerified = true;
-    await preUser.save();
   }
 };
 
@@ -111,8 +86,6 @@ const postUser = async (
     if (!error.isEmpty()) {
       throw new IllegalArgumentException('필요한 값이 없습니다.');
     }
-    const { email } = req.body;
-    await checkIfEmailIsVerified(email);
     await UserService.createUser(req.body);
 
     return res
@@ -128,7 +101,7 @@ const postUser = async (
  *  @desc 로그인 api
  *  @access Public
  */
-const loginUser = async (
+const postUserLogin = async (
   req: TypedRequest<UserLoginDto>,
   res: Response,
   next: NextFunction
@@ -304,7 +277,7 @@ const createdeleteBookmark = async (
 
 export {
   postUser,
-  loginUser,
+  postUserLogin,
   getUserProfile,
   updateUserNickname,
   updateUserProfileImage,
