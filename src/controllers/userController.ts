@@ -60,7 +60,6 @@ const nicknameDuplicationCheck = async (
 ) => {
   try {
     const { nickname } = req.query;
-    console.log(nickname);
     if (!nickname) {
       throw new IllegalArgumentException('필요한 값이 없습니다.');
     }
