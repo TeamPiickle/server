@@ -18,5 +18,6 @@ jobs:
         with:
           source-directory: dist/
           destination-github-username: 'TeamPiickle'
-          destination-repository-name: 'express-build'
+          destination-repository-name: 'express-build'  
+          user-name: 'kyY00n'
           target-branch: develop
