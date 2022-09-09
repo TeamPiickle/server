@@ -5,10 +5,7 @@ import {
   sendEmailVerification,
   checkActionCode
 } from 'firebase/auth';
-import {
-  IllegalStateException,
-  InternalServerError
-} from '../intefaces/exception';
+import { InternalServerError } from '../intefaces/exception';
 import firebase from '../loaders/firebase';
 import PreUser from '../models/preUser';
 
