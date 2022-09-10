@@ -20,4 +20,4 @@ jobs:
           destination-github-username: 'TeamPiickle'
           destination-repository-name: 'express-build'  
           user-name: 'kyY00n'
-          target-branch: develop
+          target-branch: main
