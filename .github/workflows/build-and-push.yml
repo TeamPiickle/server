@@ -21,3 +21,8 @@ jobs:
           destination-repository-name: 'express-build'  
           user-name: 'kyY00n'
           target-branch: main
+  deploy:
+    name: deploy pm2
+    needs: git-push
+    runs-on: self-hosted
+    run: ./deploy-piickle-server.sh
