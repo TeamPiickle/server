@@ -25,4 +25,6 @@ jobs:
     name: deploy pm2
     needs: git-push
     runs-on: self-hosted
-    run: ./deploy-piickle-server.sh
+    steps:
+      - name: run shell script
+        run: ./deploy-piickle-server.sh
