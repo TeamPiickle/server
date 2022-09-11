@@ -18,13 +18,16 @@ router.get('/nickname/is-exist', UserController.nicknameDuplicationCheck);
 
 router.post(
   '',
-  [
-    body('email').notEmpty(),
-    body('name').notEmpty(),
-    body('password').notEmpty(),
-    body('nickname').notEmpty()
-  ],
+  [body('email').notEmpty(), body('password').notEmpty()],
   UserController.postUser
+);
+
+router.patch(
+  '',
+  auth,
+  upload.single('imgFile'),
+  [body('nickname').notEmpty(), body('birthday').notEmpty()],
+  UserController.patchUser
 );
 
 router.post(

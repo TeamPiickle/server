@@ -11,7 +11,7 @@ const userSchema = new Schema<UserDocument>(
       required: true,
       unique: true
     },
-    name: {
+    hashedPassword: {
       type: String,
       required: true
     },
@@ -19,9 +19,11 @@ const userSchema = new Schema<UserDocument>(
       type: String,
       required: true
     },
-    hashedPassword: {
-      type: String,
-      required: true
+    birthday: {
+      type: Date
+    },
+    gender: {
+      type: String
     },
     profileImageUrl: {
       type: String,

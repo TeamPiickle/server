@@ -35,6 +35,17 @@ const util = {
         100) /
         ballotCount
     );
+  },
+
+  stringToDate: (strDate: string) => {
+    const splitedDate = strDate.split(' ');
+    const validStr =
+      splitedDate[0].substring(0, 4) +
+      '-' +
+      splitedDate[1].substring(0, 2) +
+      '-' +
+      splitedDate[2].substring(0, 2);
+    return new Date(validStr);
   }
 };
 

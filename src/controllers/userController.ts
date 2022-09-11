@@ -19,6 +19,7 @@ import { UserBookmarkInfo } from '../intefaces/user/UserBookmarkInfo';
 import { Types } from 'mongoose';
 import { TypedRequest } from '../types/TypedRequest';
 import EmailVerificationReqDto from '../intefaces/user/EmailVerificationReqDto';
+import { UpdateUserDto } from '../intefaces/user/UpdateUserDto';
 
 /**
  *  @route POST /email-verification
@@ -111,11 +112,44 @@ const postUser = async (
     if (!error.isEmpty()) {
       throw new IllegalArgumentException('필요한 값이 없습니다.');
     }
-    await UserService.createUser(req.body);
+    const createdUser = await UserService.createUser(req.body);
+
+    const jwt = getToken(createdUser._id);
 
     return res
       .status(statusCode.CREATED)
-      .send(util.success(statusCode.CREATED, message.USER_CREATED));
+      .send(util.success(statusCode.CREATED, message.USER_CREATED, { jwt }));
+  } catch (err) {
+    next(err);
+  }
+};
+
+/**
+ * @method PATCH
+ * @route /users
+ * @access Public
+ */
+const patchUser = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const reqErr = validationResult(req);
+
+    if (!reqErr.isEmpty()) {
+      throw new IllegalArgumentException('필요한 값이 없습니다.');
+    }
+
+    const input: UpdateUserDto = {
+      id: req.user.id,
+      nickname: req.body.nickname,
+      birthday: req.body.birthday,
+      gender: req.body.gender,
+      profileImgUrl: (req?.file as Express.MulterS3.File)?.location
+    };
+
+    await UserService.patchUser(input);
+
+    res
+      .status(statusCode.OK)
+      .send(util.success(statusCode.OK, message.USER_UPDATE_SUCCESS));
   } catch (err) {
     next(err);
   }
@@ -302,6 +336,7 @@ const createdeleteBookmark = async (
 
 export {
   postUser,
+  patchUser,
   postUserLogin,
   getUserProfile,
   updateUserNickname,

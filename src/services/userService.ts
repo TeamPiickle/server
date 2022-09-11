@@ -19,6 +19,8 @@ import { UserBookmarkInfo } from '../intefaces/user/UserBookmarkInfo';
 import Bookmark from '../models/bookmark';
 import PreUser from '../models/preUser';
 import Card from '../models/card';
+import { UpdateUserDto } from '../intefaces/user/UpdateUserDto';
+import util from '../modules/util';
 
 const createUser = async (command: CreateUserCommand) => {
   const alreadyUser = await User.findOne({
@@ -32,20 +34,27 @@ const createUser = async (command: CreateUserCommand) => {
   if (!preUser?.emailVerified) {
     throw new EmailNotVerifiedException('이메일 인증을 해주세요.');
   }
-  const alreadyNickname = await User.findOne({
-    nickname: command.nickname
-  });
-  if (alreadyNickname) {
-    throw new DuplicateException('이미 존재하는 닉네임입니다.');
-  }
   const hashedPassword = hashSync(command.password, 10);
   const user = new User({
-    name: command.name,
     email: command.email,
     hashedPassword: hashedPassword,
-    nickname: command.nickname,
+    nickname: command.email,
     profileImageUrl: config.defaultProfileImgUrl
   });
+  await user.save();
+  return user;
+};
+
+const patchUser = async (updateUserDto: UpdateUserDto) => {
+  const user = await User.findById(updateUserDto.id);
+  if (!user) {
+    throw new IllegalArgumentException('해당 id의 유저가 존재하지 않습니다.');
+  }
+  const { nickname, profileImgUrl, birthday, gender } = updateUserDto;
+  user.nickname = nickname;
+  user.birthday = util.stringToDate(birthday);
+  user.profileImageUrl = profileImgUrl ? profileImgUrl : user.profileImageUrl;
+  user.gender = gender ? gender : '기타';
   await user.save();
 };
 
@@ -80,7 +89,7 @@ const findUserById = async (
     throw new IllegalArgumentException('존재하지 않는 유저 입니다.');
   }
   const userProfileResponseDto: UserProfileResponseDto = {
-    name: user.name,
+    name: '김피클',
     nickname: user.nickname,
     email: user.email,
     profileImageUrl: user.profileImageUrl
@@ -190,6 +199,7 @@ const nicknameDuplicationCheck = async (nickname: string) => {
 };
 export {
   createUser,
+  patchUser,
   loginUser,
   findUserById,
   updateNickname,
