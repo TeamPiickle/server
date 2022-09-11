@@ -111,11 +111,13 @@ const postUser = async (
     if (!error.isEmpty()) {
       throw new IllegalArgumentException('필요한 값이 없습니다.');
     }
-    await UserService.createUser(req.body);
+    const createdUser = await UserService.createUser(req.body);
+
+    const jwt = getToken(createdUser._id);
 
     return res
       .status(statusCode.CREATED)
-      .send(util.success(statusCode.CREATED, message.USER_CREATED));
+      .send(util.success(statusCode.CREATED, message.USER_CREATED, { jwt }));
   } catch (err) {
     next(err);
   }

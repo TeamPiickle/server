@@ -32,21 +32,15 @@ const createUser = async (command: CreateUserCommand) => {
   if (!preUser?.emailVerified) {
     throw new EmailNotVerifiedException('이메일 인증을 해주세요.');
   }
-  const alreadyNickname = await User.findOne({
-    nickname: command.nickname
-  });
-  if (alreadyNickname) {
-    throw new DuplicateException('이미 존재하는 닉네임입니다.');
-  }
   const hashedPassword = hashSync(command.password, 10);
   const user = new User({
-    name: command.name,
     email: command.email,
     hashedPassword: hashedPassword,
-    nickname: command.nickname,
+    nickname: command.email,
     profileImageUrl: config.defaultProfileImgUrl
   });
   await user.save();
+  return user;
 };
 
 const loginUser = async (
@@ -80,7 +74,7 @@ const findUserById = async (
     throw new IllegalArgumentException('존재하지 않는 유저 입니다.');
   }
   const userProfileResponseDto: UserProfileResponseDto = {
-    name: user.name,
+    name: '김피클',
     nickname: user.nickname,
     email: user.email,
     profileImageUrl: user.profileImageUrl
