@@ -6,6 +6,7 @@ const message = {
   USER_BOOKMARK_CREATE_SUCCESS: '유저 북마크 생성 성공',
   USER_BOOKMARK_DELETE_SUCCESS: '유저 북마크 삭제 성공',
   USER_CREATED: '회원가입 성공',
+  USER_UPDATE_SUCCESS: '유저 정보 수정 성공',
   NULL_VALUE: '필요한 값이 없습니다.',
   NULL_VALUE_TOKEN: '토큰이 유효하지 않습니다.',
   NOT_FOUND: '존재하지 않는 자원',

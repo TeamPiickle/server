@@ -22,6 +22,14 @@ router.post(
   UserController.postUser
 );
 
+router.patch(
+  '',
+  auth,
+  upload.single('imgFile'),
+  [body('nickname').notEmpty(), body('birthday').notEmpty()],
+  UserController.patchUser
+);
+
 router.post(
   '/login',
   [body('email').notEmpty(), body('password').notEmpty()],
