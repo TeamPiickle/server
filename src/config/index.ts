@@ -46,5 +46,7 @@ export default {
     messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID as string,
     appId: process.env.FIREBASE_APP_ID as string,
     measurementId: process.env.FIREBASE_MEASUREMENT_ID as string
-  }
+  },
+
+  signUpRedirectionUrl: process.env.SIGN_UP_REDIRECTION_URL as string
 };

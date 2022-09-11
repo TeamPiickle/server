@@ -20,6 +20,7 @@ import { Types } from 'mongoose';
 import { TypedRequest } from '../types/TypedRequest';
 import EmailVerificationReqDto from '../intefaces/user/EmailVerificationReqDto';
 import { UpdateUserDto } from '../intefaces/user/UpdateUserDto';
+import config from '../config';
 
 /**
  *  @route POST /email-verification
@@ -91,7 +92,7 @@ const verifyEmail = async (
       );
     }
     const preUser = await AuthService.confirmEmailVerification(<string>oobCode);
-    res.redirect(`http://www.piickle.link?email=${preUser.email}`); // TODO: 웹에서 화면 만들어주면 붙이기
+    res.redirect(`${config.signUpRedirectionUrl}?email=${preUser.email}`);
   } catch (err) {
     next(err);
   }
