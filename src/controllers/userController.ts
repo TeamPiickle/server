@@ -4,7 +4,10 @@ import {
   EmptyMailCodeException,
   IllegalArgumentException
 } from '../intefaces/exception';
-import CreateUserCommand from '../intefaces/createUserCommand';
+import {
+  CreateUserCommand,
+  CreateUserReq
+} from '../intefaces/createUserCommand';
 import { PostBaseResponseDto } from '../intefaces/PostBaseResponseDto';
 import { UserLoginDto } from '../intefaces/user/UserLoginDto';
 import getToken from '../modules/jwtHandler';
@@ -104,16 +107,27 @@ const verifyEmail = async (
  *  @access Public
  */
 const postUser = async (
-  req: TypedRequest<CreateUserCommand>,
+  req: TypedRequest<CreateUserReq>,
   res: Response,
   next: NextFunction
 ): Promise<void | Response> => {
   try {
     const error = validationResult(req);
     if (!error.isEmpty()) {
+      console.log(error);
       throw new IllegalArgumentException('필요한 값이 없습니다.');
     }
-    const createdUser = await UserService.createUser(req.body);
+
+    const createUserCommand: CreateUserCommand = {
+      email: req.body.email,
+      password: req.body.password,
+      nickname: req.body.nickname,
+      birthday: req.body.birthday,
+      gender: req.body.gender,
+      profileImgUrl: (req?.file as Express.MulterS3.File)?.location
+    };
+
+    const createdUser = await UserService.createUser(createUserCommand);
 
     const jwt = getToken(createdUser._id);
 

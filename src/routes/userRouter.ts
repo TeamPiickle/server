@@ -18,6 +18,7 @@ router.get('/nickname/is-exist', UserController.nicknameDuplicationCheck);
 
 router.post(
   '',
+  upload.single('imgFile'),
   [body('email').notEmpty(), body('password').notEmpty()],
   UserController.postUser
 );

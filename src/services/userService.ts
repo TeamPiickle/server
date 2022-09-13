@@ -1,6 +1,6 @@
 import { hashSync, compare } from 'bcryptjs';
 import config from '../config';
-import CreateUserCommand from '../intefaces/createUserCommand';
+import { CreateUserCommand } from '../intefaces/createUserCommand';
 import User from '../models/user';
 import {
   IllegalArgumentException,
@@ -23,6 +23,14 @@ import { UpdateUserDto } from '../intefaces/user/UpdateUserDto';
 import util from '../modules/util';
 
 const createUser = async (command: CreateUserCommand) => {
+  const {
+    email,
+    password,
+    nickname,
+    birthday: birthStr,
+    gender,
+    profileImgUrl
+  } = command;
   const alreadyUser = await User.findOne({
     email: command.email
   });
@@ -30,16 +38,20 @@ const createUser = async (command: CreateUserCommand) => {
     throw new IllegalArgumentException('이미 존재하는 이메일입니다.');
   }
 
-  const preUser = await PreUser.findOne({ email: command.email });
+  const preUser = await PreUser.findOne({ email });
   if (!preUser?.emailVerified) {
     throw new EmailNotVerifiedException('이메일 인증을 해주세요.');
   }
-  const hashedPassword = hashSync(command.password, 10);
+
+  const hashedPassword = hashSync(password, 10);
+  const birthday = util.stringToDate(birthStr);
   const user = new User({
-    email: command.email,
-    hashedPassword: hashedPassword,
-    nickname: command.email,
-    profileImageUrl: config.defaultProfileImgUrl
+    email,
+    hashedPassword,
+    nickname,
+    birthday,
+    gender: gender ? gender : '기타',
+    profileImageUrl: profileImgUrl ? profileImgUrl : config.defaultProfileImgUrl
   });
   await user.save();
   return user;
