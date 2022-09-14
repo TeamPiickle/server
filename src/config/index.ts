@@ -48,5 +48,6 @@ export default {
     measurementId: process.env.FIREBASE_MEASUREMENT_ID as string
   },
 
-  signUpRedirectionUrl: process.env.SIGN_UP_REDIRECTION_URL as string
+  signUpRedirectionUrl: process.env.SIGN_UP_REDIRECTION_URL as string,
+  clientKey: process.env.CLIENT_KEY as string
 };
