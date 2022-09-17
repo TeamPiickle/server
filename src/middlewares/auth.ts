@@ -38,10 +38,10 @@ export default (req: Request, res: Response, next: NextFunction) => {
       req.method.toUpperCase(),
       req.originalUrl,
       error,
-      req.user?.id
+      req.user?.id,
+      token
     );
     sendMessagesToSlack(errorMessage);
-    console.log(error);
     if ((error as JwtError).name == 'TokenExpiredError') {
       return res
         .status(statusCode.UNAUTHORIZED)
