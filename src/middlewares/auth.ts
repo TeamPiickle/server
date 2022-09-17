@@ -18,8 +18,7 @@ export default (req: Request, res: Response, next: NextFunction) => {
 
   if (!token) {
     const errorMessage: string = slackMessage(
-      req.method.toUpperCase(),
-      req.originalUrl,
+      req,
       NullDataException,
       req.user?.id
     );
@@ -34,13 +33,7 @@ export default (req: Request, res: Response, next: NextFunction) => {
     req.user = decoded.user;
     next();
   } catch (error) {
-    const errorMessage: string = slackMessage(
-      req.method.toUpperCase(),
-      req.originalUrl,
-      error,
-      req.user?.id,
-      token
-    );
+    const errorMessage: string = slackMessage(req, error, req.user?.id, token);
     sendMessagesToSlack(errorMessage);
     if ((error as JwtError).name == 'TokenExpiredError') {
       return res

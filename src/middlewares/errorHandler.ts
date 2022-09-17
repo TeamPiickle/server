@@ -11,12 +11,7 @@ const errHandler = async (
   res: Response,
   next: NextFunction
 ) => {
-  const errorMessage: string = slackMessage(
-    req.method.toUpperCase(),
-    req.originalUrl,
-    err,
-    req.user?.id as string
-  );
+  const errorMessage: string = slackMessage(req, err, req.user?.id as string);
 
   await sendMessagesToSlack(errorMessage);
 
