@@ -349,6 +349,23 @@ const createdeleteBookmark = async (
   }
 };
 
+/**
+ *  @route DELETE /users/me
+ *  @desc 회원탈퇴
+ *  @access Public
+ */
+const deleteUser = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const userId: Types.ObjectId = req.user.id;
+    await UserService.deleteUser(userId);
+    res
+      .status(statusCode.OK)
+      .send(util.success(statusCode.OK, message.DELETE_USER_SUCCESS));
+  } catch (err) {
+    next(err);
+  }
+};
+
 export {
   postUser,
   patchUser,
@@ -360,5 +377,6 @@ export {
   createdeleteBookmark,
   sendEmailVerification,
   verifyEmail,
-  nicknameDuplicationCheck
+  nicknameDuplicationCheck,
+  deleteUser
 };
