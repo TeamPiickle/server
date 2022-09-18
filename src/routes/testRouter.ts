@@ -44,6 +44,13 @@ router.post(
         .send(util.fail(statusCode.FORBIDDEN, '권한이 없습니다.'));
     }
     try {
+      const already = await PreUser.findOne({ email });
+      if (already) {
+        already.emailVerified = true;
+        await already.save();
+        res.status(200).json({ message: `${email} 인증 처리 성공` });
+        return;
+      }
       const preUser = new PreUser({
         email,
         password: DUMMY_PASSWORD,
