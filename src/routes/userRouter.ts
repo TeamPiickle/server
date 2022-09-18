@@ -61,4 +61,6 @@ router.patch(
   UserController.updateUserNickname
 );
 
+router.delete('/me', auth, UserController.deleteUser);
+
 export default router;

@@ -7,7 +7,8 @@ import {
   InternalAuthenticationServiceException,
   BadCredentialException,
   DuplicateException,
-  EmailNotVerifiedException
+  EmailNotVerifiedException,
+  IllegalStateException
 } from '../intefaces/exception';
 import { UserLoginDto } from '../intefaces/user/UserLoginDto';
 import { PostBaseResponseDto } from '../intefaces/PostBaseResponseDto';
@@ -191,6 +192,7 @@ const createdeleteBookmark = async (input: UserBookmarkInfo) => {
       card: cardId
     });
     await newBookmark.save();
+    console.log(newBookmark);
     return 1;
   } else {
     user.cardIdList.splice(cardIndex, 1);
@@ -209,6 +211,21 @@ const nicknameDuplicationCheck = async (nickname: string) => {
   }
   return false;
 };
+
+const deleteUser = async (userId: Types.ObjectId) => {
+  const user = await User.findById(userId);
+  if (!user) {
+    throw new IllegalStateException('존재하지 않는 유저입니다.');
+  }
+  await Bookmark.deleteMany({ user: userId });
+  const preUser = await PreUser.findOne({ email: user.email });
+  if (preUser) {
+    preUser.emailVerified = false;
+    await preUser.save();
+  }
+  await user.delete();
+};
+
 export {
   createUser,
   patchUser,
@@ -218,5 +235,6 @@ export {
   updateUserProfileImage,
   getBookmarks,
   createdeleteBookmark,
-  nicknameDuplicationCheck
+  nicknameDuplicationCheck,
+  deleteUser
 };
