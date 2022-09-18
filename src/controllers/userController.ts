@@ -350,14 +350,19 @@ const createdeleteBookmark = async (
 };
 
 /**
- *  @route DELETE /users/me
+ *  @route PUT /users/me
  *  @desc 회원탈퇴
  *  @access Public
  */
-const deleteUser = async (req: Request, res: Response, next: NextFunction) => {
+const deleteUser = async (
+  req: TypedRequest<{ reason: string }>,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const userId: Types.ObjectId = req.user.id;
-    await UserService.deleteUser(userId);
+    const { reason } = req.body;
+    await UserService.deleteUser(userId, reason);
     res
       .status(statusCode.OK)
       .send(util.success(statusCode.OK, message.DELETE_USER_SUCCESS));

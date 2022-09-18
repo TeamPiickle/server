@@ -9,6 +9,7 @@ import { BallotTopic } from '../models/ballotTopic';
 import BallotItem from '../models/ballotItem';
 import { BallotResult } from '../models/ballotResult';
 import PreUser from '../models/preUser';
+import QuitLog from '../models/quitLog';
 
 const connectDB = async () => {
   await mongoose.connect(config.mongoURI);
@@ -74,6 +75,13 @@ const connectDB = async () => {
   EmailAuth.createCollection()
     .then(() => {
       console.log('EmailAuth collection created.');
+    })
+    .catch(err => {
+      console.log(err);
+    });
+  QuitLog.createCollection()
+    .then(() => {
+      console.log('QuitLog collection created.');
     })
     .catch(err => {
       console.log(err);
