@@ -22,7 +22,7 @@ import PreUser from '../models/preUser';
 import Card from '../models/card';
 import { UpdateUserDto } from '../intefaces/user/UpdateUserDto';
 import util from '../modules/util';
-import QuitLog from '../models/quitLog';
+import QuitLog, { QuitReason } from '../models/quitLog';
 
 const createUser = async (command: CreateUserCommand) => {
   const {
@@ -213,7 +213,7 @@ const nicknameDuplicationCheck = async (nickname: string) => {
   return false;
 };
 
-const deleteUser = async (userId: Types.ObjectId, reason: string) => {
+const deleteUser = async (userId: Types.ObjectId, reasons: string[]) => {
   const user = await User.findById(userId);
   if (!user) {
     throw new IllegalStateException('존재하지 않는 유저입니다.');
@@ -225,7 +225,10 @@ const deleteUser = async (userId: Types.ObjectId, reason: string) => {
     await preUser.save();
   }
   await user.delete();
-  const quitLog = new QuitLog({ reason });
+
+  const quitLog = new QuitLog({
+    reasons
+  });
   await quitLog.save();
 };
 
