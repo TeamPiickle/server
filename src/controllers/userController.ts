@@ -355,14 +355,14 @@ const createdeleteBookmark = async (
  *  @access Public
  */
 const deleteUser = async (
-  req: TypedRequest<{ reason: string }>,
+  req: TypedRequest<{ reasons: string[] }>,
   res: Response,
   next: NextFunction
 ) => {
   try {
     const userId: Types.ObjectId = req.user.id;
-    const { reason } = req.body;
-    await UserService.deleteUser(userId, reason);
+    const { reasons } = req.body;
+    await UserService.deleteUser(userId, reasons);
     res
       .status(statusCode.OK)
       .send(util.success(statusCode.OK, message.DELETE_USER_SUCCESS));
