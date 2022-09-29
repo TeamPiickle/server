@@ -13,7 +13,6 @@ const findBestDummy = async (
   size: number
 ) => {
   const topics = [
-    '좋아하는 스킨십은\n어떤 것들이 있나요?',
     'SOPT에서 얻은\n가장 소중한 인연은?',
     '절친 동생이랑 연애\nVS\n동생 절친이랑 연애',
     '내가 선호하는 주종과 \n나의 주량은?',
@@ -33,7 +32,7 @@ const findBestDummy = async (
     '주변환경과 본인의 의지\n둘 중 무엇이 \n삶에 더 큰 영향을\n끼친다고 생각하세요?',
     '최고의 복수는\n성공이라는 말에\n동의하시나요?\n그 이유는?',
     '시간을 돌릴 수 있다면, \n언제로 돌아가고 싶은가요?',
-    '발표를 망쳤다면\n위로와 격려\nVS \n냉철한 피드백',
+    '발표를 망쳤을 때\n위로와 격려받기\nVS \n냉철한 피드백 받기',
     '내가 생각하는 이상적인 애인 \n또는 연애에 대해 말해주세요',
     '여기서 차기 파트장\n할 것 같은 사람 고르기',
     '자신의\n인생 영화작\n말해주기',
@@ -41,15 +40,15 @@ const findBestDummy = async (
     '상대방을 보면 떠오르는 \n색깔을 말해주세요!',
     '최애가수 1명과\n그 이유를\n말해주세요!',
     '싸웠을 때,\n시간이 필요한가요\n당장 풀기를 원하나요?',
-    '이성친구 립밤 빌려주는 애인\nVS\n이성친구 빨대 같이쓰는 애인',
-    '상대방의 주사가 무엇인가요?'
+    '이성친구 립밤 빌려주는 애인\nVS\n이성친구 빨대 같이쓰는 애인'
   ];
   let count = 0;
-  let dummyList: CardResponseDto[] = [];
+  const dummyList: CardResponseDto[] = [];
   for (const item of topics) {
     const dummyCard = await Card.find({
       content: item
     });
+    console.log(item);
     dummyList[count] = {
       _id: dummyCard[0]._id,
       content: dummyCard[0].content,
