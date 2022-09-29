@@ -12,9 +12,10 @@ interface CardIdAndCnt {
 const findBestDummy = async (userId: Types.ObjectId | undefined) => {
   const bestCards = await BestCard.find();
 
-  const cardResList: CardResponseDto[] = await Promise.all(
+  const cardResList: (CardResponseDto | null)[] = await Promise.all(
     bestCards.map(async bestCard => {
       const c = await Card.findById(bestCard.card);
+      if (!c) return null;
       const isBookmarked = userId
         ? await Bookmark.exists({ user: userId, card: c._id })
         : null;
@@ -28,7 +29,7 @@ const findBestDummy = async (userId: Types.ObjectId | undefined) => {
       };
     })
   );
-  return cardResList;
+  return cardResList.filter(value => value != null);
 };
 
 const findBestCards = async (
