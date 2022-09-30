@@ -4,6 +4,7 @@ import util from '../modules/util';
 import { Types } from 'mongoose';
 import { CardResponseDto } from '../intefaces/CardResponseDto';
 import BestCard from '../models/bestCard';
+import { Nullable } from '../types/types';
 interface CardIdAndCnt {
   _id: Types.ObjectId;
   count: number;
@@ -11,8 +12,7 @@ interface CardIdAndCnt {
 
 const findBestDummy = async (userId: Types.ObjectId | undefined) => {
   const bestCards = await BestCard.find();
-
-  const cardResList: (CardResponseDto | null)[] = await Promise.all(
+  const cardResList: Nullable<CardResponseDto>[] = await Promise.all(
     bestCards.map(async bestCard => {
       const c = await Card.findById(bestCard.card);
       if (!c) return null;
