@@ -16,7 +16,7 @@ const getBestCardList = async (
   next: NextFunction
 ) => {
   try {
-    const userId = <Types.ObjectId | undefined>req.user?.id;
+    const userId: Types.ObjectId = req.user?.id;
     const cards = await CardService.findBestDummy(userId);
     return res
       .status(statusCode.OK)

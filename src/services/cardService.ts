@@ -10,7 +10,7 @@ interface CardIdAndCnt {
   count: number;
 }
 
-const findBestDummy = async (userId: Types.ObjectId | undefined) => {
+const findBestDummy = async (userId?: Types.ObjectId) => {
   const bestCards = await BestCard.find();
   const cardResList: Nullable<CardResponseDto>[] = await Promise.all(
     bestCards.map(async bestCard => {
@@ -18,13 +18,13 @@ const findBestDummy = async (userId: Types.ObjectId | undefined) => {
       if (!c) return null;
       const isBookmarked = userId
         ? await Bookmark.exists({ user: userId, card: c._id })
-        : null;
+        : false;
       return {
         _id: c._id,
         content: c.content,
         tags: c.tags,
         category: c.category,
-        filter: c?.filter,
+        filter: c.filter,
         isBookmark: !!isBookmarked
       };
     })
@@ -32,10 +32,7 @@ const findBestDummy = async (userId: Types.ObjectId | undefined) => {
   return cardResList.filter(value => value !== null);
 };
 
-const findBestCards = async (
-  userId: Types.ObjectId | undefined,
-  size: number
-) => {
+const findBestCards = async (size: number, userId?: Types.ObjectId) => {
   const cardIdAndCnt = <CardIdAndCnt[]>await Bookmark.aggregate([
     { $match: { createdAt: { $gte: util.getLastMonth() } } }
   ])

@@ -30,8 +30,8 @@ const getCategory = async (): Promise<Array<object> | null> => {
 };
 
 const getCardsWithIsBookmark = async (
-  userId: Types.ObjectId | undefined,
-  categoryId: string
+  categoryId: string,
+  userId?: Types.ObjectId
 ): Promise<CategoryResponseDto | null> => {
   const cards = await Category.findById(categoryId)
     .populate({ path: 'cardIdList', options: { limit: 30 } })
@@ -74,7 +74,7 @@ const getCardsWithIsBookmark = async (
 
 const getCardsBySearch = async (
   search: string[],
-  userId: Types.ObjectId | undefined
+  userId?: Types.ObjectId
 ): Promise<CardResponseDto[]> => {
   try {
     const cardDocuments = await Card.find({ filter: { $all: search } }).limit(

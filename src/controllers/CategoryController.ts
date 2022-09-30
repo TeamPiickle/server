@@ -41,9 +41,9 @@ const getCards = async (
   next: NextFunction
 ): Promise<void | Response> => {
   const { categoryId } = req.params;
-  const userId = <Types.ObjectId | undefined>req.user?.id;
+  const userId = <Types.ObjectId>req.user?.id;
   try {
-    const data = await getCardsWithIsBookmark(userId, categoryId);
+    const data = await getCardsWithIsBookmark(categoryId, userId);
 
     if (!data) {
       throw new NullDataException('데이터가 없습니다.');
@@ -67,7 +67,7 @@ const getCardsBySearch = async (
   next: NextFunction
 ): Promise<void | Response> => {
   const { search } = req.query;
-  const userId = <Types.ObjectId | undefined>req.user?.id;
+  const userId = <Types.ObjectId>req.user?.id;
   try {
     const data = await CategoryService.getCardsBySearch(
       search as string[],
