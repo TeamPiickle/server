@@ -29,7 +29,7 @@ const findBestDummy = async (userId: Types.ObjectId | undefined) => {
       };
     })
   );
-  return cardResList.filter(value => value != null);
+  return cardResList.filter(value => value !== null);
 };
 
 const findBestCards = async (
