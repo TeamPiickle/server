@@ -1,31 +1,23 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import config from '../config';
-import statusCode from '../modules/statusCode';
 import message from '../modules/responseMessage';
-import { NullDataException } from '../intefaces/exception';
-import util from '../modules/util';
+import {
+  JwtNotDecodedException,
+  NullJwtException
+} from '../intefaces/exception';
 import { JwtPayloadInfo } from '../intefaces/JwtPayloadInfo';
-import { slackMessage } from '../modules/returnToSlack';
-import { sendMessagesToSlack } from '../modules/slackApi';
 
 interface JwtError extends Error {
   name: string;
 }
 
-export default (req: Request, res: Response, next: NextFunction) => {
-  const token = req.header('x-auth-token')?.split(' ')[1];
+const extractJwt = (req: Request) => req.header('x-auth-token')?.split(' ')[1];
 
+const decodeJwt = (req: Request, res: Response, next: NextFunction) => {
+  const token = extractJwt(req);
   if (!token) {
-    const errorMessage: string = slackMessage(
-      req,
-      NullDataException,
-      req.user?.id
-    );
-    sendMessagesToSlack(errorMessage);
-    return res
-      .status(statusCode.UNAUTHORIZED)
-      .send(util.fail(statusCode.UNAUTHORIZED, message.NULL_VALUE_TOKEN));
+    throw new NullJwtException(message.NULL_VALUE_TOKEN);
   }
 
   try {
@@ -33,20 +25,11 @@ export default (req: Request, res: Response, next: NextFunction) => {
     req.user = decoded.user;
     next();
   } catch (error) {
-    const errorMessage: string = slackMessage(req, error, req.user?.id, token);
-    sendMessagesToSlack(errorMessage);
     if ((error as JwtError).name == 'TokenExpiredError') {
-      return res
-        .status(statusCode.UNAUTHORIZED)
-        .send(util.fail(statusCode.UNAUTHORIZED, message.EXPIRED_TOKEN));
+      throw new JwtNotDecodedException(message.EXPIRED_TOKEN);
     }
-    return res
-      .status(statusCode.INTERNAL_SERVER_ERROR)
-      .send(
-        util.fail(
-          statusCode.INTERNAL_SERVER_ERROR,
-          message.INTERNAL_SERVER_ERROR
-        )
-      );
+    throw error;
   }
 };
+
+export default decodeJwt;

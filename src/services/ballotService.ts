@@ -3,8 +3,9 @@ import CreateBallotResultDto from '../intefaces/CreateBallotResultDto';
 import BallotItem from '../models/ballotItem';
 import { Types } from 'mongoose';
 import util from '../modules/util';
-import { BallotResult } from '../models/ballotResult';
+import { BallotResult, BallotResultDocument } from '../models/ballotResult';
 import { BallotTopic, BallotTopicDocument } from '../models/ballotTopic';
+import { Nullable } from '../types/types';
 
 const createBallotResult = async (command: CreateBallotResultDto) => {
   const ballotTopic = await BallotTopic.findById(command.ballotTopicId);
@@ -51,13 +52,9 @@ const createBallotResult = async (command: CreateBallotResultDto) => {
 };
 
 const getBallotStatusAndUserSelect = async (
-  userId: Types.ObjectId | undefined,
-  ballotTopicId: Types.ObjectId
+  ballotTopicId: Types.ObjectId,
+  userId?: Types.ObjectId
 ) => {
-  const ballotSelectCheck = await BallotResult.findOne({
-    userId: userId,
-    ballotTopicId: ballotTopicId
-  });
   const ballotTopic = await BallotTopic.findById(ballotTopicId);
   if (!ballotTopic) {
     throw new IllegalArgumentException('올바르지 않은 투표 주제 id 입니다.');
@@ -67,13 +64,18 @@ const getBallotStatusAndUserSelect = async (
     ballotTopicId: ballotTopicId
   });
 
+  const userSelect: Nullable<BallotResultDocument> = userId
+    ? await BallotResult.findOne({
+        userId,
+        ballotTopicId
+      })
+    : null;
+
   const ballotCount = await BallotResult.find({ ballotTopicId }).count();
-  const ballotStatus = await Promise.all(
+
+  const ballotItemWithStatusList = await Promise.all(
     ballotItems.map(async (item: any) => {
-      let status = await util.getStatus(ballotCount, item._id);
-      if (!status) {
-        status = 0;
-      }
+      const status = userId ? await util.getStatus(ballotCount, item._id) : 0;
       const result = {
         _id: item._id,
         status: status,
@@ -82,57 +84,44 @@ const getBallotStatusAndUserSelect = async (
       return result;
     })
   );
-  let userSelect = null;
-
-  if (ballotSelectCheck) {
-    userSelect = await BallotResult.findOne(
-      {
-        userId: userId,
-
-        ballotTopicId: ballotTopicId
-      },
-      { ballotItemId: 1 }
-    );
-  }
 
   const data = {
     ballotTopic: {
       _id: ballotTopicId,
       ballotTopicContent: ballotTopic.topic
     },
-    ballotItems: ballotStatus,
-    userSelect: userSelect
+    ballotItems: ballotItemWithStatusList,
+    userSelect
   };
 
   return data;
 };
 
 const getMainBallotList = async (
-  userId: Types.ObjectId | null
+  userId?: Types.ObjectId
 ): Promise<BallotTopicDocument[]> => {
-  if (userId) {
-    const completedBallotTopic = await BallotResult.find(
-      { userId },
-      'ballotTopicId'
-    );
-    const completedIds = completedBallotTopic.map(e => e.ballotTopicId);
-    const randomBallotTopicsExcludeCompleted = await BallotTopic.find({
-      _id: { $nin: completedIds }
-    }).limit(4);
-    if (randomBallotTopicsExcludeCompleted.length < 4) {
-      const randomBallotTopicsCompleted = await BallotTopic.find({
-        _id: { $in: completedIds }
-      }).limit(4 - randomBallotTopicsExcludeCompleted.length);
-      return [
-        ...randomBallotTopicsExcludeCompleted,
-        ...randomBallotTopicsCompleted
-      ];
-    }
-    return randomBallotTopicsExcludeCompleted;
-  } else {
+  if (!userId) {
     const randomBallotTopics = await BallotTopic.find().limit(4);
     return randomBallotTopics;
   }
+  const completedBallotTopic = await BallotResult.find(
+    { userId },
+    'ballotTopicId'
+  );
+  const completedIds = completedBallotTopic.map(e => e.ballotTopicId);
+  const randomBallotTopicsExcludeCompleted = await BallotTopic.find({
+    _id: { $nin: completedIds }
+  }).limit(4);
+  if (randomBallotTopicsExcludeCompleted.length < 4) {
+    const randomBallotTopicsCompleted = await BallotTopic.find({
+      _id: { $in: completedIds }
+    }).limit(4 - randomBallotTopicsExcludeCompleted.length);
+    return [
+      ...randomBallotTopicsExcludeCompleted,
+      ...randomBallotTopicsCompleted
+    ];
+  }
+  return randomBallotTopicsExcludeCompleted;
 };
 
 export { createBallotResult, getMainBallotList, getBallotStatusAndUserSelect };

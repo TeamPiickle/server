@@ -9,6 +9,13 @@ export abstract class PiickleException extends Error {
   abstract statusCode: number;
 }
 
+export class JwtNotDecodedException extends PiickleException {
+  statusCode = statusCode.UNAUTHORIZED;
+}
+
+export class NullJwtException extends PiickleException {
+  statusCode = statusCode.BAD_REQUEST;
+}
 export class IllegalArgumentException extends PiickleException {
   statusCode = statusCode.BAD_REQUEST;
 }

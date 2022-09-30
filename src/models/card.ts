@@ -4,15 +4,20 @@ import ICard from './interface/ICard';
 
 type CardDocument = ICard & IDocument;
 
-const cardSchema = new Schema<CardDocument>({
-  content: {
-    type: String,
-    required: true
+const cardSchema = new Schema<CardDocument>(
+  {
+    content: {
+      type: String,
+      required: true
+    },
+    tags: [String],
+    category: [Schema.Types.ObjectId],
+    filter: [String]
   },
-  tags: [String],
-  category: [Schema.Types.ObjectId],
-  filter: [String]
-});
+  {
+    timestamps: true
+  }
+);
 
 const Card = model<CardDocument>('Card', cardSchema);
 
