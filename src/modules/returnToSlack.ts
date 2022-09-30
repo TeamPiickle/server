@@ -1,16 +1,23 @@
 import { Request } from 'express';
-export const slackMessage = (
-  req: Request,
-  error: any,
-  uid?: string,
-  token?: string
-): string => {
+import { UserId } from '../types/types';
+export const generateSlackMessage = (req: Request, error: any): string => {
   const method = req.method.toUpperCase();
   const originalUrl = req.originalUrl;
-  return `🚨  [ERROR] [${method}] \`${originalUrl}\`\n
-      Express-Host: ${req.header('Host') || 'Unknown'}\n
-      User-Agent: ${req.header('User-Agent') || 'Unknown'}\n
-  ${uid ? `      user_id: ${uid}\n` : ''}${
-    token ? `      token: ${token}\n` : ''
-  }      ${JSON.stringify(error)}`;
+  const uid = <UserId>req.user?.id;
+  const token = req.header('x-auth-token')?.split(' ')[1];
+
+  const reqInfo = {
+    host: req.header('Host'),
+    userAgent: req.header('User-Agent'),
+    user: req.user,
+    jwt: token,
+    body: req.body
+  };
+  return `🚨  [${method}] \`${originalUrl}\`\n - *statusCode*: ${
+    error.statusCode
+  }\n - *message*: ${error.message} \`\`\`${JSON.stringify(
+    reqInfo,
+    null,
+    2
+  )}\`\`\``;
 };

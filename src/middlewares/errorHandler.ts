@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { PiickleException } from '../intefaces/exception';
 import statusCode from '../modules/statusCode';
 import util from '../modules/util';
-import { slackMessage } from '../modules/returnToSlack';
+import { generateSlackMessage } from '../modules/returnToSlack';
 import { sendMessagesToSlack } from '../modules/slackApi';
 
 const errHandler = async (
@@ -11,8 +11,7 @@ const errHandler = async (
   res: Response,
   next: NextFunction
 ) => {
-  console.log(err);
-  const errorMessage: string = slackMessage(req, err, req.user?.id as string);
+  const errorMessage: string = generateSlackMessage(req, err);
 
   await sendMessagesToSlack(errorMessage);
 
