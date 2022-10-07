@@ -52,6 +52,32 @@ const sendEmailVerification = async (
 };
 
 /**
+ *  @route POST /email-verification/test
+ *  @desc 인증메일 전송 api
+ *  @access Public
+ */
+const sendEmailVerificationTest = async (
+  req: TypedRequest<EmailVerificationReqDto>,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const error = validationResult(req);
+    if (!error.isEmpty()) {
+      throw new IllegalArgumentException('필요한 값이 없습니다.');
+    }
+    const { email } = req.body;
+    const { preUser, isNew } = await PreUserService.createPreUser(email);
+    await AuthService.sendEmail(preUser.email, preUser.password, isNew, true);
+    res
+      .status(statusCode.OK)
+      .send(util.success(statusCode.OK, '인증메일 발송 성공', email));
+  } catch (err) {
+    next(err);
+  }
+};
+
+/**
  *  @route GET /users/nickname
  *  @desc 닉네임 중복 체크 api
  *  @access Public
@@ -88,14 +114,40 @@ const verifyEmail = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const { oobCode } = req.query;
-    if (!oobCode) {
+    const { email } = req.query;
+    if (!email) {
       throw new EmptyMailCodeException(
         '유저 정보를 알 수 없습니다. 인증 메일을 새로 전송해주세요.'
       );
     }
-    const preUser = await AuthService.confirmEmailVerification(<string>oobCode);
-    res.redirect(`${config.signUpRedirectionUrl}?email=${preUser.email}`);
+    const preUser = await AuthService.confirmEmailVerification(<string>email);
+    res.redirect(`${config.emailRedirectionUrl.prod}?email=${preUser.email}`);
+  } catch (err) {
+    next(err);
+  }
+};
+
+/**
+ *
+ * @method GET
+ * @route /email-check/test
+ * @desc 이메일 인증하기 api
+ * @access Public
+ */
+const verifyEmailTest = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const { email } = req.query;
+    if (!email) {
+      throw new EmptyMailCodeException(
+        '유저 정보를 알 수 없습니다. 인증 메일을 새로 전송해주세요.'
+      );
+    }
+    const preUser = await AuthService.confirmEmailVerification(<string>email);
+    res.redirect(`${config.emailRedirectionUrl.dev}?email=${preUser.email}`);
   } catch (err) {
     next(err);
   }
@@ -381,7 +433,9 @@ export {
   getBookmarks,
   createdeleteBookmark,
   sendEmailVerification,
+  sendEmailVerificationTest,
   verifyEmail,
+  verifyEmailTest,
   nicknameDuplicationCheck,
   deleteUser
 };

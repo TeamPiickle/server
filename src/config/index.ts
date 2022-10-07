@@ -47,7 +47,9 @@ export default {
     appId: process.env.FIREBASE_APP_ID as string,
     measurementId: process.env.FIREBASE_MEASUREMENT_ID as string
   },
-
-  signUpRedirectionUrl: process.env.SIGN_UP_REDIRECTION_URL as string,
+  emailRedirectionUrl: {
+    prod: process.env.SIGN_UP_REDIRECTION_PROD_URL as string,
+    dev: process.env.SIGN_UP_REDIRECTION_DEV_URL as string
+  },
   clientKey: process.env.CLIENT_KEY as string
 };
