@@ -42,33 +42,8 @@ const sendEmailVerification = async (
     }
     const { email } = req.body;
     const { preUser, isNew } = await PreUserService.createPreUser(email);
-    await AuthService.sendEmail(preUser.email, preUser.password, isNew);
-    res
-      .status(statusCode.OK)
-      .send(util.success(statusCode.OK, '인증메일 발송 성공', email));
-  } catch (err) {
-    next(err);
-  }
-};
-
-/**
- *  @route POST /email-verification/test
- *  @desc 인증메일 전송 api
- *  @access Public
- */
-const sendEmailVerificationTest = async (
-  req: TypedRequest<EmailVerificationReqDto>,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const error = validationResult(req);
-    if (!error.isEmpty()) {
-      throw new IllegalArgumentException('필요한 값이 없습니다.');
-    }
-    const { email } = req.body;
-    const { preUser, isNew } = await PreUserService.createPreUser(email);
-    await AuthService.sendEmail(preUser.email, preUser.password, isNew, true);
+    const isDev = req.header('Origin') != 'https://www.piickle.link';
+    await AuthService.sendEmail(preUser.email, preUser.password, isNew, isDev);
     res
       .status(statusCode.OK)
       .send(util.success(statusCode.OK, '인증메일 발송 성공', email));
@@ -433,7 +408,6 @@ export {
   getBookmarks,
   createdeleteBookmark,
   sendEmailVerification,
-  sendEmailVerificationTest,
   verifyEmail,
   verifyEmailTest,
   nicknameDuplicationCheck,
