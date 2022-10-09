@@ -23,6 +23,60 @@ import Card from '../models/card';
 import { UpdateUserDto } from '../intefaces/user/UpdateUserDto';
 import util from '../modules/util';
 import QuitLog, { QuitReason } from '../models/quitLog';
+import statusCode from '../modules/statusCode';
+
+const requestSocialLogin = async (token, social) => {
+  const urlHash = {
+    naver: 'https://openapi.naver.com/v1/nid/me'
+  };
+
+  let response;
+
+  try {
+    response = await axios({
+      method: 'get',
+      url: urlHash[social],
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+  } catch (error) {
+    return null;
+  }
+  return response;
+};
+
+const naverLogin = async (code, state) {
+  if (!code || !state) {
+    return {
+      statusCode: statusCode.UNAUTHORIZED,
+      json: { error: responseMessage.BAD_REQUEST },
+    };
+  }
+
+  const response = await axios({
+    method: "GET",
+    url: "https://nid.naver.com/oauth2.0/token",
+    params: {
+      grant_type: "authorization_code",
+      client_id: config.client_id,
+      client_secret: config.client_secret,
+      code: code,
+      state: state
+    },
+  });
+
+  if (response.data.error) {
+    return {
+      statusCode: statusCode.BAD_REQUEST,
+      json: { error: response.data.error_description },
+    };
+  }
+
+  const access_token = response.data.access_token;
+  const data = await this.signIn(access_token, "naver");
+  return data;
+}
 
 const createUser = async (command: CreateUserCommand) => {
   const {

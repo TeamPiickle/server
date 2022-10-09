@@ -15,7 +15,7 @@ router.post(
 router.get('/email-check', UserController.verifyEmail);
 
 router.get('/nickname/is-exist', UserController.nicknameDuplicationCheck);
-
+router.post('/naverLogin', UserController.naverLogin);
 router.post(
   '',
   upload.single('imgFile'),

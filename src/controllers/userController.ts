@@ -25,6 +25,21 @@ import EmailVerificationReqDto from '../intefaces/user/EmailVerificationReqDto';
 import { UpdateUserDto } from '../intefaces/user/UpdateUserDto';
 import config from '../config';
 
+const naverLogin = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+  ) => {
+    try {
+      const { code, state } = req.body;
+      UserService.naverLogin(code, state);
+      res
+      .status(statusCode.OK)
+      .send(util.success(statusCode.OK, '네이버로그인 성공'));
+    }catch(err) {
+      next(err);
+};
+
 /**
  *  @route POST /email-verification
  *  @desc 인증메일 전송 api
@@ -372,6 +387,7 @@ const deleteUser = async (
 };
 
 export {
+  naverLogin,
   postUser,
   patchUser,
   postUserLogin,

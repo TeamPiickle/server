@@ -28,7 +28,11 @@ export default {
   mongoURI: process.env.MONGODB_URI as string,
   mongoTestURI: process.env.MONGODB_TEST_URI as string,
   defaultProfileImgUrl: process.env.DEFAULT_PROFILE_IMG_URL as string,
-
+  /**
+   * naver client id, secret
+   */
+  client_id: process.env.NAVER_CLIENT_ID,
+  client_secret: process.env.NAVER_CLIENT_SECRET,
   /**
    * s3
    */
