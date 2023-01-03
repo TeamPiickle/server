@@ -26,6 +26,32 @@ import { UpdateUserDto } from '../intefaces/user/UpdateUserDto';
 import config from '../config';
 
 /**
+ * @route GET /email
+ * @desc 메일 중복 확인 api
+ * @access public
+ */
+const readEmailIsExisting = async (
+  req: TypedRequest<{ email: string }>,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const error = validationResult(req);
+    if (!error.isEmpty()) {
+      throw new IllegalArgumentException('필요한 값이 없습니다');
+    }
+    const isAlreadyExisting = await UserService.isEmailExisting(req.body.email);
+    res.status(statusCode.OK).send(
+      util.success(statusCode.OK, '이메일 중복 조회 성공', {
+        isAlreadyExisting
+      })
+    );
+  } catch (err) {
+    next(err);
+  }
+};
+
+/**
  *  @route POST /email-verification
  *  @desc 인증메일 전송 api
  *  @access Public
@@ -36,11 +62,7 @@ const sendEmailVerification = async (
   next: NextFunction
 ) => {
   try {
-    const error = validationResult(req);
-    if (!error.isEmpty()) {
-      throw new IllegalArgumentException('필요한 값이 없습니다.');
-    }
-    const { email } = req.body;
+    const { email } = req.query;
     const { preUser, isNew } = await PreUserService.createPreUser(email);
     const isDev = req.header('Origin') != 'https://www.piickle.link';
     await AuthService.sendEmail(preUser.email, preUser.password, isNew, isDev);
@@ -399,6 +421,7 @@ const deleteUser = async (
 };
 
 export {
+  readEmailIsExisting,
   postUser,
   patchUser,
   postUserLogin,

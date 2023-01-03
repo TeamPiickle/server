@@ -22,6 +22,16 @@ import { UpdateUserDto } from '../intefaces/user/UpdateUserDto';
 import util from '../modules/util';
 import QuitLog from '../models/quitLog';
 
+const isEmailExisting = async (email: string): Promise<boolean> => {
+  const alreadyUser = await User.findOne({
+    email
+  });
+  if (alreadyUser) {
+    return true;
+  }
+  return false;
+};
+
 const validateEmail = async (email: string) => {
   const alreadyUser = await User.findOne({
     email
@@ -228,6 +238,7 @@ const deleteUser = async (userId: Types.ObjectId, reasons: string[]) => {
 };
 
 export {
+  isEmailExisting,
   createUser,
   patchUser,
   loginUser,

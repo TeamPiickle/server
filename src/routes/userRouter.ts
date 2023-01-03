@@ -6,6 +6,8 @@ import upload from '../config/multer';
 
 const router = Router();
 
+router.get('/existing', UserController.readEmailIsExisting);
+
 router.post(
   '/email-verification',
   [body('email').notEmpty()],
