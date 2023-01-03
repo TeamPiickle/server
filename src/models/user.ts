@@ -1,6 +1,7 @@
 import IDocument from './interface/Document';
 import IUser from './interface/IUser';
 import { model, Schema } from 'mongoose';
+import config from '../config';
 
 type UserDocument = IUser & IDocument;
 
@@ -23,11 +24,13 @@ const userSchema = new Schema<UserDocument>(
       type: Date
     },
     gender: {
-      type: String
+      type: String,
+      default: '기타'
     },
     profileImageUrl: {
       type: String,
-      required: false
+      required: false,
+      default: config.defaultProfileImgUrl
     },
     cardIdList: [
       {

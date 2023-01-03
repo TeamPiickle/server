@@ -1,5 +1,4 @@
 import { hashSync, compare } from 'bcryptjs';
-import config from '../config';
 import { CreateUserCommand } from '../intefaces/createUserCommand';
 import User from '../models/user';
 import {
@@ -7,7 +6,6 @@ import {
   InternalAuthenticationServiceException,
   BadCredentialException,
   DuplicateException,
-  EmailNotVerifiedException,
   IllegalStateException
 } from '../intefaces/exception';
 import { UserLoginDto } from '../intefaces/user/UserLoginDto';
@@ -22,7 +20,16 @@ import PreUser from '../models/preUser';
 import Card from '../models/card';
 import { UpdateUserDto } from '../intefaces/user/UpdateUserDto';
 import util from '../modules/util';
-import QuitLog, { QuitReason } from '../models/quitLog';
+import QuitLog from '../models/quitLog';
+
+const validateEmail = async (email: string) => {
+  const alreadyUser = await User.findOne({
+    email
+  });
+  if (alreadyUser) {
+    throw new IllegalArgumentException('이미 존재하는 이메일입니다.');
+  }
+};
 
 const createUser = async (command: CreateUserCommand) => {
   const {
@@ -31,29 +38,17 @@ const createUser = async (command: CreateUserCommand) => {
     nickname,
     birthday: birthStr,
     gender,
-    profileImgUrl
+    profileImgUrl: profileImageUrl
   } = command;
-  const alreadyUser = await User.findOne({
-    email: command.email
-  });
-  if (alreadyUser) {
-    throw new IllegalArgumentException('이미 존재하는 이메일입니다.');
-  }
+  await validateEmail(email);
 
-  const preUser = await PreUser.findOne({ email });
-  if (!preUser?.emailVerified) {
-    throw new EmailNotVerifiedException('이메일 인증을 해주세요.');
-  }
-
-  const hashedPassword = hashSync(password, 10);
-  const birthday = util.stringToDate(birthStr);
   const user = new User({
     email,
-    hashedPassword,
+    hashedPassword: hashSync(password, 10),
     nickname,
-    birthday,
-    gender: gender ? gender : '기타',
-    profileImageUrl: profileImgUrl ? profileImgUrl : config.defaultProfileImgUrl
+    birthday: util.stringToDate(birthStr),
+    gender,
+    profileImageUrl
   });
   await user.save();
   return user;
