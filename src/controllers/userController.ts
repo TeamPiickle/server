@@ -31,16 +31,16 @@ import config from '../config';
  * @access public
  */
 const readEmailIsExisting = async (
-  req: TypedRequest<{ email: string }>,
+  req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const error = validationResult(req);
-    if (!error.isEmpty()) {
-      throw new IllegalArgumentException('필요한 값이 없습니다');
+    const { email } = req.query;
+    if (!email) {
+      throw new IllegalArgumentException('이메일 값을 입력해주세요.');
     }
-    const isAlreadyExisting = await UserService.isEmailExisting(req.body.email);
+    const isAlreadyExisting = await UserService.isEmailExisting(<string>email);
     res.status(statusCode.OK).send(
       util.success(statusCode.OK, '이메일 중복 조회 성공', {
         isAlreadyExisting
@@ -62,7 +62,11 @@ const sendEmailVerification = async (
   next: NextFunction
 ) => {
   try {
-    const { email } = req.query;
+    const error = validationResult(req);
+    if (!error.isEmpty()) {
+      throw new IllegalArgumentException('필요한 값이 없습니다');
+    }
+    const { email } = req.body;
     const { preUser, isNew } = await PreUserService.createPreUser(email);
     const isDev = req.header('Origin') != 'https://www.piickle.link';
     await AuthService.sendEmail(preUser.email, preUser.password, isNew, isDev);
