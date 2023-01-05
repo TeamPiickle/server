@@ -1,19 +1,12 @@
 import { Category, CategoryDocument } from '../models/category';
-import Card, { CardDocument } from '../models/card';
+import Card from '../models/card';
 import CategoryResponseDto from '../intefaces/CategoryResponseDto';
 import Types from 'mongoose';
 import { CardResponseDto } from '../intefaces/CardResponseDto';
 import Bookmark from '../models/bookmark';
 import { IllegalArgumentException } from '../intefaces/exception';
-import { CategoryInfoDto } from '../intefaces/CategoryInfoDto';
 
-const shuffleCard = (arr: CategoryInfoDto[]) => {
-  arr.sort(() => Math.random() - 0.5);
-};
-
-const shuffleCards = (arr: CardResponseDto[]) => {
-  arr.sort(() => Math.random() - 0.5);
-};
+const CARD_SIZE_PER_REQUEST = 30;
 
 const getCategory = async (): Promise<Array<object> | null> => {
   const categories: CategoryDocument[] = await Category.find(
@@ -50,9 +43,10 @@ const getCardsWithIsBookmark = async (
   }
   const allCards = await Card.find({ category: categoryId });
 
-  const randomCards = getRandomUniqueNumbersInRange(allCards.length, 30).map(
-    idx => allCards[idx]
-  );
+  const randomCards = getRandomUniqueNumbersInRange(
+    allCards.length,
+    CARD_SIZE_PER_REQUEST
+  ).map(idx => allCards[idx]);
 
   const cardList = await Promise.all(
     randomCards.map(async (item: any) => {
@@ -83,11 +77,12 @@ const getCardsBySearch = async (
   userId?: Types.ObjectId
 ): Promise<CardResponseDto[]> => {
   try {
-    const cardDocuments = await Card.find({ filter: { $all: search } }).limit(
-      30
-    );
-    shuffleCards(cardDocuments);
-    if (!cardDocuments.length) return [];
+    const allCards = await Card.find({ filter: { $all: search } });
+
+    const cardDocuments = getRandomUniqueNumbersInRange(
+      allCards.length,
+      CARD_SIZE_PER_REQUEST
+    ).map(idx => allCards[idx]);
 
     const cardIds = cardDocuments.map(e => e._id);
     const bookmarks = await Bookmark.find({
