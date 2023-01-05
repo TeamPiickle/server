@@ -1,5 +1,5 @@
 import { Category, CategoryDocument } from '../models/category';
-import Card from '../models/card';
+import Card, { CardDocument } from '../models/card';
 import CategoryResponseDto from '../intefaces/CategoryResponseDto';
 import Types from 'mongoose';
 import { CardResponseDto } from '../intefaces/CardResponseDto';
@@ -29,26 +29,33 @@ const getCategory = async (): Promise<Array<object> | null> => {
   return categories;
 };
 
+const getRandomUniqueNumbersInRange = (to: number, size: number): number[] => {
+  const result: number[] = [];
+  while (result.length < size) {
+    const randomNumberInRange = Math.floor(Math.random() * to);
+    if (!result.includes(randomNumberInRange)) {
+      result.push(randomNumberInRange);
+    }
+  }
+  return result;
+};
+
 const getCardsWithIsBookmark = async (
   categoryId: string,
   userId?: Types.ObjectId
 ): Promise<CategoryResponseDto | null> => {
-  const cards = await Category.findById(categoryId)
-    .populate({ path: 'cardIdList', options: { limit: 30 } })
-    .then(item => {
-      if (!item) {
-        throw new IllegalArgumentException('해당 id의 카테고리가 없습니다.');
-      }
-      return {
-        _id: item._id,
-        title: item.title,
-        cardList: item.cardIdList
-      };
-    });
+  const category = await Category.findById(categoryId);
+  if (!category) {
+    throw new IllegalArgumentException('해당 id의 카테고리가 없습니다.');
+  }
+  const allCards = await Card.find({ category: categoryId });
 
-  if (!cards) return null;
+  const randomCards = getRandomUniqueNumbersInRange(allCards.length, 30).map(
+    idx => allCards[idx]
+  );
+
   const cardList = await Promise.all(
-    cards.cardList.map(async (item: any) => {
+    randomCards.map(async (item: any) => {
       const isBookmark =
         (await Bookmark.find({ user: userId, card: item._id }).count()) > 0
           ? true
@@ -63,11 +70,10 @@ const getCardsWithIsBookmark = async (
       };
     })
   );
-  shuffleCard(cardList);
 
   return {
-    _id: cards._id,
-    title: cards.title,
+    _id: category._id,
+    title: category.title,
     cardList
   };
 };
