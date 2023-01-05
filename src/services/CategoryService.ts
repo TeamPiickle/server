@@ -24,7 +24,8 @@ const getCategory = async (): Promise<Array<object> | null> => {
 
 const getRandomUniqueNumbersInRange = (to: number, size: number): number[] => {
   const result: number[] = [];
-  while (result.length < size) {
+  const resultSize = Math.min(to, size);
+  while (result.length < resultSize) {
     const randomNumberInRange = Math.floor(Math.random() * to);
     if (!result.includes(randomNumberInRange)) {
       result.push(randomNumberInRange);
