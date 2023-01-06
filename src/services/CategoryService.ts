@@ -5,15 +5,8 @@ import Types from 'mongoose';
 import { CardResponseDto } from '../intefaces/CardResponseDto';
 import Bookmark from '../models/bookmark';
 import { IllegalArgumentException } from '../intefaces/exception';
-import { CategoryInfoDto } from '../intefaces/CategoryInfoDto';
 
-const shuffleCard = (arr: CategoryInfoDto[]) => {
-  arr.sort(() => Math.random() - 0.5);
-};
-
-const shuffleCards = (arr: CardResponseDto[]) => {
-  arr.sort(() => Math.random() - 0.5);
-};
+const CARD_SIZE_PER_REQUEST = 30;
 
 const getCategory = async (): Promise<Array<object> | null> => {
   const categories: CategoryDocument[] = await Category.find(
@@ -29,26 +22,35 @@ const getCategory = async (): Promise<Array<object> | null> => {
   return categories;
 };
 
+const getRandomUniqueNumbersInRange = (to: number, size: number): number[] => {
+  const result: number[] = [];
+  const resultSize = Math.min(to, size);
+  while (result.length < resultSize) {
+    const randomNumberInRange = Math.floor(Math.random() * to);
+    if (!result.includes(randomNumberInRange)) {
+      result.push(randomNumberInRange);
+    }
+  }
+  return result;
+};
+
 const getCardsWithIsBookmark = async (
   categoryId: string,
   userId?: Types.ObjectId
 ): Promise<CategoryResponseDto | null> => {
-  const cards = await Category.findById(categoryId)
-    .populate({ path: 'cardIdList', options: { limit: 30 } })
-    .then(item => {
-      if (!item) {
-        throw new IllegalArgumentException('해당 id의 카테고리가 없습니다.');
-      }
-      return {
-        _id: item._id,
-        title: item.title,
-        cardList: item.cardIdList
-      };
-    });
+  const category = await Category.findById(categoryId);
+  if (!category) {
+    throw new IllegalArgumentException('해당 id의 카테고리가 없습니다.');
+  }
+  const allCards = await Card.find({ category: categoryId });
 
-  if (!cards) return null;
+  const randomCards = getRandomUniqueNumbersInRange(
+    allCards.length,
+    CARD_SIZE_PER_REQUEST
+  ).map(idx => allCards[idx]);
+
   const cardList = await Promise.all(
-    cards.cardList.map(async (item: any) => {
+    randomCards.map(async (item: any) => {
       const isBookmark =
         (await Bookmark.find({ user: userId, card: item._id }).count()) > 0
           ? true
@@ -63,11 +65,10 @@ const getCardsWithIsBookmark = async (
       };
     })
   );
-  shuffleCard(cardList);
 
   return {
-    _id: cards._id,
-    title: cards.title,
+    _id: category._id,
+    title: category.title,
     cardList
   };
 };
@@ -77,11 +78,12 @@ const getCardsBySearch = async (
   userId?: Types.ObjectId
 ): Promise<CardResponseDto[]> => {
   try {
-    const cardDocuments = await Card.find({ filter: { $all: search } }).limit(
-      30
-    );
-    shuffleCards(cardDocuments);
-    if (!cardDocuments.length) return [];
+    const allCards = await Card.find({ filter: { $all: search } });
+
+    const cardDocuments = getRandomUniqueNumbersInRange(
+      allCards.length,
+      CARD_SIZE_PER_REQUEST
+    ).map(idx => allCards[idx]);
 
     const cardIds = cardDocuments.map(e => e._id);
     const bookmarks = await Bookmark.find({
