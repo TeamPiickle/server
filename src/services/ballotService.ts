@@ -51,6 +51,26 @@ const createBallotResult = async (command: CreateBallotResultDto) => {
   await newBallot.save();
 };
 
+const getSmallestOrderTopicIdGreaterThan = async (
+  standard: number
+): Promise<Types.ObjectId | undefined> => {
+  const smallestOrderTopic = await BallotTopic.findOne()
+    .where('order')
+    .gt(standard)
+    .sort({ order: 1 });
+  return smallestOrderTopic?._id;
+};
+
+const getLargestOrderTopicIdLessThan = async (
+  standard: number
+): Promise<Types.ObjectId | undefined> => {
+  const largestOrderTopic = await BallotTopic.findOne()
+    .where('order')
+    .lt(standard)
+    .sort({ order: -1 });
+  return largestOrderTopic?._id;
+};
+
 const getBallotStatusAndUserSelect = async (
   ballotTopicId: Types.ObjectId,
   userId?: Types.ObjectId
@@ -91,7 +111,9 @@ const getBallotStatusAndUserSelect = async (
       ballotTopicContent: ballotTopic.topic
     },
     ballotItems: ballotItemWithStatusList,
-    userSelect
+    userSelect,
+    beforeTopicId: await getLargestOrderTopicIdLessThan(ballotTopic.order),
+    nextTopicId: await getSmallestOrderTopicIdGreaterThan(ballotTopic.order)
   };
 
   return data;
