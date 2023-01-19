@@ -101,7 +101,9 @@ const getMainBallotList = async (
   userId?: Types.ObjectId
 ): Promise<BallotTopicDocument[]> => {
   if (!userId) {
-    const randomBallotTopics = await BallotTopic.find().limit(4);
+    const randomBallotTopics = await BallotTopic.find()
+      .sort({ order: 1 })
+      .limit(4);
     return randomBallotTopics;
   }
   const completedBallotTopic = await BallotResult.find(
@@ -111,11 +113,15 @@ const getMainBallotList = async (
   const completedIds = completedBallotTopic.map(e => e.ballotTopicId);
   const randomBallotTopicsExcludeCompleted = await BallotTopic.find({
     _id: { $nin: completedIds }
-  }).limit(4);
+  })
+    .sort({ order: 1 })
+    .limit(4);
   if (randomBallotTopicsExcludeCompleted.length < 4) {
     const randomBallotTopicsCompleted = await BallotTopic.find({
       _id: { $in: completedIds }
-    }).limit(4 - randomBallotTopicsExcludeCompleted.length);
+    })
+      .sort({ order: 1 })
+      .limit(4 - randomBallotTopicsExcludeCompleted.length);
     return [
       ...randomBallotTopicsExcludeCompleted,
       ...randomBallotTopicsCompleted
