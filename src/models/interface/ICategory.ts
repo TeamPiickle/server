@@ -5,4 +5,5 @@ export default interface ICategory {
   content: string;
   imgurl: string;
   cardIdList: Types.ObjectId[];
+  unicode: string;
 }
