@@ -1,0 +1,33 @@
+name: build and push code
+on:
+  push:
+    branches:
+      - main
+jobs:
+  git-push:
+    name: build and push
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: borales/actions-yarn@v3.0.0
+        with:
+          cmd: install # will run `yarn install` command
+      - uses: borales/actions-yarn@v3.0.0
+        with:
+          cmd: build # will run `yarn build` command
+      - uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+        with:
+          source-directory: dist/
+          destination-github-username: 'TeamPiickle'
+          destination-repository-name: 'express-build'
+          user-email: dev.kayoung@gmail.com
+          target-branch: main
+  deploy:
+    name: deploy pm2
+    needs: git-push
+    runs-on: self-hosted
+    steps:
+      - name: run shell script
+        run: /home/ubuntu/deploy-piickle-server.sh
