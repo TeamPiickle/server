@@ -1,5 +1,8 @@
 name: build and push code
 on:
+  pull_request:
+    branches:
+      - develop
   push:
     branches:
       - develop
@@ -27,7 +30,7 @@ jobs:
   deploy:
     name: deploy pm2
     needs: git-push
-    runs-on: self-hosted
+    runs-on: [self-hosted, development]
     steps:
       - name: run shell script
-        # run: /home/ubuntu/deploy-piickle-server.sh
+        run: /home/ubuntu/deploy-piickle-server.sh
