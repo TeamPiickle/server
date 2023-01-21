@@ -1,8 +1,5 @@
 name: build and push code
 on:
-  pull_request:
-    branches:
-      - develop
   push:
     branches:
       - develop
