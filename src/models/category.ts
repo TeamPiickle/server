@@ -10,14 +10,17 @@ const categorySchema = new Schema<CategoryDocument>({
     required: true
   },
   content: String,
-  imgurl: String,
   cardIdList: [
     {
       type: Schema.Types.ObjectId,
       ref: 'Card'
     }
   ],
-  unicode: String
+  gradation: String,
+  order: {
+    type: Number,
+    unique: true
+  }
 });
 
 const Category = model<CategoryDocument>('Category', categorySchema);
