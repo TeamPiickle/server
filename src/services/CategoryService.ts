@@ -14,9 +14,10 @@ const getCategory = async (): Promise<Array<object> | null> => {
     {
       title: 1,
       content: 2,
-      imgurl: 3
+      unicode: 3,
+      gradation: 4
     }
-  ).sort({ __v: 1 });
+  ).sort({ order: 1 });
   if (!categories) return null;
 
   return categories;

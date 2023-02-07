@@ -51,6 +51,26 @@ const createBallotResult = async (command: CreateBallotResultDto) => {
   await newBallot.save();
 };
 
+const getSmallestOrderTopicIdGreaterThan = async (
+  standard: number
+): Promise<Types.ObjectId | undefined> => {
+  const smallestOrderTopic = await BallotTopic.findOne()
+    .where('order')
+    .gt(standard)
+    .sort({ order: 1 });
+  return smallestOrderTopic?._id;
+};
+
+const getLargestOrderTopicIdLessThan = async (
+  standard: number
+): Promise<Types.ObjectId | undefined> => {
+  const largestOrderTopic = await BallotTopic.findOne()
+    .where('order')
+    .lt(standard)
+    .sort({ order: -1 });
+  return largestOrderTopic?._id;
+};
+
 const getBallotStatusAndUserSelect = async (
   ballotTopicId: Types.ObjectId,
   userId?: Types.ObjectId
@@ -91,7 +111,9 @@ const getBallotStatusAndUserSelect = async (
       ballotTopicContent: ballotTopic.topic
     },
     ballotItems: ballotItemWithStatusList,
-    userSelect
+    userSelect,
+    beforeTopicId: await getLargestOrderTopicIdLessThan(ballotTopic.order),
+    nextTopicId: await getSmallestOrderTopicIdGreaterThan(ballotTopic.order)
   };
 
   return data;
@@ -101,7 +123,9 @@ const getMainBallotList = async (
   userId?: Types.ObjectId
 ): Promise<BallotTopicDocument[]> => {
   if (!userId) {
-    const randomBallotTopics = await BallotTopic.find().limit(4);
+    const randomBallotTopics = await BallotTopic.find()
+      .sort({ order: 1 })
+      .limit(4);
     return randomBallotTopics;
   }
   const completedBallotTopic = await BallotResult.find(
@@ -111,11 +135,15 @@ const getMainBallotList = async (
   const completedIds = completedBallotTopic.map(e => e.ballotTopicId);
   const randomBallotTopicsExcludeCompleted = await BallotTopic.find({
     _id: { $nin: completedIds }
-  }).limit(4);
+  })
+    .sort({ order: 1 })
+    .limit(4);
   if (randomBallotTopicsExcludeCompleted.length < 4) {
     const randomBallotTopicsCompleted = await BallotTopic.find({
       _id: { $in: completedIds }
-    }).limit(4 - randomBallotTopicsExcludeCompleted.length);
+    })
+      .sort({ order: 1 })
+      .limit(4 - randomBallotTopicsExcludeCompleted.length);
     return [
       ...randomBallotTopicsExcludeCompleted,
       ...randomBallotTopicsCompleted

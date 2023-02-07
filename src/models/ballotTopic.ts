@@ -8,6 +8,14 @@ const ballotTopicSchema = new Schema<BallotTopicDocument>({
   topic: {
     type: String,
     required: true
+  },
+
+  /**
+   * This field is not auto-incremented and must be inserted manually.
+   */
+  order: {
+    type: Number,
+    unique: true
   }
 });
 

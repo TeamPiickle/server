@@ -21,13 +21,13 @@ jobs:
         with:
           source-directory: dist/
           destination-github-username: 'TeamPiickle'
-          destination-repository-name: 'express-build'  
-          user-name: 'kyY00n'
-          target-branch: main
+          destination-repository-name: 'express-build'
+          user-email: dev.kayoung@gmail.com
+          target-branch: develop
   deploy:
     name: deploy pm2
     needs: git-push
-    runs-on: self-hosted
+    runs-on: [self-hosted, development]
     steps:
       - name: run shell script
         run: /home/ubuntu/deploy-piickle-server.sh

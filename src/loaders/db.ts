@@ -13,14 +13,9 @@ import QuitLog from '../models/quitLog';
 import BestCard from '../models/bestCard';
 
 const createCollection = (model: Model<any>) => {
-  model
-    .createCollection()
-    .then(() => {
-      console.log(`${model.modelName} collection created.`);
-    })
-    .catch(err => {
-      console.log(err);
-    });
+  model.createCollection().catch(err => {
+    console.log(err);
+  });
 };
 
 const connectDB = async () => {
