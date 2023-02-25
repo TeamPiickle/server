@@ -26,6 +26,9 @@ const message = {
   READ_CARD_SUCCESS: '카테고리에 해당 카드 읽어오기 성공',
   READ_BEST_CARDS_SUCCESS: '베스트 카드 읽어오기 성공',
 
+  //카드 메들리
+  READ_CARD_MEDLEY_DETAIL_SUCCESS: '카드 메들리 상세 조회 성공',
+
   // 투표
   BALLOT_RESULT_CREATED: '투표 성공',
   BALLOT_STATUS_VIEW_SUCCESS: '투표 현황 조회 성공',
