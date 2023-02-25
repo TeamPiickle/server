@@ -26,7 +26,7 @@ const getCardsById = async (id: string): Promise<CardMedleyDto> => {
 const getPreviewById = async (id: string): Promise<CardMedleyPreviewDto> => {
   const cardMedley: Nullable<CardMedleyDocument> = await CardMedley.findById(
     id
-  ).populate('previewCards');
+  ).populate('previewCards', 'content');
   if (!cardMedley) {
     throw new IllegalArgumentException(
       '해당하는 아이디의 카드 메들리가 없습니다.'

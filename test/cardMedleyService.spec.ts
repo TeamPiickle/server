@@ -3,8 +3,15 @@ import {
   getPreviewById
 } from '../src/services/cardMedleyService';
 import connectDB from '../src/loaders/db';
+import chai from 'chai';
 import { assert } from 'chai';
+import chaiThings from 'chai-things';
 import CardMedley, { CardMedleyDocument } from '../src/models/cardMedley';
+import { Nullable } from '../src/types/types';
+import CardMedleyPreviewDto from '../src/intefaces/CardMedleyPreviewDto';
+
+chai.should();
+chai.use(chaiThings);
 
 describe('카드 메들리를 가져오는 서비스', () => {
   let medleyDocument: CardMedleyDocument;
@@ -85,5 +92,14 @@ describe('카드 메들리 미리보기를 가져오는 서비스', () => {
       'description',
       'previewCards'
     ]);
+  });
+
+  it('미리 보기 카드의 요소가 모두 포함되어있다.', async () => {
+    const result: Nullable<CardMedleyPreviewDto> = await getPreviewById(
+      medleyDocument._id.toString()
+    );
+    result.previewCards
+      .map(document => document.toJSON())
+      .should.all.have.keys(['_id', 'content']);
   });
 });
