@@ -5,4 +5,5 @@ export default interface ICardMedley {
   sticker: string;
   description?: string;
   previewCards: Types.ObjectId[];
+  cards: Types.ObjectId[];
 }

@@ -21,6 +21,12 @@ const cardMedleySchema = new Schema<CardMedleyDocument>({
       type: Schema.Types.ObjectId,
       ref: 'Card'
     }
+  ],
+  cards: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Card'
+    }
   ]
 });
 
