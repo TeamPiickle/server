@@ -49,9 +49,7 @@ const findBestCards = async (size: number, userId?: Types.ObjectId) => {
     cardList = await Promise.all(
       cards.map(async (item: any) => {
         const isBookmark =
-          (await Bookmark.find({ user: userId, card: item._id }).count()) > 0
-            ? true
-            : false;
+          (await Bookmark.find({ user: userId, card: item._id }).count()) > 0;
         return {
           _id: item._id,
           content: item.content,

@@ -1,4 +1,5 @@
 import { Types } from 'mongoose';
+import { CardResponseDto } from './CardResponseDto';
 
 export default interface CardMedleyDto {
   _id: Types.ObjectId;
@@ -6,5 +7,5 @@ export default interface CardMedleyDto {
   sticker: string;
   description?: string;
   previewCards: Types.ObjectId[];
-  cards: Types.ObjectId[];
+  cards: CardResponseDto[];
 }

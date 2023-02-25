@@ -38,7 +38,7 @@ describe('카드 메들리를 가져오는 서비스', () => {
     });
   });
   it('카드 메들리의 모든 정보가 포함돼있다.', async () => {
-    const result = await getCardsById(medleyDocument._id.toString());
+    const result = await getCardsById(medleyDocument._id.toString(), null);
     assert.containsAllKeys(result, [
       '_id',
       'title',
@@ -49,12 +49,16 @@ describe('카드 메들리를 가져오는 서비스', () => {
     ]);
   });
   it('미리보기 카드가 3장 존재한다.', async () => {
-    const result = await getCardsById(medleyDocument._id.toString());
+    const result = await getCardsById(medleyDocument._id.toString(), null);
     assert(result.previewCards.length == 3);
   });
   it('카드가 비어있지 않다.', async () => {
-    const result = await getCardsById(medleyDocument._id.toString());
+    const result = await getCardsById(medleyDocument._id.toString(), null);
     assert(result.cards.length != 0);
+  });
+  it('카드 정보에는 북마크 여부가 포함된다.', async () => {
+    const result = await getCardsById(medleyDocument._id.toString(), null);
+    result.cards.should.all.have.property('isBookmark');
   });
 });
 
