@@ -33,3 +33,5 @@ const cardMedleySchema = new Schema<CardMedleyDocument>({
 const CardMedley = model<CardMedleyDocument>('CardMedley', cardMedleySchema);
 
 export default CardMedley;
+
+export { CardMedleyDocument };
