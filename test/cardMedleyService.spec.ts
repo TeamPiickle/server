@@ -58,7 +58,7 @@ describe('카드 메들리를 가져오는 서비스', () => {
   });
 });
 
-describe('카드 메들리 미리보기를 가져오는 서비스', () => {
+describe('모든 메들리 미리보기를 가져오는 서비스', () => {
   let medleyDocument: CardMedleyDocument;
   before(async () => {
     await connectDB();
@@ -84,8 +84,8 @@ describe('카드 메들리 미리보기를 가져오는 서비스', () => {
   });
 
   it('미리 보기를 가져온다.', async () => {
-    const result = await getPreviewById(medleyDocument._id.toString());
-    assert.containsAllKeys(result, [
+    const result = await getPreviewById();
+    result.should.all.have.keys([
       '_id',
       'title',
       'sticker',
@@ -95,11 +95,11 @@ describe('카드 메들리 미리보기를 가져오는 서비스', () => {
   });
 
   it('미리 보기 카드의 요소가 모두 포함되어있다.', async () => {
-    const result: Nullable<CardMedleyPreviewDto> = await getPreviewById(
-      medleyDocument._id.toString()
-    );
-    result.previewCards
-      .map(document => document.toJSON())
-      .should.all.have.keys(['_id', 'content']);
+    const result: CardMedleyPreviewDto[] = await getPreviewById();
+    result.forEach(medley => {
+      medley.previewCards
+        .map(document => document.toJSON())
+        .should.all.have.keys(['_id', 'content']);
+    });
   });
 });
