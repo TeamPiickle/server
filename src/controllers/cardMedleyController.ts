@@ -29,4 +29,25 @@ const getCardMedleyById = async (
   }
 };
 
-export { getCardMedleyById };
+const getAllMedleyPreview = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const medleyPreviews = await CardMedleyService.getPreviewById();
+    res
+      .status(statusCode.OK)
+      .send(
+        util.success(
+          statusCode.OK,
+          responseMessage.READ_CARD_MEDLEY_PREVIEWS_SUCCESS,
+          medleyPreviews
+        )
+      );
+  } catch (err) {
+    next(err);
+  }
+};
+
+export { getCardMedleyById, getAllMedleyPreview };

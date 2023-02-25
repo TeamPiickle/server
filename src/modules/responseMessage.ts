@@ -28,6 +28,7 @@ const message = {
 
   //카드 메들리
   READ_CARD_MEDLEY_DETAIL_SUCCESS: '카드 메들리 상세 조회 성공',
+  READ_CARD_MEDLEY_PREVIEWS_SUCCESS: '모든 카드 메들리 프리뷰 조회 성공',
 
   // 투표
   BALLOT_RESULT_CREATED: '투표 성공',
