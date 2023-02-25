@@ -12,8 +12,9 @@ const getCardMedleyById = async (
 ) => {
   try {
     const { medleyId } = req.params;
-    const cardMedley: CardMedleyDto =
-      await CardMedleyService.getCardsByMedleyId(medleyId);
+    const cardMedley: CardMedleyDto = await CardMedleyService.getCardsById(
+      medleyId
+    );
     res
       .status(statusCode.OK)
       .send(

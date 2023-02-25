@@ -2,7 +2,8 @@ import CardMedley, { CardMedleyDocument } from '../models/cardMedley';
 import { IllegalArgumentException } from '../intefaces/exception';
 import { Nullable } from '../types/types';
 import CardMedleyDto from '../intefaces/CardMedleyDto';
-const getCardsByMedleyId = async (id: string): Promise<CardMedleyDto> => {
+
+const getCardsById = async (id: string): Promise<CardMedleyDto> => {
   const cardMedley: Nullable<CardMedleyDocument> = await CardMedley.findById(
     id
   ).populate('cards');
