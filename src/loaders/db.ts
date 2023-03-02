@@ -11,6 +11,7 @@ import { BallotResult } from '../models/ballotResult';
 import PreUser from '../models/preUser';
 import QuitLog from '../models/quitLog';
 import BestCard from '../models/bestCard';
+import CardMedley from '../models/cardMedley';
 
 const createCollection = (model: Model<any>) => {
   model.createCollection().catch(err => {
@@ -34,7 +35,8 @@ const connectDB = async () => {
     BallotResult,
     QuitLog,
     EmailAuth,
-    BestCard
+    BestCard,
+    CardMedley
   ];
 
   models.forEach(model => {
