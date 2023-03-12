@@ -9,6 +9,10 @@ const cardMedleySchema = new Schema<CardMedleyDocument>({
     type: String,
     required: true
   },
+  coverTitle: {
+    type: String,
+    required: true
+  },
   sticker: {
     type: String,
     required: true
