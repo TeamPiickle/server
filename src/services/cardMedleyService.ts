@@ -39,8 +39,9 @@ const getCardsById = async (
 
   return {
     _id: cardMedley._id,
-    title: cardMedley.title,
     sticker: cardMedley.sticker,
+    coverTitle: cardMedley.coverTitle,
+    title: cardMedley.title,
     description: cardMedley.description,
     previewCards: cardMedley.previewCards,
     cards: cardDtos
@@ -55,6 +56,7 @@ const getPreviewById = async (): Promise<CardMedleyPreviewDto[]> => {
   return cardMedleys.map(cardMedley => {
     return {
       _id: cardMedley._id,
+      coverTitle: cardMedley.coverTitle,
       title: cardMedley.title,
       sticker: cardMedley.sticker,
       description: cardMedley.description,
