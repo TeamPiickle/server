@@ -8,11 +8,8 @@ import config from '../src/config';
 
 let jwtToken = 'Bearar ';
 before(async () => {
-  console.log('Piickle server API Test');
   try {
     await mongoose.createConnection(config.mongoTestURI);
-
-    console.log('Mongoose Connected ...');
   } catch (err) {
     console.error(err);
     process.exit(1);
