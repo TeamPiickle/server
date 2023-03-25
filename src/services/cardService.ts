@@ -43,21 +43,29 @@ function notEmpty<CardDocument>(
   return true;
 }
 
-const findBestCards = async (size: number, userId?: Types.ObjectId) => {
+const findBestCardsLimit = async (size: number) => {
   const cardsWithBookmarkCount = <CardIdAndCnt[]>(
     await Bookmark.aggregate().sortByCount('card').limit(size)
   );
-  const cards: CardDocument[] = (
+  return (
     await Promise.all(
       cardsWithBookmarkCount.map(cardWithBookmarkCount =>
         Card.findById(cardWithBookmarkCount._id)
       )
     )
   ).filter(notEmpty);
+};
 
+const findExtraCardsExceptFor = async (cards: CardDocument[], size: number) => {
   const extraCards: CardDocument[] = await Card.find({
     _id: { $nin: cards.map(c => c._id) }
   }).limit(size - cards.length);
+  return extraCards;
+};
+
+const findBestCards = async (size: number, userId?: Types.ObjectId) => {
+  const cards = await findBestCardsLimit(size);
+  const extraCards = await findExtraCardsExceptFor(cards, size);
 
   const totalCards: CardResponseDto[] = [];
   for (const card of [...cards, ...extraCards]) {
