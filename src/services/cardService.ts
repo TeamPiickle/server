@@ -34,15 +34,6 @@ const createCardResponse = async (
     isBookmark: await findBookmark(card._id, userId)
   };
 };
-
-function notEmpty<CardDocument>(
-  value: CardDocument | null | undefined
-): value is CardDocument {
-  if (value === null || value === undefined) return false;
-  const testDummy: CardDocument = value;
-  return true;
-}
-
 const findBestCardsLimit = async (size: number) => {
   const cardsWithBookmarkCount = <CardIdAndCnt[]>(
     await Bookmark.aggregate().sortByCount('card').limit(size)
@@ -53,7 +44,7 @@ const findBestCardsLimit = async (size: number) => {
         Card.findById(cardWithBookmarkCount._id)
       )
     )
-  ).filter(notEmpty);
+  ).filter(util.isNotEmpty);
 };
 
 const findExtraCardsExceptFor = async (cards: CardDocument[], size: number) => {
