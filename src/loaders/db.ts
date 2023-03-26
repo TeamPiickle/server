@@ -22,7 +22,6 @@ const createCollection = (model: Model<any>) => {
 const connectDB = async () => {
   await mongoose.connect(config.mongoURI);
   mongoose.set('autoCreate', true);
-  console.log('Mongoose Connected ...');
 
   const models = [
     User,

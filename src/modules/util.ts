@@ -46,6 +46,11 @@ const util = {
       '-' +
       splitedDate[2].substring(0, 2);
     return new Date(validStr);
+  },
+  isNotEmpty: <T>(value: T | null | undefined): value is T => {
+    if (value === null || value === undefined) return false;
+    const testDummy: T = value;
+    return true;
   }
 };
 

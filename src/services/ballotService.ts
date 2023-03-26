@@ -122,34 +122,17 @@ const getBallotStatusAndUserSelect = async (
 const getMainBallotList = async (
   userId?: Types.ObjectId
 ): Promise<BallotTopicDocument[]> => {
-  if (!userId) {
-    const randomBallotTopics = await BallotTopic.find()
-      .sort({ order: 1 })
-      .limit(4);
-    return randomBallotTopics;
-  }
-  const completedBallotTopic = await BallotResult.find(
-    { userId },
-    'ballotTopicId'
-  );
-  const completedIds = completedBallotTopic.map(e => e.ballotTopicId);
-  const randomBallotTopicsExcludeCompleted = await BallotTopic.find({
-    _id: { $nin: completedIds }
-  })
-    .sort({ order: 1 })
-    .limit(4);
-  if (randomBallotTopicsExcludeCompleted.length < 4) {
-    const randomBallotTopicsCompleted = await BallotTopic.find({
-      _id: { $in: completedIds }
+  const resultCountsWithTopicId = (await BallotResult.aggregate()
+    .sortByCount('ballotTopicId')
+    .limit(10)) as { count: number; _id: Types.ObjectId }[];
+
+  const ballots = await Promise.all(
+    resultCountsWithTopicId.map(async resultCountWithTopicId => {
+      return BallotTopic.findById(resultCountWithTopicId._id);
     })
-      .sort({ order: 1 })
-      .limit(4 - randomBallotTopicsExcludeCompleted.length);
-    return [
-      ...randomBallotTopicsExcludeCompleted,
-      ...randomBallotTopicsCompleted
-    ];
-  }
-  return randomBallotTopicsExcludeCompleted;
+  );
+
+  return ballots.filter(util.isNotEmpty).slice(0, 4);
 };
 
 export { createBallotResult, getMainBallotList, getBallotStatusAndUserSelect };

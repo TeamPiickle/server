@@ -167,7 +167,6 @@ const postUser = async (
   try {
     const error = validationResult(req);
     if (!error.isEmpty()) {
-      console.log(error);
       throw new IllegalArgumentException('필요한 값이 없습니다.');
     }
 
