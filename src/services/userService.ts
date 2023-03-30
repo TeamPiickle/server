@@ -198,7 +198,6 @@ const createdeleteBookmark = async (input: UserBookmarkInfo) => {
       card: cardId
     });
     await newBookmark.save();
-    console.log(newBookmark);
     return 1;
   } else {
     user.cardIdList.splice(cardIndex, 1);

@@ -11,6 +11,7 @@ import { BallotResult } from '../models/ballotResult';
 import PreUser from '../models/preUser';
 import QuitLog from '../models/quitLog';
 import BestCard from '../models/bestCard';
+import CardMedley from '../models/cardMedley';
 
 const createCollection = (model: Model<any>) => {
   model.createCollection().catch(err => {
@@ -21,7 +22,6 @@ const createCollection = (model: Model<any>) => {
 const connectDB = async () => {
   await mongoose.connect(config.mongoURI);
   mongoose.set('autoCreate', true);
-  console.log('Mongoose Connected ...');
 
   const models = [
     User,
@@ -34,7 +34,8 @@ const connectDB = async () => {
     BallotResult,
     QuitLog,
     EmailAuth,
-    BestCard
+    BestCard,
+    CardMedley
   ];
 
   models.forEach(model => {
