@@ -111,7 +111,9 @@ const getBallotStatusAndUserSelect = async (
       ballotTopicContent: ballotTopic.topic
     },
     ballotItems: ballotItemWithStatusList,
-    userSelect
+    userSelect,
+    beforeTopicId: await getLargestOrderTopicIdLessThan(ballotTopic.order),
+    nextTopicId: await getSmallestOrderTopicIdGreaterThan(ballotTopic.order)
   };
 
   return data;
@@ -121,7 +123,7 @@ const getMainBallotList = async (
   userId?: Types.ObjectId
 ): Promise<BallotTopicDocument[]> => {
   if (!userId) {
-    const randomBallotTopics = await BallotTopic.find().limit(4);
+    const randomBallotTopics = await BallotTopic.find().limit(4).sort('order');
     return randomBallotTopics;
   }
   const completedBallotTopic = await BallotResult.find(
@@ -131,11 +133,15 @@ const getMainBallotList = async (
   const completedIds = completedBallotTopic.map(e => e.ballotTopicId);
   const randomBallotTopicsExcludeCompleted = await BallotTopic.find({
     _id: { $nin: completedIds }
-  }).limit(4);
+  })
+    .limit(4)
+    .sort('order');
   if (randomBallotTopicsExcludeCompleted.length < 4) {
     const randomBallotTopicsCompleted = await BallotTopic.find({
       _id: { $in: completedIds }
-    }).limit(4 - randomBallotTopicsExcludeCompleted.length);
+    })
+      .limit(4 - randomBallotTopicsExcludeCompleted.length)
+      .sort('order');
     return [
       ...randomBallotTopicsExcludeCompleted,
       ...randomBallotTopicsCompleted

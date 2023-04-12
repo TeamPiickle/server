@@ -13,6 +13,10 @@ const ballotItemSchema = new Schema<BallotItemDocument>({
     type: Schema.Types.ObjectId,
     ref: 'BallotTopic',
     required: true
+  },
+  order: {
+    type: Number,
+    required: true
   }
 });
 
