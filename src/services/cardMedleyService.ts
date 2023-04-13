@@ -6,6 +6,7 @@ import CardMedleyPreviewDto from '../intefaces/CardMedleyPreviewDto';
 import Bookmark from '../models/bookmark';
 import { CardResponseDto } from '../intefaces/CardResponseDto';
 import { Types } from 'mongoose';
+import util from '../modules/util';
 
 const getCardsById = async (
   id: string,
@@ -44,7 +45,7 @@ const getCardsById = async (
     title: cardMedley.title,
     description: cardMedley.description,
     previewCards: cardMedley.previewCards,
-    cards: cardDtos
+    cards: util.shuffle(cardDtos)
   };
 };
 
