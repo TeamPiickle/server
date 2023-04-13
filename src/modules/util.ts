@@ -51,6 +51,23 @@ const util = {
     if (value === null || value === undefined) return false;
     const testDummy: T = value;
     return true;
+  },
+  shuffle: <T>(array: T[]) => {
+    let currentIndex = array.length,
+      randomIndex;
+
+    while (currentIndex != 0) {
+      // Pick a remaining element.
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+
+      // And swap it with the current element.
+      [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex],
+        array[currentIndex]
+      ];
+    }
+    return array;
   }
 };
 
