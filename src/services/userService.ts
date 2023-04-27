@@ -1,12 +1,12 @@
-import { hashSync, compare } from 'bcryptjs';
+import { compare, hashSync } from 'bcryptjs';
 import { CreateUserCommand } from '../intefaces/createUserCommand';
 import User from '../models/user';
 import {
-  IllegalArgumentException,
-  InternalAuthenticationServiceException,
   BadCredentialException,
   DuplicateException,
-  IllegalStateException
+  IllegalArgumentException,
+  IllegalStateException,
+  InternalAuthenticationServiceException
 } from '../intefaces/exception';
 import { UserLoginDto } from '../intefaces/user/UserLoginDto';
 import { PostBaseResponseDto } from '../intefaces/PostBaseResponseDto';
@@ -94,10 +94,9 @@ const loginUser = async (
     throw new BadCredentialException('비밀번호가 일치하지 않습니다.');
   }
 
-  const data = {
+  return {
     _id: user._id
   };
-  return data;
 };
 
 const findUserById = async (
@@ -107,13 +106,12 @@ const findUserById = async (
   if (!user) {
     throw new IllegalArgumentException('존재하지 않는 유저 입니다.');
   }
-  const userProfileResponseDto: UserProfileResponseDto = {
+  return {
     name: '김피클',
     nickname: user.nickname,
     email: user.email,
     profileImageUrl: user.profileImageUrl
   };
-  return userProfileResponseDto;
 };
 
 const updateNickname = async (userId: Types.ObjectId, nickname: string) => {
@@ -156,7 +154,7 @@ const getBookmarks = async (
     throw new IllegalArgumentException('존재하지 않는 유저 입니다.');
   }
 
-  const bookmarks = await Promise.all(
+  return Promise.all(
     user.cardIdList.map(async (item: any) => {
       const isBookmark =
         (await Bookmark.find({ user: userId, card: item._id }).count()) > 0
@@ -172,11 +170,11 @@ const getBookmarks = async (
       };
     })
   );
-
-  return bookmarks;
 };
 
-const createdeleteBookmark = async (input: UserBookmarkInfo) => {
+const createOrDeleteBookmark = async (
+  input: UserBookmarkInfo
+): Promise<boolean> => {
   const { userId, cardId } = input;
   const user = await User.findById(userId);
   if (user == null) {
@@ -198,12 +196,12 @@ const createdeleteBookmark = async (input: UserBookmarkInfo) => {
       card: cardId
     });
     await newBookmark.save();
-    return 1;
+    return true;
   } else {
     user.cardIdList.splice(cardIndex, 1);
     await user.save();
     await Bookmark.findOneAndDelete({ user: userId, card: cardId });
-    return 0;
+    return false;
   }
 };
 
@@ -245,7 +243,7 @@ export {
   updateNickname,
   updateUserProfileImage,
   getBookmarks,
-  createdeleteBookmark,
+  createOrDeleteBookmark,
   nicknameDuplicationCheck,
   deleteUser
 };

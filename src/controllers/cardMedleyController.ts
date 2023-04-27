@@ -4,7 +4,6 @@ import { CardMedleyService } from '../services';
 import statusCode from '../modules/statusCode';
 import responseMessage from '../modules/responseMessage';
 import util from '../modules/util';
-import { Nullable } from '../types/types';
 
 const getCardMedleyById = async (
   req: Request,
@@ -13,7 +12,7 @@ const getCardMedleyById = async (
 ) => {
   try {
     const { medleyId } = req.params;
-    const userId: Nullable<string> = req.user?.id.toString();
+    const userId = req.user?.id;
     const cardMedley: CardMedleyDto = await CardMedleyService.getCardsById(
       medleyId,
       userId

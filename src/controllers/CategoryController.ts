@@ -3,7 +3,6 @@ import { NullDataException } from '../intefaces/exception';
 import message from '../modules/responseMessage';
 import statusCode from '../modules/statusCode';
 import util from '../modules/util';
-import Types from 'mongoose';
 import { CategoryService } from '../services';
 import { getCardsWithIsBookmark } from '../services/CategoryService';
 
@@ -41,7 +40,7 @@ const getCards = async (
   next: NextFunction
 ): Promise<void | Response> => {
   const { categoryId } = req.params;
-  const userId = <Types.ObjectId>req.user?.id;
+  const userId = req.user?.id;
   try {
     const data = await getCardsWithIsBookmark(categoryId, userId);
 
@@ -67,7 +66,7 @@ const getCardsBySearch = async (
   next: NextFunction
 ): Promise<void | Response> => {
   const { search } = req.query;
-  const userId = <Types.ObjectId>req.user?.id;
+  const userId = req.user?.id;
   try {
     const data = await CategoryService.getCardsBySearch(
       search as string[],
