@@ -15,7 +15,8 @@ const createBallotResult = async (command: CreateBallotResultDto) => {
 
   const alreadyBallotResult = await BallotResult.findOne({
     ballotTopicId: command.ballotTopicId,
-    userId: command.userId
+    userId: command.userId,
+    guestId: command.guestId
   });
 
   if (alreadyBallotResult) {
@@ -23,10 +24,7 @@ const createBallotResult = async (command: CreateBallotResultDto) => {
       alreadyBallotResult.ballotItemId.toString() ==
       command.ballotItemId.toString()
     ) {
-      await BallotResult.deleteOne({
-        _id: alreadyBallotResult._id
-      });
-      return;
+      throw new IllegalArgumentException('이미 투표한 항목입니다.');
     }
     await BallotResult.findByIdAndUpdate(
       {
@@ -45,7 +43,8 @@ const createBallotResult = async (command: CreateBallotResultDto) => {
   const newBallot = new BallotResult({
     ballotTopicId: ballotItem.ballotTopicId,
     ballotItemId: ballotItem._id,
-    userId: command.userId
+    userId: command.userId,
+    guestId: command.guestId
   });
 
   await newBallot.save();
@@ -73,7 +72,8 @@ const getLargestOrderTopicIdLessThan = async (
 
 const getBallotStatusAndUserSelect = async (
   ballotTopicId: Types.ObjectId,
-  userId?: Types.ObjectId
+  userId?: Types.ObjectId,
+  guestId?: string
 ) => {
   const ballotTopic = await BallotTopic.findById(ballotTopicId);
   if (!ballotTopic) {
@@ -84,18 +84,22 @@ const getBallotStatusAndUserSelect = async (
     ballotTopicId: ballotTopicId
   });
 
-  const userSelect: Nullable<BallotResultDocument> = userId
-    ? await BallotResult.findOne({
-        userId,
-        ballotTopicId
-      })
-    : null;
+  const userSelect: Nullable<BallotResultDocument> =
+    userId || guestId
+      ? await BallotResult.findOne({
+          userId,
+          ballotTopicId,
+          guestId
+        })
+      : null;
 
   const ballotCount = await BallotResult.find({ ballotTopicId }).count();
 
   const ballotItemWithStatusList = await Promise.all(
     ballotItems.map(async (item: any) => {
-      const status = userId ? await util.getStatus(ballotCount, item._id) : 0;
+      const status = userSelect
+        ? await util.getStatus(ballotCount, item._id)
+        : 0;
       const result = {
         _id: item._id,
         status: status,
