@@ -10,7 +10,7 @@ import util from '../modules/util';
 
 const getCardsById = async (
   id: string,
-  userId: Nullable<string>
+  userId: Types.ObjectId | undefined
 ): Promise<CardMedleyDto> => {
   const cardMedley: Nullable<CardMedleyDocument> = await CardMedley.findById(
     id

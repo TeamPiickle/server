@@ -16,6 +16,11 @@ export default {
   port: parseInt(process.env.PORT as string, 10),
 
   /**
+   * session key
+   */
+  sessionKey: process.env.SESSION_SECRET_KEY as string,
+
+  /**
    * jwt
    */
   jwtSecret: process.env.JWT_SECRET as string,

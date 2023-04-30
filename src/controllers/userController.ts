@@ -198,6 +198,10 @@ const postUser = async (
  */
 const patchUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    const userId = req.user?.id;
+    if (!userId) {
+      throw new IllegalArgumentException('로그인이 필요합니다.');
+    }
     const reqErr = validationResult(req);
 
     if (!reqErr.isEmpty()) {
@@ -205,7 +209,7 @@ const patchUser = async (req: Request, res: Response, next: NextFunction) => {
     }
 
     const input: UpdateUserDto = {
-      id: req.user.id,
+      id: userId,
       nickname: req.body.nickname,
       birthday: req.body.birthday,
       gender: req.body.gender,
@@ -264,7 +268,10 @@ const getUserProfile = async (
   res: Response,
   next: NextFunction
 ) => {
-  const userId = req.user.id as Types.ObjectId;
+  const userId = req.user?.id;
+  if (!userId) {
+    throw new IllegalArgumentException('로그인이 필요합니다.');
+  }
   try {
     const data: UserProfileResponseDto = await UserService.findUserById(userId);
     return res
@@ -292,7 +299,10 @@ const updateUserNickname = async (
     if (!error.isEmpty()) {
       throw new IllegalArgumentException('필요한 값이 없습니다.');
     }
-    const userId = req.user.id as Types.ObjectId;
+    const userId = req.user?.id;
+    if (!userId) {
+      throw new IllegalArgumentException('로그인이 필요합니다.');
+    }
     const { nickname } = req.body;
     await UserService.updateNickname(userId, nickname);
     return res
@@ -319,10 +329,11 @@ const updateUserProfileImage = async (
     }
     const image = req.file as Express.MulterS3.File;
     const { location } = image;
-    const data = await UserService.updateUserProfileImage(
-      req.user.id as Types.ObjectId,
-      location
-    );
+    const userId = req.user?.id;
+    if (!userId) {
+      throw new IllegalArgumentException('로그인이 필요합니다.');
+    }
+    const data = await UserService.updateUserProfileImage(userId, location);
     return res
       .status(statusCode.OK)
       .send(
@@ -347,7 +358,10 @@ const getBookmarks = async (
   res: Response,
   next: NextFunction
 ) => {
-  const userId = req.user.id as Types.ObjectId;
+  const userId = req.user?.id;
+  if (!userId) {
+    throw new IllegalArgumentException('로그인이 필요합니다.');
+  }
   try {
     const data: UserBookmarkDto[] = await UserService.getBookmarks(userId);
     return res
@@ -377,7 +391,10 @@ const createdeleteBookmark = async (
       .status(statusCode.BAD_REQUEST)
       .send(util.fail(statusCode.BAD_REQUEST, message.BAD_REQUEST));
   }
-  const userId = req.user.id as Types.ObjectId;
+  const userId = req.user?.id;
+  if (!userId) {
+    throw new IllegalArgumentException('로그인이 필요합니다.');
+  }
   const cardId = req.body.cardId;
 
   const input: UserBookmarkInfo = {
@@ -385,7 +402,7 @@ const createdeleteBookmark = async (
     cardId
   };
   try {
-    const created = await UserService.createdeleteBookmark(input);
+    const created: boolean = await UserService.createOrDeleteBookmark(input);
     res
       .status(statusCode.CREATED)
       .send(
@@ -412,7 +429,10 @@ const deleteUser = async (
   next: NextFunction
 ) => {
   try {
-    const userId: Types.ObjectId = req.user.id;
+    const userId: Types.ObjectId | undefined = req.user?.id;
+    if (!userId) {
+      throw new IllegalArgumentException('로그인이 필요한 기능입니다.');
+    }
     const { reasons } = req.body;
     await UserService.deleteUser(userId, reasons);
     res

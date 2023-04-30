@@ -1,7 +1,7 @@
 import { Category, CategoryDocument } from '../models/category';
 import Card from '../models/card';
 import CategoryResponseDto from '../intefaces/CategoryResponseDto';
-import Types from 'mongoose';
+import { Types } from 'mongoose';
 import { CardResponseDto } from '../intefaces/CardResponseDto';
 import Bookmark from '../models/bookmark';
 import { IllegalArgumentException } from '../intefaces/exception';
@@ -53,9 +53,7 @@ const getCardsWithIsBookmark = async (
   const cardList = await Promise.all(
     randomCards.map(async (item: any) => {
       const isBookmark =
-        (await Bookmark.find({ user: userId, card: item._id }).count()) > 0
-          ? true
-          : false;
+        (await Bookmark.find({ user: userId, card: item._id }).count()) > 0;
       return {
         _id: item._id,
         content: item.content,
@@ -93,7 +91,7 @@ const getCardsBySearch = async (
     }).then(res => {
       return res.map(e => e.card.toString());
     });
-    const cardList = cardDocuments.map((card: any) => {
+    return cardDocuments.map((card: any) => {
       let isBookmark = false;
       if (userId) {
         isBookmark = bookmarks.indexOf(card._id.toString()) != -1;
@@ -107,7 +105,6 @@ const getCardsBySearch = async (
         isBookmark: isBookmark
       };
     });
-    return cardList;
   } catch (error) {
     console.log(error);
     throw error;

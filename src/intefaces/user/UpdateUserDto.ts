@@ -1,7 +1,7 @@
-import { ObjectId } from 'mongoose';
+import { Types } from 'mongoose';
 
 export interface UpdateUserDto {
-  id: ObjectId;
+  id: Types.ObjectId;
   nickname: string;
   profileImgUrl?: string;
   birthday: string;

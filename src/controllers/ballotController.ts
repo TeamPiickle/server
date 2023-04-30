@@ -19,7 +19,8 @@ const postBallotResult = async (
 ): Promise<void | Response> => {
   try {
     const command: CreateBallotResultDto = req.body;
-    command.userId = <Types.ObjectId>req.user.id;
+    command.userId = req.user?.id;
+    command.guestId = req.guestId;
     await BallotService.createBallotResult(command);
     return res
       .status(statusCode.CREATED)
@@ -40,11 +41,13 @@ const getBallotStatus = async (
   next: NextFunction
 ): Promise<void | Response> => {
   try {
-    const userId = <Types.ObjectId>req.user?.id;
+    const userId = req.user?.id;
+    const guestId = req.guestId;
     const ballotId = new Types.ObjectId(req.params.ballotTopicId);
     const data = await BallotService.getBallotStatusAndUserSelect(
       ballotId,
-      userId
+      userId,
+      guestId
     );
     return res
       .status(statusCode.OK)
@@ -67,7 +70,7 @@ const getMainBallotList = async (
   next: NextFunction
 ) => {
   try {
-    const userId = <Types.ObjectId>req.user?.id;
+    const userId = req.user?.id;
     const ballotList = await BallotService.getMainBallotList(userId);
     res
       .status(statusCode.OK)
