@@ -1,5 +1,5 @@
 //router index file
-import { Router } from 'express';
+import {Request, Response, Router} from 'express';
 import UserRouter from './userRouter';
 import CategoryRouter from './CategoryRouter';
 import BallotRouter from './ballotRouter';
@@ -7,7 +7,7 @@ import CardRouter from './cardRouter';
 import TestRouter from './testRouter';
 import CardMedleyRouter from './cardMedleyRouter';
 import flexibleAuth from '../middlewares/flexibleAuth';
-import guestHandler from '../middlewares/guestHandler';
+import guestHandler from '../middlewares/session/guestHandler';
 
 const router = Router();
 
@@ -17,5 +17,9 @@ router.use('/ballots', flexibleAuth, guestHandler, BallotRouter);
 router.use('/cards', CardRouter);
 router.use('/test', TestRouter);
 router.use('/medley', CardMedleyRouter);
+
+router.use('', (req: Request, res: Response) => {
+    res.status(200).send();
+});
 
 export default router;
