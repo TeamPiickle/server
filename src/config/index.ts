@@ -15,6 +15,8 @@ const MONGO_URI =
 export default {
   port: parseInt(process.env.PORT as string, 10),
 
+  webHost: process.env.WEB_HOST as string,
+
   /**
    * session key
    */
