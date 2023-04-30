@@ -12,8 +12,17 @@ const MONGO_URI =
     ? process.env.MONGODB_URI
     : process.env.MONGODB_DEVELOPMENT_URI;
 
+const WEB_HOST =
+    NODE_ENV == 'production'
+        ? process.env.WEB_HOST
+        : process.env.DEV_WEB_HOST;
+
 export default {
   port: parseInt(process.env.PORT as string, 10),
+  /**
+   * front-end host*
+   */
+  webhost: WEB_HOST,
 
   webHost: process.env.WEB_HOST as string,
 
