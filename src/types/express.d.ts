@@ -15,6 +15,7 @@ declare global {
 
 declare module 'express-session' {
   interface Session {
+    uid: string;
     isGuest: boolean;
   }
 }

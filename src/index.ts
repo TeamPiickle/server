@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express';
+import express, {NextFunction, Request, Response} from 'express';
 import connectDB from './loaders/db';
 import routes from './routes';
 import helmet from 'helmet';
@@ -7,9 +7,13 @@ import errorHandler from './middlewares/errorHandler';
 import cors from 'cors';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
+import uidSetter from "./middlewares/session/uidSetter";
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: '*',
+  credentials: true
+}));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(helmet());
@@ -19,17 +23,16 @@ const expressSession: express.RequestHandler = session({
   store: MongoStore.create({
     mongoUrl: config.mongoURI
   }),
-  cookie: { maxAge: 3.6e6 * 24 * 180 },
+  cookie: {
+    secure: true,
+    maxAge: 3.6e6 * 24 * 180
+  },
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false,
 });
 
-app.use(expressSession);
-
+app.use(expressSession, uidSetter);
 app.use(routes);
-app.use('', (req: Request, res: Response) => {
-  res.status(200).send();
-});
 app.use(errorHandler);
 
 connectDB()
