@@ -20,9 +20,7 @@ export default {
   /**
    *
    */
-  accessControlAllowOriginPort: parseInt(
-    process.env.ACCESS_CONTROL_ALLOW_ORIGIN_PORT as string
-  ),
+  accessControlAllowOrigin: process.env.ACCESS_CONTROL_ALLOW_ORIGIN as string,
   /**
    * front-end host*
    */
