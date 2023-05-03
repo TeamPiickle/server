@@ -12,7 +12,7 @@ import uidSetter from './middlewares/session/uidSetter';
 const app = express();
 app.use(
   cors({
-    origin: `https://${config.webhost}:${config.accessControlAllowOriginPort}`,
+    origin: [`https://${config.webhost}`, `${config.accessControlAllowOrigin}`],
     credentials: true
   })
 );
