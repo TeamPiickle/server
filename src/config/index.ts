@@ -15,6 +15,7 @@ const MONGO_URI =
 const WEB_HOST =
   NODE_ENV == 'production' ? process.env.WEB_HOST : process.env.DEV_WEB_HOST;
 
+const delimeter = process.env.ORIGINS_DELIMIER || ',';
 
 export default {
   port: parseInt(process.env.PORT as string, 10),
@@ -23,7 +24,7 @@ export default {
    */
   accessControlAllowOrigin: (
     process.env.ACCESS_CONTROL_ALLOW_ORIGINS as string
-  ).split(','),
+  ).split(delimeter),
   /**
    * front-end host*
    */
