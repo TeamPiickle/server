@@ -15,12 +15,15 @@ const MONGO_URI =
 const WEB_HOST =
   NODE_ENV == 'production' ? process.env.WEB_HOST : process.env.DEV_WEB_HOST;
 
+
 export default {
   port: parseInt(process.env.PORT as string, 10),
   /**
    *
    */
-  accessControlAllowOrigin: process.env.ACCESS_CONTROL_ALLOW_ORIGIN as string,
+  accessControlAllowOrigin: (
+    process.env.ACCESS_CONTROL_ALLOW_ORIGINS as string
+  ).split(','),
   /**
    * front-end host*
    */
