@@ -72,12 +72,25 @@ const getCardsWithIsBookmark = async (
   };
 };
 
+const FILTER_R_RATED = '19금';
+
+const makeQueryOption = (search: string[]) => {
+  if (search.includes(FILTER_R_RATED)) {
+    search.splice(search.indexOf(FILTER_R_RATED), 1);
+    return {
+      $or: [{ filter: { $all: search } }, { filter: FILTER_R_RATED }]
+    };
+  }
+  return { filter: { $all: search } };
+};
+
 const getCardsBySearch = async (
   search: string[],
   userId?: Types.ObjectId
 ): Promise<CardResponseDto[]> => {
   try {
-    const allCards = await Card.find({ filter: { $all: search } });
+    const option = makeQueryOption(search);
+    const allCards = await Card.find(option);
 
     const cardDocuments = getRandomUniqueNumbersInRange(
       allCards.length,
