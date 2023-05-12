@@ -11,7 +11,7 @@ import uidSetter from "./middlewares/session/uidSetter";
 
 const app = express();
 app.use(cors({
-  origin: `https://${config.webhost}`,
+  origin: ['http://localhost', `https://${config.webHost}`, `http://${config.webHost}`],
   credentials: true
 }));
 app.use(express.urlencoded({ extended: true }));
