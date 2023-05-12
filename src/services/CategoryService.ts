@@ -1,10 +1,11 @@
 import { Category, CategoryDocument } from '../models/category';
-import Card from '../models/card';
+import Card, { CardDocument } from '../models/card';
 import CategoryResponseDto from '../intefaces/CategoryResponseDto';
 import { Types } from 'mongoose';
 import { CardResponseDto } from '../intefaces/CardResponseDto';
 import Bookmark from '../models/bookmark';
 import { IllegalArgumentException } from '../intefaces/exception';
+import util from '../modules/util';
 
 const CARD_SIZE_PER_REQUEST = 30;
 
@@ -72,17 +73,62 @@ const getCardsWithIsBookmark = async (
   };
 };
 
-const getCardsBySearch = async (
+const FILTER_R_RATED = '19금';
+
+const makeQueryOption = (search: string[]) => {
+  if (search.includes(FILTER_R_RATED)) {
+    search.splice(search.indexOf(FILTER_R_RATED), 1);
+    return {
+      $or: [{ filter: { $all: search } }, { filter: FILTER_R_RATED }]
+    };
+  }
+  return { filter: { $all: search } };
+};
+
+const getRandomizedPrimaryCards = async () => {
+  const primaryCards = await Card.find({ filter: FILTER_R_RATED });
+  const randomizedPrimaryCards = getRandomUniqueNumbersInRange(
+    primaryCards.length,
+    4
+  ).map(idx => primaryCards[idx]);
+  return randomizedPrimaryCards;
+};
+
+async function getFilteredCardsWithSize(
   search: string[],
+  primaryCardsSize: number
+) {
+  const allCards = await Card.find({ filter: { $all: search } });
+  const sizedCards = getRandomUniqueNumbersInRange(
+    allCards.length,
+    CARD_SIZE_PER_REQUEST - primaryCardsSize
+  ).map(idx => allCards[idx]);
+  return sizedCards;
+}
+
+const getCard = async (filterKeywords: string[]): Promise<CardDocument[]> => {
+  const primaryCards = [];
+
+  if (filterKeywords.includes(FILTER_R_RATED)) {
+    const randomizedPrimaryCards = await getRandomizedPrimaryCards();
+
+    primaryCards.push(...randomizedPrimaryCards);
+    filterKeywords.splice(filterKeywords.indexOf(FILTER_R_RATED), 1);
+  }
+
+  const sizedCards = await getFilteredCardsWithSize(
+    filterKeywords,
+    primaryCards.length
+  );
+  return util.shuffle([...primaryCards, ...sizedCards]);
+};
+
+const getFilteredCards = async (
+  filterKeywords: string[],
   userId?: Types.ObjectId
 ): Promise<CardResponseDto[]> => {
   try {
-    const allCards = await Card.find({ filter: { $all: search } });
-
-    const cardDocuments = getRandomUniqueNumbersInRange(
-      allCards.length,
-      CARD_SIZE_PER_REQUEST
-    ).map(idx => allCards[idx]);
+    const cardDocuments = await getCard(filterKeywords);
 
     const cardIds = cardDocuments.map(e => e._id);
     const bookmarks = await Bookmark.find({
@@ -111,4 +157,4 @@ const getCardsBySearch = async (
   }
 };
 
-export { getCategory, getCardsBySearch, getCardsWithIsBookmark };
+export { getCategory, getFilteredCards, getCardsWithIsBookmark };
