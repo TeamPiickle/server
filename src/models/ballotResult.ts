@@ -18,8 +18,10 @@ const ballotResultSchema = new Schema<BallotResultDocument>(
     },
     userId: {
       type: Schema.Types.ObjectId,
-      ref: 'User',
-      required: true
+      ref: 'User'
+    },
+    guestId: {
+      type: String
     }
   },
   {
