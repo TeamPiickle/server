@@ -85,34 +85,50 @@ const makeQueryOption = (search: string[]) => {
   return { filter: { $all: search } };
 };
 
-const getCard = async (search: string[]): Promise<CardDocument[]> => {
-  const cards = [];
+const getRandomizedPrimaryCards = async () => {
+  const primaryCards = await Card.find({ filter: FILTER_R_RATED });
+  const randomizedPrimaryCards = getRandomUniqueNumbersInRange(
+    primaryCards.length,
+    4
+  ).map(idx => primaryCards[idx]);
+  return randomizedPrimaryCards;
+};
 
-  if (search.includes(FILTER_R_RATED)) {
-    const primaryCards = await Card.find({ filter: FILTER_R_RATED });
-    const randomizedPrimaryCards = getRandomUniqueNumbersInRange(
-      primaryCards.length,
-      4
-    ).map(idx => primaryCards[idx]);
-    cards.push(...randomizedPrimaryCards);
-    search.splice(search.indexOf(FILTER_R_RATED), 1);
-  }
-
+async function getFilteredCardsWithSize(
+  search: string[],
+  primaryCardsSize: number
+) {
   const allCards = await Card.find({ filter: { $all: search } });
   const sizedCards = getRandomUniqueNumbersInRange(
     allCards.length,
-    CARD_SIZE_PER_REQUEST - cards.length
+    CARD_SIZE_PER_REQUEST - primaryCardsSize
   ).map(idx => allCards[idx]);
+  return sizedCards;
+}
 
-  return util.shuffle([...cards, ...sizedCards]);
+const getCard = async (filterKeywords: string[]): Promise<CardDocument[]> => {
+  const primaryCards = [];
+
+  if (filterKeywords.includes(FILTER_R_RATED)) {
+    const randomizedPrimaryCards = await getRandomizedPrimaryCards();
+
+    primaryCards.push(...randomizedPrimaryCards);
+    filterKeywords.splice(filterKeywords.indexOf(FILTER_R_RATED), 1);
+  }
+
+  const sizedCards = await getFilteredCardsWithSize(
+    filterKeywords,
+    primaryCards.length
+  );
+  return util.shuffle([...primaryCards, ...sizedCards]);
 };
 
-const getCardsBySearch = async (
-  search: string[],
+const getFilteredCards = async (
+  filterKeywords: string[],
   userId?: Types.ObjectId
 ): Promise<CardResponseDto[]> => {
   try {
-    const cardDocuments = await getCard(search);
+    const cardDocuments = await getCard(filterKeywords);
 
     const cardIds = cardDocuments.map(e => e._id);
     const bookmarks = await Bookmark.find({
@@ -141,4 +157,4 @@ const getCardsBySearch = async (
   }
 };
 
-export { getCategory, getCardsBySearch, getCardsWithIsBookmark };
+export { getCategory, getFilteredCards, getCardsWithIsBookmark };
