@@ -1,10 +1,11 @@
 import { Category, CategoryDocument } from '../models/category';
-import Card from '../models/card';
+import Card, { CardDocument } from '../models/card';
 import CategoryResponseDto from '../intefaces/CategoryResponseDto';
 import { Types } from 'mongoose';
 import { CardResponseDto } from '../intefaces/CardResponseDto';
 import Bookmark from '../models/bookmark';
 import { IllegalArgumentException } from '../intefaces/exception';
+import util from '../modules/util';
 
 const CARD_SIZE_PER_REQUEST = 30;
 
@@ -84,18 +85,34 @@ const makeQueryOption = (search: string[]) => {
   return { filter: { $all: search } };
 };
 
+const getCard = async (search: string[]): Promise<CardDocument[]> => {
+  const cards = [];
+
+  if (search.includes(FILTER_R_RATED)) {
+    const primaryCards = await Card.find({ filter: FILTER_R_RATED });
+    const randomizedPrimaryCards = getRandomUniqueNumbersInRange(
+      primaryCards.length,
+      4
+    ).map(idx => primaryCards[idx]);
+    cards.push(...randomizedPrimaryCards);
+    search.splice(search.indexOf(FILTER_R_RATED), 1);
+  }
+
+  const allCards = await Card.find({ filter: { $all: search } });
+  const sizedCards = getRandomUniqueNumbersInRange(
+    allCards.length,
+    CARD_SIZE_PER_REQUEST - cards.length
+  ).map(idx => allCards[idx]);
+
+  return util.shuffle([...cards, ...sizedCards]);
+};
+
 const getCardsBySearch = async (
   search: string[],
   userId?: Types.ObjectId
 ): Promise<CardResponseDto[]> => {
   try {
-    const option = makeQueryOption(search);
-    const allCards = await Card.find(option);
-
-    const cardDocuments = getRandomUniqueNumbersInRange(
-      allCards.length,
-      CARD_SIZE_PER_REQUEST
-    ).map(idx => allCards[idx]);
+    const cardDocuments = await getCard(search);
 
     const cardIds = cardDocuments.map(e => e._id);
     const bookmarks = await Bookmark.find({
