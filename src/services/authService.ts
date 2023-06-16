@@ -1,12 +1,14 @@
 import {
-  getAuth,
   createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  sendEmailVerification
+  getAuth,
+  sendEmailVerification,
+  signInWithEmailAndPassword
 } from 'firebase/auth';
 import { InternalServerError } from '../intefaces/exception';
 import firebase from '../loaders/firebase';
 import PreUser from '../models/preUser';
+import axios from 'axios';
+import { SocialVendorToUrl } from '../models/socialVendor';
 
 const EMAIL_CHECK_URL = 'http://server.piickle.link/users/email-check';
 
@@ -48,4 +50,20 @@ const isUserEmailVerified = async (email: string): Promise<boolean> => {
   return preUser.emailVerified;
 };
 
-export { sendEmail, isUserEmailVerified, confirmEmailVerification };
+const getUserFromThirdService = async (token: string, vendor: string) => {
+  const response = await axios({
+    method: 'get',
+    url: SocialVendorToUrl.fromVendorValue(vendor),
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+  return response;
+};
+
+export {
+  sendEmail,
+  isUserEmailVerified,
+  confirmEmailVerification,
+  getUserFromThirdService
+};
