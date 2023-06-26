@@ -5,6 +5,7 @@ import * as CardService from './cardService';
 import * as PreUserService from './preUserService';
 import * as AuthService from './authService';
 import * as CardMedleyService from './cardMedleyService';
+import * as SocialAuthService from './socialAuthService';
 
 export {
   AuthService,
@@ -13,5 +14,6 @@ export {
   BallotService,
   CardService,
   PreUserService,
-  CardMedleyService
+  CardMedleyService,
+  SocialAuthService
 };

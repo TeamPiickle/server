@@ -1,4 +1,4 @@
-import User from '../models/user';
+import User from '../models/user/user';
 import PreUser from '../models/preUser';
 import { IllegalStateException } from '../intefaces/exception';
 
