@@ -208,7 +208,7 @@ const createOrDeleteBookmark = async (
   }
 };
 
-const nicknameDuplicationCheck = async (nickname: string) => {
+const nicknameAlreadyExists = async (nickname: string) => {
   const user = await User.findOne({
     nickname: nickname
   });
@@ -218,6 +218,14 @@ const nicknameDuplicationCheck = async (nickname: string) => {
   return false;
 };
 
+const autoGenerateNicknameFrom = async (nickname: string): Promise<string> => {
+  let nicknameWithIncrement = nickname;
+
+  for (let i = 1; await nicknameAlreadyExists(nicknameWithIncrement); i++) {
+    nicknameWithIncrement = nickname + i.toString();
+  }
+  return nicknameWithIncrement;
+};
 const deleteUser = async (userId: Types.ObjectId, reasons: string[]) => {
   const user = await User.findById(userId);
   if (!user) {
@@ -247,6 +255,7 @@ export {
   updateUserProfileImage,
   getBookmarks,
   createOrDeleteBookmark,
-  nicknameDuplicationCheck,
+  nicknameAlreadyExists,
+  autoGenerateNicknameFrom,
   deleteUser
 };

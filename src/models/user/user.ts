@@ -29,7 +29,8 @@ const userSchema = new Schema<UserDocument>(
     },
     nickname: {
       type: String,
-      required: true
+      required: true,
+      unique: true
     },
     ageGroup: {
       type: String,

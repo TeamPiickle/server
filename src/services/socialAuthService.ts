@@ -72,6 +72,9 @@ const join = async (socialMember: IUser): Promise<UserDocument> => {
       );
     }
   }
+  socialMember.nickname = await UserService.autoGenerateNicknameFrom(
+    socialMember.nickname
+  );
   const newMember = new User(socialMember);
   await newMember.save();
   return newMember;
