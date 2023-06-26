@@ -2,7 +2,8 @@ import { NextFunction, Request, Response } from 'express';
 import { validationResult } from 'express-validator';
 import {
   EmptyMailCodeException,
-  IllegalArgumentException
+  IllegalArgumentException,
+  IllegalStateException
 } from '../intefaces/exception';
 import {
   CreateUserCommand,
@@ -18,7 +19,8 @@ import {
   UserService,
   PreUserService,
   AuthService,
-  SocialAuthService
+  SocialAuthService,
+  NaverLoginService
 } from '../services';
 import { UserProfileResponseDto } from '../intefaces/user/UserProfileResponseDto';
 import { UserUpdateNicknameDto } from '../intefaces/user/UserUpdateNicknameDto';
@@ -31,6 +33,7 @@ import config from '../config';
 import SocialLoginDto from '../intefaces/user/SocialLoginDto';
 import LoginResponseDto from '../intefaces/user/LoginResponseDto';
 import { UserDocument } from '../models/user/user';
+import { SocialVendor } from '../models/socialVendor';
 
 /**
  * @route GET /email
@@ -265,14 +268,35 @@ const postUserLogin = async (
   }
 };
 
+const getAccessToken = async (
+  req: TypedRequest<SocialLoginDto>
+): Promise<string> => {
+  const { vendor } = req.body;
+  let accessToken = req.body.accessToken;
+
+  if (vendor == SocialVendor.NAVER) {
+    const { code, state } = req.body;
+    if (!code || !state) {
+      throw new IllegalArgumentException(
+        `${SocialVendor.NAVER}는 code와 state가 필요합니다.`
+      );
+    }
+    accessToken = await NaverLoginService.getToken(code, state);
+  }
+  if (!accessToken) {
+    throw new IllegalStateException('accessToken이 없습니다.');
+  }
+  return accessToken;
+};
+
 const socialLogin = async (
   req: TypedRequest<SocialLoginDto>,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const { accessToken, vendor } = req.body;
-    // todo: vendor가 naver인 경우 token 직접 얻기
+    const { vendor } = req.body;
+    const accessToken = await getAccessToken(req);
     const socialUser: UserDocument =
       await SocialAuthService.findOrCreateUserBySocialToken(
         vendor,

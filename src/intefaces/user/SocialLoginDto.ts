@@ -1,4 +1,6 @@
 export default interface SocialLoginDto {
-  accessToken: string;
   vendor: string;
+  accessToken?: string;
+  code?: string;
+  state?: string;
 }

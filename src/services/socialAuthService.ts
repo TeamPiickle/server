@@ -8,6 +8,7 @@ import {
   IllegalArgumentException,
   IllegalStateException
 } from '../intefaces/exception';
+import { UserService } from './index';
 
 const getUserFromSocialVendor = async (token: string, vendor: string) => {
   const response: AxiosResponse<any> = await axios({
@@ -62,6 +63,20 @@ const findUserBySocial = async (
   return user;
 };
 
+const join = async (socialMember: IUser): Promise<UserDocument> => {
+  if (socialMember.email) {
+    const alreadyEmail = await UserService.isEmailExisting(socialMember.email);
+    if (alreadyEmail) {
+      throw new IllegalArgumentException(
+        `같은 이메일로 가입된 유저가 있습니다. email: ${socialMember.email}`
+      );
+    }
+  }
+  const newMember = new User(socialMember);
+  await newMember.save();
+  return newMember;
+};
+
 const findOrCreateUserBySocialToken = async (vendor: string, token: string) => {
   const response: SocialLoginResponse = await getUserFromSocialVendor(
     token,
@@ -77,9 +92,7 @@ const findOrCreateUserBySocialToken = async (vendor: string, token: string) => {
     );
     return alreadyMember;
   }
-  const newMember = new User(socialMember);
-  await newMember.save();
-  return newMember;
+  return join(socialMember);
 };
 
 export { findOrCreateUserBySocialToken, findUserBySocial };

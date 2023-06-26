@@ -6,6 +6,7 @@ import * as PreUserService from './preUserService';
 import * as AuthService from './authService';
 import * as CardMedleyService from './cardMedleyService';
 import * as SocialAuthService from './socialAuthService';
+import * as NaverLoginService from './naverLoginService';
 
 export {
   AuthService,
@@ -15,5 +16,6 @@ export {
   CardService,
   PreUserService,
   CardMedleyService,
-  SocialAuthService
+  SocialAuthService,
+  NaverLoginService
 };
