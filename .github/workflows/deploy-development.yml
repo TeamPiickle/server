@@ -2,12 +2,17 @@ name: build and push code
 on:
   push:
     branches:
-      - develop
+      - development
+      - sprint/**
 jobs:
   git-push:
     name: build and push
     runs-on: ubuntu-latest
     steps:
+      - name: Extract branch name
+        shell: bash
+        run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+        id: extract_branch
       - uses: actions/checkout@v2
       - uses: borales/actions-yarn@v3.0.0
         with:
@@ -23,7 +28,7 @@ jobs:
           destination-github-username: 'TeamPiickle'
           destination-repository-name: 'express-build'
           user-email: dev.kayoung@gmail.com
-          target-branch: develop
+          target-branch: ${{ steps.extract_branch.outputs.branch }}
 #  deploy:
 #    name: deploy pm2
 #    needs: git-push
