@@ -23,3 +23,4 @@ const bookmarkSchema = new Schema<BookmarkDocument>(
 const Bookmark = model('Bookmark', bookmarkSchema);
 
 export default Bookmark;
+export { BookmarkDocument };
