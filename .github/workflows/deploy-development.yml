@@ -29,6 +29,7 @@ jobs:
           destination-repository-name: 'express-build'
           user-email: dev.kayoung@gmail.com
           target-branch: ${{ steps.extract_branch.outputs.branch }}
+          create-target-branch-if-needed: true
 #  deploy:
 #    name: deploy pm2
 #    needs: git-push
