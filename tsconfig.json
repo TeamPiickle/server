@@ -20,10 +20,10 @@
     ]
   },
   "include": [
-    "./src/**/*" // build 시 포함
+    "./src/**/*",
+    "./test/**/*" // build 시 포함
   ],
   "exclude": [
     "node_modules", // build 시 제외
-    "test"
   ]
 }

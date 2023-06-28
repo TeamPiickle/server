@@ -27,13 +27,15 @@ router.post(
   UserController.postUser
 );
 
-router.patch(
-  '',
-  auth,
-  upload.single('imgFile'),
-  [body('nickname').notEmpty(), body('birthday').notEmpty()],
-  UserController.patchUser
-);
+// router.patch(
+//   '',
+//   auth,
+//   upload.single('imgFile'),
+//   [body('nickname').notEmpty(), body('birthday').notEmpty()],
+//   UserController.patchUser
+// );
+
+router.post('/social', UserController.socialLogin);
 
 router.post(
   '/login',
