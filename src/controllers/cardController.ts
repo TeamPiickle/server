@@ -37,7 +37,6 @@ const getBestCardList = async (
  */
 const getCards = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    console.log('여기 아니야');
     const cardId = new Types.ObjectId(req.params.cardId);
     const card = await CardService.findCards(cardId, BEST_PIICKLE_SIZE);
     return res
