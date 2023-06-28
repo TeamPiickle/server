@@ -17,6 +17,8 @@ const blockedCardSchema = new Schema<BlockedCardDocument>({
   }
 });
 
+blockedCardSchema.index({ user: 1, card: 1 }, { unique: true });
+
 const BlockedCard = model<BlockedCardDocument>(
   'BlockedCard',
   blockedCardSchema
