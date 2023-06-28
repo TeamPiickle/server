@@ -20,7 +20,8 @@ import {
   PreUserService,
   AuthService,
   SocialAuthService,
-  NaverLoginService
+  NaverLoginService,
+  BlockCardService
 } from '../services';
 import { UserProfileResponseDto } from '../intefaces/user/UserProfileResponseDto';
 import { UserUpdateNicknameDto } from '../intefaces/user/UserUpdateNicknameDto';
@@ -34,6 +35,7 @@ import SocialLoginDto from '../intefaces/user/SocialLoginDto';
 import LoginResponseDto from '../intefaces/user/LoginResponseDto';
 import { UserDocument } from '../models/user/user';
 import { SocialVendor } from '../models/socialVendor';
+import card from '../models/card';
 
 /**
  * @route GET /email
@@ -500,6 +502,60 @@ const deleteUser = async (
   }
 };
 
+/**
+ * @route POST /users/cards/blacklist
+ * @desc 카드 블랙리스트 추가
+ * @access public
+ */
+const blockCard = async (
+  req: TypedRequest<{ cardId: Types.ObjectId }>,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const userId = req.user?.id;
+    if (!userId) {
+      throw new IllegalArgumentException('유저 아이디가 없습니다.');
+    }
+    const { cardId } = req.body;
+    await BlockCardService.blockCard(userId, cardId);
+    return res
+      .status(statusCode.OK)
+      .send(util.success(statusCode.OK, message.BLOCK_CARD_SUCCESS));
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
+};
+
+/**
+ * @route DELETE /users/cards/blacklist/:cardId
+ * @desc 카드 블랙리스트 추가
+ * @access public
+ */
+const cancelToBlock = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const userId = req.user?.id;
+    if (!userId) {
+      throw new IllegalArgumentException('유저 아이디가 없습니다.');
+    }
+    const cardId = new Types.ObjectId(req.params.cardId);
+    if (!cardId) {
+      throw new IllegalArgumentException('카드 아이디가 없습니다.');
+    }
+    await BlockCardService.cancelToBlockCard(userId, cardId);
+    return res
+        .status(statusCode.OK)
+        .send(util.success(statusCode.OK, message.CANCEL_BLOCK_CARD_SUCCESS));
+  } catch (e) {
+    next(e);
+  }
+};
+
 export {
   readEmailIsExisting,
   socialLogin,
@@ -515,5 +571,7 @@ export {
   verifyEmail,
   verifyEmailTest,
   nicknameDuplicationCheck,
-  deleteUser
+  deleteUser,
+  blockCard,
+  cancelToBlock
 };

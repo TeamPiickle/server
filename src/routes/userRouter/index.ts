@@ -1,10 +1,13 @@
 import { Router } from 'express';
 import { body } from 'express-validator';
-import { UserController } from '../controllers';
-import auth from '../middlewares/auth';
-import upload from '../config/multer';
+import { UserController } from '../../controllers';
+import auth from '../../middlewares/auth';
+import upload from '../../config/multer';
+import userCardRouter from './userCardRouter';
 
 const router = Router();
+
+router.use('/cards', userCardRouter);
 
 router.get('/existing', UserController.readEmailIsExisting);
 
