@@ -1,5 +1,5 @@
-import Bookmark from '../models/bookmark';
 import Card, { CardDocument } from '../models/card';
+import Bookmark, { BookmarkDocument } from '../models/bookmark';
 import util from '../modules/util';
 import { Types } from 'mongoose';
 import { CardResponseDto } from '../intefaces/CardResponseDto';
