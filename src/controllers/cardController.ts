@@ -37,8 +37,9 @@ const getBestCardList = async (
  */
 const getCards = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    const userId: Types.ObjectId | undefined = req.user?.id;
     const cardId = new Types.ObjectId(req.params.cardId);
-    const card = await CardService.findCards(cardId, BEST_PIICKLE_SIZE);
+    const card = await CardService.findCards(cardId, BEST_PIICKLE_SIZE, userId);
     return res
       .status(statusCode.OK)
       .send(util.success(statusCode.OK, message.READ_CARD_SUCCESS, card));
@@ -58,8 +59,8 @@ const getRecentlyBookmarkedCard = async (
   next: NextFunction
 ) => {
   try {
-    console.log('정신차려');
-    const card = await CardService.findRecentlyBookmarkedCard();
+    const userId: Types.ObjectId | undefined = req.user?.id;
+    const card = await CardService.findRecentlyBookmarkedCard(userId);
     return res
       .status(statusCode.OK)
       .send(
@@ -85,7 +86,8 @@ const getRecentlyUpdatedCard = async (
   next: NextFunction
 ) => {
   try {
-    const card = await CardService.findRecentlyUpdatedCard();
+    const userId: Types.ObjectId | undefined = req.user?.id;
+    const card = await CardService.findRecentlyUpdatedCard(userId);
     return res
       .status(statusCode.OK)
       .send(
@@ -112,7 +114,8 @@ const getCardByBookmarkedGender = async (
 ) => {
   try {
     const gender = req.params.gender;
-    const card = await CardService.findCardByBookmarkedGender(gender);
+    const userId: Types.ObjectId | undefined = req.user?.id;
+    const card = await CardService.findCardByBookmarkedGender(gender, userId);
     return res
       .status(statusCode.OK)
       .send(

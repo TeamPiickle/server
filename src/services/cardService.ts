@@ -68,7 +68,11 @@ const findBestCards = async (size: number, userId?: Types.ObjectId) => {
   return totalCards;
 };
 
-const findCards = async (cardId: Types.ObjectId, size: number) => {
+const findCards = async (
+  cardId: Types.ObjectId,
+  size: number,
+  userId?: Types.ObjectId
+) => {
   const cards: CardDocument[] = await Card.find({
     _id: cardId
   });
@@ -76,32 +80,18 @@ const findCards = async (cardId: Types.ObjectId, size: number) => {
     cards.length < size ? await findExtraCardsExceptFor(cards, size) : [];
   const totalCards: CardResponseDto[] = [];
   for (const card of [...cards, ...extraCards]) {
-    totalCards.push({
-      _id: card._id,
-      content: card.content,
-      tags: card.tags,
-      category: card.category,
-      filter: card.filter,
-      isBookmark: false
-    });
+    totalCards.push(await createCardResponse(card, userId));
   }
   return totalCards;
 };
 
-const findRecentlyUpdatedCard = async () => {
+const findRecentlyUpdatedCard = async (userId?: Types.ObjectId) => {
   const cards: CardDocument[] = await Card.aggregate()
     .sort({ createdAt: -1 })
     .limit(20);
   const totalCards: CardResponseDto[] = [];
   for (const card of cards) {
-    totalCards.push({
-      _id: card._id,
-      content: card.content,
-      tags: card.tags,
-      category: card.category,
-      filter: card.filter,
-      isBookmark: false
-    });
+    totalCards.push(await createCardResponse(card, userId));
   }
   return {
     recentlyDate: cards[0].createdAt,
@@ -109,7 +99,7 @@ const findRecentlyUpdatedCard = async () => {
   };
 };
 
-const findRecentlyBookmarkedCard = async () => {
+const findRecentlyBookmarkedCard = async (userId?: Types.ObjectId) => {
   const bookmarks: BookmarkDocument[] = await Bookmark.aggregate()
     .sort({ createdAt: -1 })
     .limit(20);
@@ -118,14 +108,7 @@ const findRecentlyBookmarkedCard = async () => {
   ).filter(util.isNotEmpty);
   const totalCards: CardResponseDto[] = [];
   for (const card of cards) {
-    totalCards.push({
-      _id: card._id,
-      content: card.content,
-      tags: card.tags,
-      category: card.category,
-      filter: card.filter,
-      isBookmark: false
-    });
+    totalCards.push(await createCardResponse(card, userId));
   }
   return {
     recentlyDate: bookmarks[0].createdAt,
@@ -133,7 +116,10 @@ const findRecentlyBookmarkedCard = async () => {
   };
 };
 
-const findCardByBookmarkedGender = async (gender: string) => {
+const findCardByBookmarkedGender = async (
+  gender: string,
+  userId?: Types.ObjectId
+) => {
   const bookmarks = await Bookmark.aggregate()
     .lookup({
       from: 'users',
@@ -149,14 +135,7 @@ const findCardByBookmarkedGender = async (gender: string) => {
   ).filter(util.isNotEmpty);
   const totalCards: CardResponseDto[] = [];
   for (const card of cards) {
-    totalCards.push({
-      _id: card._id,
-      content: card.content,
-      tags: card.tags,
-      category: card.category,
-      filter: card.filter,
-      isBookmark: false
-    });
+    totalCards.push(await createCardResponse(card, userId));
   }
   return totalCards;
 };
