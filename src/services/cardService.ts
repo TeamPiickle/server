@@ -67,4 +67,82 @@ const findBestCards = async (size: number, userId?: Types.ObjectId) => {
   return totalCards;
 };
 
-export { findBestCards };
+const findCards = async (
+  cardId: Types.ObjectId,
+  size: number,
+  userId?: Types.ObjectId
+) => {
+  const cards: CardDocument[] = await Card.find({
+    _id: cardId
+  });
+  const extraCards =
+    cards.length < size ? await findExtraCardsExceptFor(cards, size) : [];
+  const totalCards: CardResponseDto[] = [];
+  for (const card of [...cards, ...extraCards]) {
+    totalCards.push(await createCardResponse(card, userId));
+  }
+  return totalCards;
+};
+
+const findRecentlyUpdatedCard = async (userId?: Types.ObjectId) => {
+  const cards: CardDocument[] = await Card.aggregate()
+    .sort({ createdAt: -1 })
+    .limit(20);
+  const totalCards: CardResponseDto[] = [];
+  for (const card of cards) {
+    totalCards.push(await createCardResponse(card, userId));
+  }
+  return {
+    recentlyDate: cards[0].createdAt,
+    cardResponseDtos: totalCards
+  };
+};
+
+const findRecentlyBookmarkedCard = async (userId?: Types.ObjectId) => {
+  const bookmarks: BookmarkDocument[] = await Bookmark.aggregate()
+    .sort({ createdAt: -1 })
+    .limit(20);
+  const cards: CardDocument[] = (
+    await Promise.all(bookmarks.map(bookmark => Card.findById(bookmark.card)))
+  ).filter(util.isNotEmpty);
+  const totalCards: CardResponseDto[] = [];
+  for (const card of cards) {
+    totalCards.push(await createCardResponse(card, userId));
+  }
+  return {
+    recentlyDate: bookmarks[0].createdAt,
+    cardResponseDtos: totalCards
+  };
+};
+
+const findCardByBookmarkedGender = async (
+  gender: string,
+  userId?: Types.ObjectId
+) => {
+  const bookmarks = await Bookmark.aggregate()
+    .lookup({
+      from: 'users',
+      localField: 'user',
+      foreignField: '_id',
+      as: 'userInfo'
+    })
+    .match({ 'userInfo.gender': gender })
+    .group({ _id: '$card', count: { $sum: 1 } })
+    .sort('-count _id');
+  const cards: CardDocument[] = (
+    await Promise.all(bookmarks.map(bookmark => Card.findById(bookmark._id)))
+  ).filter(util.isNotEmpty);
+  const totalCards: CardResponseDto[] = [];
+  for (const card of cards) {
+    totalCards.push(await createCardResponse(card, userId));
+  }
+  return totalCards;
+};
+
+export {
+  findBestCards,
+  findCards,
+  findRecentlyBookmarkedCard,
+  findCardByBookmarkedGender,
+  findRecentlyUpdatedCard
+};
