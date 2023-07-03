@@ -2,7 +2,8 @@ import { NextFunction, Request, Response } from 'express';
 import { validationResult } from 'express-validator';
 import {
   EmptyMailCodeException,
-  IllegalArgumentException
+  IllegalArgumentException,
+  IllegalStateException
 } from '../intefaces/exception';
 import {
   CreateUserCommand,
@@ -14,7 +15,13 @@ import getToken from '../modules/jwtHandler';
 import message from '../modules/responseMessage';
 import statusCode from '../modules/statusCode';
 import util from '../modules/util';
-import { UserService, PreUserService, AuthService } from '../services';
+import {
+  UserService,
+  PreUserService,
+  AuthService,
+  SocialAuthService,
+  NaverLoginService
+} from '../services';
 import { UserProfileResponseDto } from '../intefaces/user/UserProfileResponseDto';
 import { UserUpdateNicknameDto } from '../intefaces/user/UserUpdateNicknameDto';
 import { UserBookmarkDto } from '../intefaces/user/UserBookmarkDto';
@@ -22,8 +29,11 @@ import { UserBookmarkInfo } from '../intefaces/user/UserBookmarkInfo';
 import { Types } from 'mongoose';
 import { TypedRequest } from '../types/TypedRequest';
 import EmailVerificationReqDto from '../intefaces/user/EmailVerificationReqDto';
-import { UpdateUserDto } from '../intefaces/user/UpdateUserDto';
 import config from '../config';
+import SocialLoginDto from '../intefaces/user/SocialLoginDto';
+import LoginResponseDto from '../intefaces/user/LoginResponseDto';
+import { UserDocument } from '../models/user/user';
+import { SocialVendor } from '../models/socialVendor';
 
 /**
  * @route GET /email
@@ -93,7 +103,7 @@ const nicknameDuplicationCheck = async (
     if (!nickname) {
       throw new IllegalArgumentException('필요한 값이 없습니다.');
     }
-    const result = await UserService.nicknameDuplicationCheck(<string>nickname);
+    const result = await UserService.nicknameAlreadyExists(<string>nickname);
     res
       .status(statusCode.OK)
       .send(util.success(statusCode.OK, '닉네임 중복 체크 성공', result));
@@ -196,35 +206,35 @@ const postUser = async (
  * @route /users
  * @access Public
  */
-const patchUser = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const userId = req.user?.id;
-    if (!userId) {
-      throw new IllegalArgumentException('로그인이 필요합니다.');
-    }
-    const reqErr = validationResult(req);
-
-    if (!reqErr.isEmpty()) {
-      throw new IllegalArgumentException('필요한 값이 없습니다.');
-    }
-
-    const input: UpdateUserDto = {
-      id: userId,
-      nickname: req.body.nickname,
-      birthday: req.body.birthday,
-      gender: req.body.gender,
-      profileImgUrl: (req?.file as Express.MulterS3.File)?.location
-    };
-
-    await UserService.patchUser(input);
-
-    res
-      .status(statusCode.OK)
-      .send(util.success(statusCode.OK, message.USER_UPDATE_SUCCESS));
-  } catch (err) {
-    next(err);
-  }
-};
+// const patchUser = async (req: Request, res: Response, next: NextFunction) => {
+//   try {
+//     const userId = req.user?.id;
+//     if (!userId) {
+//       throw new IllegalArgumentException('로그인이 필요합니다.');
+//     }
+//     const reqErr = validationResult(req);
+//
+//     if (!reqErr.isEmpty()) {
+//       throw new IllegalArgumentException('필요한 값이 없습니다.');
+//     }
+//
+//     const input: UpdateUserDto = {
+//       id: userId,
+//       nickname: req.body.nickname,
+//       birthday: req.body.birthday,
+//       gender: req.body.gender,
+//       profileImgUrl: (req?.file as Express.MulterS3.File)?.location
+//     };
+//
+//     await UserService.patchUser(input);
+//
+//     res
+//       .status(statusCode.OK)
+//       .send(util.success(statusCode.OK, message.USER_UPDATE_SUCCESS));
+//   } catch (err) {
+//     next(err);
+//   }
+// };
 
 /**
  *  @route /users/login
@@ -246,13 +256,60 @@ const postUserLogin = async (
       userLoginDto
     );
     const accessToken = getToken(result._id);
-    const data = {
+    const data: LoginResponseDto = {
       _id: result._id,
       accessToken
     };
     return res
       .status(statusCode.OK)
       .send(util.success(statusCode.OK, message.USER_LOGIN_SUCCESS, data));
+  } catch (err) {
+    next(err);
+  }
+};
+
+const getAccessToken = async (
+  req: TypedRequest<SocialLoginDto>
+): Promise<string> => {
+  const { vendor } = req.body;
+  let accessToken = req.body.accessToken;
+
+  if (vendor == SocialVendor.NAVER) {
+    const { code, state } = req.body;
+    if (!code || !state) {
+      throw new IllegalArgumentException(
+        `${SocialVendor.NAVER}는 code와 state가 필요합니다.`
+      );
+    }
+    accessToken = await NaverLoginService.getToken(code, state);
+  }
+  if (!accessToken) {
+    throw new IllegalStateException('accessToken이 없습니다.');
+  }
+  return accessToken;
+};
+
+const socialLogin = async (
+  req: TypedRequest<SocialLoginDto>,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { vendor } = req.body;
+    const accessToken = await getAccessToken(req);
+    const socialUser: UserDocument =
+      await SocialAuthService.findOrCreateUserBySocialToken(
+        vendor,
+        accessToken
+      );
+
+    const piickleJwt = getToken(socialUser._id);
+    return res.status(statusCode.OK).send(
+      util.success(statusCode.OK, message.USER_LOGIN_SUCCESS, {
+        _id: socialUser._id,
+        accessToken: piickleJwt
+      })
+    );
   } catch (err) {
     next(err);
   }
@@ -445,8 +502,9 @@ const deleteUser = async (
 
 export {
   readEmailIsExisting,
+  socialLogin,
   postUser,
-  patchUser,
+  // patchUser,
   postUserLogin,
   getUserProfile,
   updateUserNickname,

@@ -3,6 +3,7 @@ import Bookmark, { BookmarkDocument } from '../models/bookmark';
 import util from '../modules/util';
 import { Types } from 'mongoose';
 import { CardResponseDto } from '../intefaces/CardResponseDto';
+
 interface CardIdAndCnt {
   _id: Types.ObjectId;
   count: number;
@@ -31,6 +32,7 @@ const createCardResponse = async (
     isBookmark: await findBookmark(card._id, userId)
   };
 };
+
 const findBestCardsLimit = async (size: number) => {
   const cardsWithBookmarkCount = <CardIdAndCnt[]>await Bookmark.aggregate()
     .group({ _id: '$card', count: { $sum: 1 } })

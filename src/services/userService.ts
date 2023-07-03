@@ -1,6 +1,6 @@
 import { compare, hashSync } from 'bcryptjs';
 import { CreateUserCommand } from '../intefaces/createUserCommand';
-import User from '../models/user';
+import User from '../models/user/user';
 import {
   BadCredentialException,
   DuplicateException,
@@ -17,8 +17,8 @@ import { UserBookmarkDto } from '../intefaces/user/UserBookmarkDto';
 import { UserBookmarkInfo } from '../intefaces/user/UserBookmarkInfo';
 import Bookmark from '../models/bookmark';
 import PreUser from '../models/preUser';
-import Card from '../models/card';
-import { UpdateUserDto } from '../intefaces/user/UpdateUserDto';
+import Card, { CardDocument } from '../models/card';
+// import { UpdateUserDto } from '../intefaces/user/UpdateUserDto';
 import util from '../modules/util';
 import QuitLog from '../models/quitLog';
 
@@ -64,18 +64,18 @@ const createUser = async (command: CreateUserCommand) => {
   return user;
 };
 
-const patchUser = async (updateUserDto: UpdateUserDto) => {
-  const user = await User.findById(updateUserDto.id);
-  if (!user) {
-    throw new IllegalArgumentException('해당 id의 유저가 존재하지 않습니다.');
-  }
-  const { nickname, profileImgUrl, birthday, gender } = updateUserDto;
-  user.nickname = nickname;
-  user.birthday = util.stringToDate(birthday);
-  user.profileImageUrl = profileImgUrl ? profileImgUrl : user.profileImageUrl;
-  user.gender = gender ? gender : '기타';
-  await user.save();
-};
+// const patchUser = async (updateUserDto: UpdateUserDto) => {
+//   const user = await User.findById(updateUserDto.id);
+//   if (!user) {
+//     throw new IllegalArgumentException('해당 id의 유저가 존재하지 않습니다.');
+//   }
+//   const { nickname, profileImgUrl, birthday, gender } = updateUserDto;
+//   user.nickname = nickname;
+//   user.birthday = util.stringToDate(birthday);
+//   user.profileImageUrl = profileImgUrl ? profileImgUrl : user.profileImageUrl;
+//   user.gender = gender ? gender : '기타';
+//   await user.save();
+// };
 
 const loginUser = async (
   userLoginDto: UserLoginDto
@@ -89,7 +89,10 @@ const loginUser = async (
       '존재하지 않는 email 입니다.'
     );
   }
-  const isMatch = await compare(userLoginDto.password, user.hashedPassword);
+  if (user.socialId) {
+    throw new IllegalStateException('소셜로그인을 해주세요.');
+  }
+  const isMatch = await compare(userLoginDto.password, user.hashedPassword!);
   if (!isMatch) {
     throw new BadCredentialException('비밀번호가 일치하지 않습니다.');
   }
@@ -107,7 +110,6 @@ const findUserById = async (
     throw new IllegalArgumentException('존재하지 않는 유저 입니다.');
   }
   return {
-    name: '김피클',
     nickname: user.nickname,
     email: user.email,
     profileImageUrl: user.profileImageUrl
@@ -156,16 +158,17 @@ const getBookmarks = async (
 
   return Promise.all(
     user.cardIdList.map(async (item: any) => {
+      const card = <CardDocument>item;
       const isBookmark =
-        (await Bookmark.find({ user: userId, card: item._id }).count()) > 0
+        (await Bookmark.find({ user: userId, card: card._id }).count()) > 0
           ? true
           : false;
       return {
-        cardId: item._id,
-        content: item.content,
-        tags: item.tags,
-        category: item.category,
-        filter: item.filter,
+        cardId: card._id,
+        content: card.content,
+        tags: card.tags,
+        category: card.category,
+        filter: card.filter,
         isBookmark: isBookmark
       };
     })
@@ -205,7 +208,7 @@ const createOrDeleteBookmark = async (
   }
 };
 
-const nicknameDuplicationCheck = async (nickname: string) => {
+const nicknameAlreadyExists = async (nickname: string) => {
   const user = await User.findOne({
     nickname: nickname
   });
@@ -215,6 +218,14 @@ const nicknameDuplicationCheck = async (nickname: string) => {
   return false;
 };
 
+const autoGenerateNicknameFrom = async (nickname: string): Promise<string> => {
+  let nicknameWithIncrement = nickname;
+
+  for (let i = 1; await nicknameAlreadyExists(nicknameWithIncrement); i++) {
+    nicknameWithIncrement = nickname + i.toString();
+  }
+  return nicknameWithIncrement;
+};
 const deleteUser = async (userId: Types.ObjectId, reasons: string[]) => {
   const user = await User.findById(userId);
   if (!user) {
@@ -237,13 +248,14 @@ const deleteUser = async (userId: Types.ObjectId, reasons: string[]) => {
 export {
   isEmailExisting,
   createUser,
-  patchUser,
+  // patchUser,
   loginUser,
   findUserById,
   updateNickname,
   updateUserProfileImage,
   getBookmarks,
   createOrDeleteBookmark,
-  nicknameDuplicationCheck,
+  nicknameAlreadyExists,
+  autoGenerateNicknameFrom,
   deleteUser
 };

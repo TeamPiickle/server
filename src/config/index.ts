@@ -55,5 +55,7 @@ export default {
     prod: process.env.SIGN_UP_REDIRECTION_PROD_URL as string,
     dev: process.env.SIGN_UP_REDIRECTION_DEV_URL as string
   },
-  clientKey: process.env.CLIENT_KEY as string
+  clientKey: process.env.CLIENT_KEY as string,
+  naverClientId: process.env.NAVER_CLIENT_ID as string,
+  naverClientSecret: process.env.NAVER_CLIENT_SECRET as string
 };
