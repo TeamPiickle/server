@@ -13,6 +13,14 @@ const createBallotResult = async (command: CreateBallotResultDto) => {
     throw new IllegalArgumentException('올바르지 않은 투표 주제 id 입니다.');
   }
 
+  const ballotItem = await BallotItem.findById(command.ballotItemId);
+  if (
+    !ballotItem ||
+    ballotItem.ballotTopicId.toString() !== ballotTopic._id.toString()
+  ) {
+    throw new IllegalArgumentException('올바르지 않은 투표 항목 id 입니다.');
+  }
+
   const alreadyBallotResult = await BallotResult.findOne({
     ballotTopicId: command.ballotTopicId,
     userId: command.userId,
@@ -20,24 +28,10 @@ const createBallotResult = async (command: CreateBallotResultDto) => {
   });
 
   if (alreadyBallotResult) {
-    if (
-      alreadyBallotResult.ballotItemId.toString() ==
-      command.ballotItemId.toString()
-    ) {
-      throw new IllegalArgumentException('이미 투표한 항목입니다.');
-    }
-    await BallotResult.findByIdAndUpdate(
-      {
-        _id: alreadyBallotResult._id
-      },
-      { ballotItemId: command.ballotItemId }
-    );
+    await BallotResult.deleteOne({
+      _id: alreadyBallotResult._id
+    });
     return;
-  }
-
-  const ballotItem = await BallotItem.findById(command.ballotItemId);
-  if (!ballotItem) {
-    throw new IllegalArgumentException('올바르지 않은 투표 항목 id 입니다.');
   }
 
   const newBallot = new BallotResult({
