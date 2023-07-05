@@ -12,6 +12,7 @@ import PreUser from '../models/preUser';
 import QuitLog from '../models/quitLog';
 import BestCard from '../models/bestCard';
 import CardMedley from '../models/cardMedley';
+import { BlockedCard } from '../models/blockedCard';
 
 const createCollection = (model: Model<any>) => {
   model.createCollection().catch(err => {
@@ -35,7 +36,8 @@ const connectDB = async () => {
     QuitLog,
     EmailAuth,
     BestCard,
-    CardMedley
+    CardMedley,
+    BlockedCard
   ];
 
   models.forEach(model => {

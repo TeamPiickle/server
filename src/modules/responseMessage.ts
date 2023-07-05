@@ -28,7 +28,8 @@ const message = {
   READ_RECENTLY_BOOKMARKED_CARD_SUCCESS: '최근 북마크 된 카드 읽어오기 성공',
   READ_GENDER_BEST_CARD_SUCCESS: '성별 별 베스트 카드 읽어오기 성공',
   READ_BEST_CARDS_SUCCESS: '베스트 카드 읽어오기 성공',
-  READ_ONE_CARD_SUCCESS: '카드 한 장 읽어오기 성공',
+  BLOCK_CARD_SUCCESS: '카드 블랙리스트 추가 성공',
+  CANCEL_BLOCK_CARD_SUCCESS: '카드 블랙리스트 제외 성공',
 
   //카드 메들리
   READ_CARD_MEDLEY_DETAIL_SUCCESS: '카드 메들리 상세 조회 성공',
