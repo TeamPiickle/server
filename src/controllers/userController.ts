@@ -33,9 +33,8 @@ import EmailVerificationReqDto from '../intefaces/user/EmailVerificationReqDto';
 import config from '../config';
 import SocialLoginDto from '../intefaces/user/SocialLoginDto';
 import LoginResponseDto from '../intefaces/user/LoginResponseDto';
-import { UserDocument } from '../models/user/user';
 import { SocialVendor } from '../models/socialVendor';
-import card from '../models/card';
+import IUser from '../models/interface/IUser';
 
 /**
  * @route GET /email
@@ -204,41 +203,6 @@ const postUser = async (
 };
 
 /**
- * @method PATCH
- * @route /users
- * @access Public
- */
-// const patchUser = async (req: Request, res: Response, next: NextFunction) => {
-//   try {
-//     const userId = req.user?.id;
-//     if (!userId) {
-//       throw new IllegalArgumentException('로그인이 필요합니다.');
-//     }
-//     const reqErr = validationResult(req);
-//
-//     if (!reqErr.isEmpty()) {
-//       throw new IllegalArgumentException('필요한 값이 없습니다.');
-//     }
-//
-//     const input: UpdateUserDto = {
-//       id: userId,
-//       nickname: req.body.nickname,
-//       birthday: req.body.birthday,
-//       gender: req.body.gender,
-//       profileImgUrl: (req?.file as Express.MulterS3.File)?.location
-//     };
-//
-//     await UserService.patchUser(input);
-//
-//     res
-//       .status(statusCode.OK)
-//       .send(util.success(statusCode.OK, message.USER_UPDATE_SUCCESS));
-//   } catch (err) {
-//     next(err);
-//   }
-// };
-
-/**
  *  @route /users/login
  *  @desc 로그인 api
  *  @access Public
@@ -291,6 +255,18 @@ const getAccessToken = async (
   return accessToken;
 };
 
+const findOrCreateSocialUser = async (
+  alreadyMember: boolean,
+  buildUser: IUser
+) => {
+  if (alreadyMember) {
+    const foundUser = await SocialAuthService.findSocialUser(buildUser);
+    return foundUser;
+  }
+  const newUser = await SocialAuthService.join(buildUser);
+  return newUser;
+};
+
 const socialLogin = async (
   req: TypedRequest<SocialLoginDto>,
   res: Response,
@@ -298,18 +274,21 @@ const socialLogin = async (
 ) => {
   try {
     const { vendor } = req.body;
-    const accessToken = await getAccessToken(req);
-    const socialUser: UserDocument =
-      await SocialAuthService.findOrCreateUserBySocialToken(
-        vendor,
-        accessToken
-      );
+    const socialAccessToken = await getAccessToken(req);
+    const buildUser: IUser = await SocialAuthService.getPiickleUser(
+      vendor,
+      socialAccessToken
+    );
+    const alreadyUser: boolean = await SocialAuthService.isAlreadySocialMember(
+      buildUser
+    );
+    const socialUser = await findOrCreateSocialUser(alreadyUser, buildUser);
 
-    const piickleJwt = getToken(socialUser._id);
     return res.status(statusCode.OK).send(
       util.success(statusCode.OK, message.USER_LOGIN_SUCCESS, {
         _id: socialUser._id,
-        accessToken: piickleJwt
+        accessToken: getToken(socialUser._id),
+        newMember: !alreadyUser
       })
     );
   } catch (err) {
@@ -549,8 +528,8 @@ const cancelToBlock = async (
     }
     await BlockCardService.cancelToBlockCard(userId, cardId);
     return res
-        .status(statusCode.OK)
-        .send(util.success(statusCode.OK, message.CANCEL_BLOCK_CARD_SUCCESS));
+      .status(statusCode.OK)
+      .send(util.success(statusCode.OK, message.CANCEL_BLOCK_CARD_SUCCESS));
   } catch (e) {
     next(e);
   }

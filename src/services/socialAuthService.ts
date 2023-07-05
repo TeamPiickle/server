@@ -80,6 +80,24 @@ const join = async (socialMember: IUser): Promise<UserDocument> => {
   return newMember;
 };
 
+const getPiickleUser = async (vendor: string, token: string) => {
+  const response: SocialLoginResponse = await getUserFromSocialVendor(
+    token,
+    vendor
+  );
+  const socialVendor = SocialVendorExtension.getVendorByValue(vendor);
+  const socialMember: IUser = convertSocialToPiickle(socialVendor, response);
+  return socialMember;
+};
+
+const findSocialUser = async (socialMember: IUser) => {
+  const alreadyMember = await findUserBySocial(
+    SocialVendorExtension.getVendorByValue(socialMember.socialVendor!),
+    socialMember.socialId!
+  );
+  return alreadyMember;
+};
+
 const findOrCreateUserBySocialToken = async (vendor: string, token: string) => {
   const response: SocialLoginResponse = await getUserFromSocialVendor(
     token,
@@ -98,4 +116,11 @@ const findOrCreateUserBySocialToken = async (vendor: string, token: string) => {
   return join(socialMember);
 };
 
-export { findOrCreateUserBySocialToken, findUserBySocial };
+export {
+  findOrCreateUserBySocialToken,
+  findUserBySocial,
+  getPiickleUser,
+  isAlreadySocialMember,
+  join,
+  findSocialUser
+};
