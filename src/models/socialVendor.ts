@@ -4,7 +4,7 @@ import KakaoResponse, {
 } from '../services/dto/KakaoResponse';
 import NaverResponse, {
   naverToPiickleUser
-} from '../services/dto/INaverResponse';
+} from '../services/dto/NaverResponse';
 import { SocialLoginResponse } from '../services/dto/socialLoginResponse';
 import IUser from './interface/IUser';
 

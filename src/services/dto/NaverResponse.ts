@@ -62,13 +62,15 @@ const toPiickleAgeGroup = (age?: string): AgeGroup => {
 };
 
 const naverToPiickleUser = (naverUser: NaverResponse): IUser => {
+  const nickname =
+    naverUser.response.nickname || `naver ${naverUser.response.id}`;
   const profileImageUrl =
     naverUser.response.profile_image || config.defaultProfileImgUrl;
   return {
     socialId: naverUser.response.id,
     socialVendor: SocialVendor.NAVER,
     email: naverUser.response.email,
-    nickname: naverUser.response.nickname,
+    nickname,
     ageGroup: toPiickleAgeGroup(naverUser.response.age),
     gender: toPiickleGender(naverUser.response.gender),
     profileImageUrl,
