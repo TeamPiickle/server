@@ -3,6 +3,7 @@ import Bookmark, { BookmarkDocument } from '../models/bookmark';
 import util from '../modules/util';
 import { Types } from 'mongoose';
 import { CardResponseDto } from '../intefaces/CardResponseDto';
+import { BlockedCard, BlockedCardDocument } from '../models/blockedCard';
 
 interface CardIdAndCnt {
   _id: Types.ObjectId;
@@ -47,9 +48,24 @@ const findBestCardsLimit = async (size: number) => {
   ).filter(util.isNotEmpty);
 };
 
-const findExtraCardsExceptFor = async (cards: CardDocument[], size: number) => {
+const findExtraCardsExceptFor = async (
+  cards: CardDocument[],
+  size: number,
+  blockedCards?: BlockedCardDocument[]
+) => {
+  const ninCards: Types.ObjectId[] = [];
+  for (const card of cards) {
+    ninCards.push(card._id);
+  }
+  if (blockedCards) {
+    for (const blockedCard of blockedCards) {
+      ninCards.push(blockedCard.card);
+    }
+  }
   const extraCards: CardDocument[] = await Card.find({
-    _id: { $nin: cards.map(c => c._id) }
+    _id: {
+      $nin: ninCards
+    }
   })
     .sort('_id')
     .limit(size - cards.length);
@@ -65,7 +81,6 @@ const findBestCards = async (size: number, userId?: Types.ObjectId) => {
   for (const card of [...cards, ...extraCards]) {
     totalCards.push(await createCardResponse(card, userId));
   }
-
   return totalCards;
 };
 
@@ -77,8 +92,13 @@ const findCards = async (
   const cards: CardDocument[] = await Card.find({
     _id: cardId
   });
+  const blockedCards: BlockedCardDocument[] = await BlockedCard.find({
+    user: userId
+  });
   const extraCards =
-    cards.length < size ? await findExtraCardsExceptFor(cards, size) : [];
+    cards.length < size
+      ? await findExtraCardsExceptFor(cards, size, blockedCards)
+      : [];
   const totalCards: CardResponseDto[] = [];
   for (const card of [...cards, ...extraCards]) {
     totalCards.push(await createCardResponse(card, userId));

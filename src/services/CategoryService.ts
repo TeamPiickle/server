@@ -6,6 +6,7 @@ import { CardResponseDto } from '../intefaces/CardResponseDto';
 import Bookmark from '../models/bookmark';
 import { IllegalArgumentException } from '../intefaces/exception';
 import util from '../modules/util';
+import { BlockedCard, BlockedCardDocument } from '../models/blockedCard';
 
 const CARD_SIZE_PER_REQUEST = 30;
 
@@ -44,7 +45,19 @@ const getCardsWithIsBookmark = async (
   if (!category) {
     throw new IllegalArgumentException('해당 id의 카테고리가 없습니다.');
   }
-  const allCards = await Card.find({ category: categoryId });
+  const blockedCards: BlockedCardDocument[] = await BlockedCard.find({
+    user: userId
+  });
+  const ninCards: Types.ObjectId[] = [];
+  if (blockedCards) {
+    for (const blockedCard of blockedCards) {
+      ninCards.push(blockedCard.card);
+    }
+  }
+  const allCards = await Card.find({
+    category: categoryId,
+    _id: { $nin: ninCards }
+  });
 
   const randomCards = getRandomUniqueNumbersInRange(
     allCards.length,
@@ -85,8 +98,11 @@ const makeQueryOption = (search: string[]) => {
   return { filter: { $all: search } };
 };
 
-const getRandomizedPrimaryCards = async () => {
-  const primaryCards = await Card.find({ filter: FILTER_R_RATED });
+const getRandomizedPrimaryCards = async (ninCards: Types.ObjectId[]) => {
+  const primaryCards = await Card.find({
+    filter: FILTER_R_RATED,
+    _id: { $nin: ninCards }
+  });
   const randomizedPrimaryCards = getRandomUniqueNumbersInRange(
     primaryCards.length,
     4
@@ -96,9 +112,13 @@ const getRandomizedPrimaryCards = async () => {
 
 async function getFilteredCardsWithSize(
   search: string[],
-  primaryCardsSize: number
+  primaryCardsSize: number,
+  ninCards: Types.ObjectId[]
 ) {
-  const allCards = await Card.find({ filter: { $all: search } });
+  const allCards = await Card.find({
+    filter: { $all: search },
+    _id: { $nin: ninCards }
+  });
   const sizedCards = getRandomUniqueNumbersInRange(
     allCards.length,
     CARD_SIZE_PER_REQUEST - primaryCardsSize
@@ -106,11 +126,19 @@ async function getFilteredCardsWithSize(
   return sizedCards;
 }
 
-const getCard = async (filterKeywords: string[]): Promise<CardDocument[]> => {
+const getCard = async (
+  filterKeywords: string[],
+  blockedCards?: BlockedCardDocument[]
+): Promise<CardDocument[]> => {
   const primaryCards = [];
-
+  const ninCards: Types.ObjectId[] = [];
+  if (blockedCards) {
+    for (const blockedCard of blockedCards) {
+      ninCards.push(blockedCard.card);
+    }
+  }
   if (filterKeywords.includes(FILTER_R_RATED)) {
-    const randomizedPrimaryCards = await getRandomizedPrimaryCards();
+    const randomizedPrimaryCards = await getRandomizedPrimaryCards(ninCards);
 
     primaryCards.push(...randomizedPrimaryCards);
     filterKeywords.splice(filterKeywords.indexOf(FILTER_R_RATED), 1);
@@ -118,7 +146,8 @@ const getCard = async (filterKeywords: string[]): Promise<CardDocument[]> => {
 
   const sizedCards = await getFilteredCardsWithSize(
     filterKeywords,
-    primaryCards.length
+    primaryCards.length,
+    ninCards
   );
   return util.shuffle([...primaryCards, ...sizedCards]);
 };
@@ -128,8 +157,10 @@ const getFilteredCards = async (
   userId?: Types.ObjectId
 ): Promise<CardResponseDto[]> => {
   try {
-    const cardDocuments = await getCard(filterKeywords);
-
+    const blockedCards: BlockedCardDocument[] = await BlockedCard.find({
+      user: userId
+    });
+    const cardDocuments = await getCard(filterKeywords, blockedCards);
     const cardIds = cardDocuments.map(e => e._id);
     const bookmarks = await Bookmark.find({
       user: userId,
