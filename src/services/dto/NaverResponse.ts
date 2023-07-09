@@ -45,13 +45,13 @@ const toPiickleAgeGroup = (age?: string): AgeGroup => {
   switch (age) {
     case '0-9':
     case '10-19':
-      return AgeGroup.ADOLECENT;
+      return AgeGroup.ADOLESCENT;
     case '20-29':
       return AgeGroup.TWENTIES;
     case '30-39':
       return AgeGroup.THIRTIES;
     case '40-49':
-      return AgeGroup.FOURTIES;
+      return AgeGroup.FORTIES;
     case '50-59':
       return AgeGroup.FIFTIES;
     case '60-':

@@ -46,7 +46,7 @@ const createUser = async (command: CreateUserCommand) => {
     email,
     password,
     nickname,
-    birthday: birthStr,
+    ageGroup,
     gender,
     profileImgUrl: profileImageUrl
   } = command;
@@ -56,7 +56,7 @@ const createUser = async (command: CreateUserCommand) => {
     email,
     hashedPassword: hashSync(password, 10),
     nickname,
-    birthday: util.stringToDate(birthStr),
+    ageGroup,
     gender,
     profileImageUrl
   });

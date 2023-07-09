@@ -50,13 +50,13 @@ const toPiickleAgeGroup = (ageGroup: string): AgeGroup => {
     case '10~14':
       return AgeGroup.CHILDREN;
     case '15~19':
-      return AgeGroup.ADOLECENT;
+      return AgeGroup.ADOLESCENT;
     case '20~29':
       return AgeGroup.TWENTIES;
     case '30~39':
       return AgeGroup.THIRTIES;
     case '40~49':
-      return AgeGroup.FOURTIES;
+      return AgeGroup.FORTIES;
     case '50~59':
       return AgeGroup.FIFTIES;
     case '60~69':
