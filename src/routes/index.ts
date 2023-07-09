@@ -1,5 +1,5 @@
 //router index file
-import {Request, Response, Router} from 'express';
+import { Router } from 'express';
 import UserRouter from './userRouter';
 import CategoryRouter from './CategoryRouter';
 import BallotRouter from './ballotRouter';
@@ -17,9 +17,4 @@ router.use('/ballots', flexibleAuth, guestHandler, BallotRouter);
 router.use('/cards', CardRouter);
 router.use('/test', TestRouter);
 router.use('/medley', CardMedleyRouter);
-
-router.use('', (req: Request, res: Response) => {
-    res.status(200).send();
-});
-
 export default router;

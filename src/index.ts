@@ -1,35 +1,23 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
 import connectDB from './loaders/db';
 import routes from './routes';
 import helmet from 'helmet';
 import config from './config';
 import errorHandler from './middlewares/errorHandler';
 import cors from 'cors';
-import session from 'express-session';
-import MongoStore from 'connect-mongo';
+import expressSession from './loaders/session';
+import * as SentryConfig from './loaders/sentryConfiguration';
 
 const app = express();
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(helmet());
-
-const expressSession: express.RequestHandler = session({
-  secret: config.sessionKey,
-  store: MongoStore.create({
-    mongoUrl: config.mongoURI
-  }),
-  cookie: { maxAge: 3.6e6 * 24 * 180 },
-  resave: false,
-  saveUninitialized: false
-});
-
 app.use(expressSession);
+SentryConfig.initializeSentry(app);
 
 app.use(routes);
-app.use('', (req: Request, res: Response) => {
-  res.status(200).send();
-});
+SentryConfig.attachSentryErrorHandler(app);
 app.use(errorHandler);
 
 connectDB()
