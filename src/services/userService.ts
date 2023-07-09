@@ -18,8 +18,6 @@ import { UserBookmarkInfo } from '../intefaces/user/UserBookmarkInfo';
 import Bookmark from '../models/bookmark';
 import PreUser from '../models/preUser';
 import Card, { CardDocument } from '../models/card';
-// import { UpdateUserDto } from '../intefaces/user/UpdateUserDto';
-import util from '../modules/util';
 import QuitLog from '../models/quitLog';
 
 const isEmailExisting = async (email: string): Promise<boolean> => {
@@ -63,19 +61,6 @@ const createUser = async (command: CreateUserCommand) => {
   await user.save();
   return user;
 };
-
-// const patchUser = async (updateUserDto: UpdateUserDto) => {
-//   const user = await User.findById(updateUserDto.id);
-//   if (!user) {
-//     throw new IllegalArgumentException('해당 id의 유저가 존재하지 않습니다.');
-//   }
-//   const { nickname, profileImgUrl, birthday, gender } = updateUserDto;
-//   user.nickname = nickname;
-//   user.birthday = util.stringToDate(birthday);
-//   user.profileImageUrl = profileImgUrl ? profileImgUrl : user.profileImageUrl;
-//   user.gender = gender ? gender : '기타';
-//   await user.save();
-// };
 
 const loginUser = async (
   userLoginDto: UserLoginDto
@@ -248,7 +233,6 @@ const deleteUser = async (userId: Types.ObjectId, reasons: string[]) => {
 export {
   isEmailExisting,
   createUser,
-  // patchUser,
   loginUser,
   findUserById,
   updateNickname,
