@@ -35,6 +35,7 @@ import SocialLoginDto from '../intefaces/user/SocialLoginDto';
 import LoginResponseDto from '../intefaces/user/LoginResponseDto';
 import { SocialVendor } from '../models/socialVendor';
 import IUser from '../models/interface/IUser';
+import {AgeGroup, AgeGroupKey} from '../models/user/ageGroup';
 
 /**
  * @route GET /email
@@ -185,7 +186,7 @@ const postUser = async (
       email: req.body.email,
       password: req.body.password,
       nickname: req.body.nickname,
-      birthday: req.body.birthday,
+      ageGroup: AgeGroup[req.body.ageGroup],
       gender: req.body.gender,
       profileImgUrl: (req?.file as Express.MulterS3.File)?.location
     };
