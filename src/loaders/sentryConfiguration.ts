@@ -1,24 +1,29 @@
 import { Express } from 'express';
-import * as Sentry from '@sentry/node';
+import {
+  init,
+  Handlers,
+  Integrations,
+  autoDiscoverNodePerformanceMonitoringIntegrations
+} from '@sentry/node';
 import config from '../config';
 
 const initializeSentry = (app: Express) => {
-  Sentry.init({
+  init({
     environment: config.nodeEnv,
-    dsn: 'https://c6a940a8f6fc411396328fdfc3ba2576@o4505496940380160.ingest.sentry.io/4505496954404864',
+    dsn: config.sentryDsn,
     integrations: [
-      new Sentry.Integrations.Http({ tracing: true }),
-      new Sentry.Integrations.Express({ app }),
-      ...Sentry.autoDiscoverNodePerformanceMonitoringIntegrations()
+      new Integrations.Http({ tracing: true }),
+      new Integrations.Express({ app }),
+      ...autoDiscoverNodePerformanceMonitoringIntegrations()
     ],
     tracesSampleRate: 1.0
   });
-  app.use(Sentry.Handlers.requestHandler());
-  app.use(Sentry.Handlers.tracingHandler());
+  app.use(Handlers.requestHandler());
+  app.use(Handlers.tracingHandler());
 };
 
 const attachSentryErrorHandler = (app: Express) => {
-  app.use(Sentry.Handlers.errorHandler());
+  app.use(Handlers.errorHandler());
 };
 
 export { initializeSentry, attachSentryErrorHandler };
