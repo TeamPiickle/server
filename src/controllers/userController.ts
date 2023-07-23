@@ -16,12 +16,12 @@ import message from '../modules/responseMessage';
 import statusCode from '../modules/statusCode';
 import util from '../modules/util';
 import {
-  UserService,
-  PreUserService,
   AuthService,
-  SocialAuthService,
+  BlockCardService,
   NaverLoginService,
-  BlockCardService
+  PreUserService,
+  SocialAuthService,
+  UserService
 } from '../services';
 import { UserProfileResponseDto } from '../intefaces/user/UserProfileResponseDto';
 import { UserUpdateNicknameDto } from '../intefaces/user/UserUpdateNicknameDto';
@@ -35,7 +35,8 @@ import SocialLoginDto from '../intefaces/user/SocialLoginDto';
 import LoginResponseDto from '../intefaces/user/LoginResponseDto';
 import { SocialVendor } from '../models/socialVendor';
 import IUser from '../models/interface/IUser';
-import {AgeGroup, AgeGroupKey} from '../models/user/ageGroup';
+import { AgeGroup } from '../models/user/ageGroup';
+import { Gender } from '../models/user/gender';
 
 /**
  * @route GET /email
@@ -186,8 +187,10 @@ const postUser = async (
       email: req.body.email,
       password: req.body.password,
       nickname: req.body.nickname,
-      ageGroup: AgeGroup[req.body.ageGroup],
-      gender: req.body.gender,
+      ageGroup: req.body.ageGroup
+        ? AgeGroup[req.body.ageGroup]
+        : AgeGroup.UNDEFINED,
+      gender: req.body.gender ? Gender[req.body.gender] : Gender.ETC,
       profileImgUrl: (req?.file as Express.MulterS3.File)?.location
     };
 
