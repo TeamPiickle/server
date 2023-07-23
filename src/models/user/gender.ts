@@ -4,4 +4,6 @@ enum Gender {
   ETC = '기타'
 }
 
-export { Gender };
+type GenderKey = keyof typeof Gender;
+
+export { Gender, GenderKey };
