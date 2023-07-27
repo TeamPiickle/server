@@ -13,6 +13,7 @@ const MONGO_URI =
     : process.env.MONGODB_DEVELOPMENT_URI;
 
 export default {
+  nodeEnv: NODE_ENV,
   port: parseInt(process.env.PORT as string, 10),
 
   /**
