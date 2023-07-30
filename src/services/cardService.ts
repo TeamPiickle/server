@@ -122,6 +122,11 @@ const findRecentlyUpdatedCard = async (userId?: Types.ObjectId) => {
 
 const findRecentlyBookmarkedCard = async (userId?: Types.ObjectId) => {
   const bookmarks: BookmarkDocument[] = await Bookmark.aggregate()
+    .group({
+      _id: '$card',
+      card: { $first: '$card' },
+      createdAt: { $first: '$createdAt' }
+    })
     .sort({ createdAt: -1 })
     .limit(20);
   const cards: CardDocument[] = (
