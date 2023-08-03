@@ -63,15 +63,20 @@ const findUserBySocial = async (
   return user;
 };
 
-const join = async (socialMember: IUser): Promise<UserDocument> => {
-  if (socialMember.email) {
-    const alreadyEmail = await UserService.isEmailExisting(socialMember.email);
-    if (alreadyEmail) {
-      throw new IllegalArgumentException(
-        `같은 이메일로 가입된 유저가 있습니다. email: ${socialMember.email}`
-      );
-    }
+const validateMemberState = async (preMember: IUser) => {
+  const alreadyUser = await User.findOne({
+    socialVendor: '$preMember.socialVendor',
+    socialId: '$preMember.socialId'
+  });
+  if (alreadyUser) {
+    throw new IllegalArgumentException(
+      `해당 소셜에 같은 이메일로 가입된 유저가 있습니다. email: ${preMember.email}`
+    );
   }
+};
+
+const join = async (socialMember: IUser): Promise<UserDocument> => {
+  validateMemberState(socialMember);
   socialMember.nickname = await UserService.autoGenerateNicknameFrom(
     socialMember.nickname
   );
