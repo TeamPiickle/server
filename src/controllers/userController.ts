@@ -7,7 +7,8 @@ import {
 } from '../intefaces/exception';
 import {
   CreateUserCommand,
-  CreateUserReq
+  CreateUserReq,
+  toCommand
 } from '../intefaces/createUserCommand';
 import { PostBaseResponseDto } from '../intefaces/PostBaseResponseDto';
 import { UserLoginDto } from '../intefaces/user/UserLoginDto';
@@ -37,6 +38,7 @@ import { SocialVendor } from '../models/socialVendor';
 import IUser from '../models/interface/IUser';
 import { AgeGroup } from '../models/user/ageGroup';
 import { Gender } from '../models/user/gender';
+import { createUser, validateNewLocalEmail } from '../services/userService';
 
 /**
  * @route GET /email
@@ -168,7 +170,7 @@ const verifyEmailTest = async (
 };
 
 /**
- *  @route /users
+ *  @route POST /users
  *  @desc 회원가입 api
  *  @access Public
  */
@@ -183,18 +185,9 @@ const postUser = async (
       throw new IllegalArgumentException('필요한 값이 없습니다.');
     }
 
-    const createUserCommand: CreateUserCommand = {
-      email: req.body.email,
-      password: req.body.password,
-      nickname: req.body.nickname,
-      ageGroup: req.body.ageGroup
-        ? AgeGroup[req.body.ageGroup]
-        : AgeGroup.UNDEFINED,
-      gender: req.body.gender ? Gender[req.body.gender] : Gender.ETC,
-      profileImgUrl: (req?.file as Express.MulterS3.File)?.location
-    };
-
-    const createdUser = await UserService.createUser(createUserCommand);
+    const createUserCommand = toCommand(req);
+    await validateNewLocalEmail(createUserCommand.email);
+    const createdUser = await createUser(createUserCommand);
 
     const jwt = getToken(createdUser._id);
 
