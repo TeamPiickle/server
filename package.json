@@ -67,5 +67,6 @@
     "multer-s3": "2",
     "prettier": "^2.7.1",
     "slack-node": "^0.1.8"
-  }
+  },
+  "packageManager": "yarn@3.6.1"
 }
