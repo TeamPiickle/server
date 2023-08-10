@@ -30,9 +30,10 @@ const isEmailExisting = async (email: string): Promise<boolean> => {
   return false;
 };
 
-const validateEmail = async (email: string) => {
+const validateNewLocalEmail = async (email: string) => {
   const alreadyUser = await User.findOne({
-    email
+    email,
+    socialVendor: null
   });
   if (alreadyUser) {
     throw new IllegalArgumentException('이미 존재하는 이메일입니다.');
@@ -48,7 +49,6 @@ const createUser = async (command: CreateUserCommand) => {
     gender,
     profileImgUrl: profileImageUrl
   } = command;
-  await validateEmail(email);
 
   const user = new User({
     email,
@@ -241,5 +241,6 @@ export {
   createOrDeleteBookmark,
   nicknameAlreadyExists,
   autoGenerateNicknameFrom,
-  deleteUser
+  deleteUser,
+  validateNewLocalEmail
 };

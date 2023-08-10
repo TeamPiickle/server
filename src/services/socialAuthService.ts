@@ -63,15 +63,22 @@ const findUserBySocial = async (
   return user;
 };
 
-const join = async (socialMember: IUser): Promise<UserDocument> => {
-  if (socialMember.email) {
-    const alreadyEmail = await UserService.isEmailExisting(socialMember.email);
-    if (alreadyEmail) {
-      throw new IllegalArgumentException(
-        `같은 이메일로 가입된 유저가 있습니다. email: ${socialMember.email}`
-      );
-    }
+const validateMemberState = async (preMember: IUser) => {
+  const alreadyUser = await User.findOne({
+    socialVendor: '$preMember.socialVendor',
+    socialId: '$preMember.socialId'
+  });
+  if (alreadyUser) {
+    throw new IllegalArgumentException(
+      `해당 소셜에 같은 이메일로 가입된 유저가 있습니다. email: ${
+        preMember.email || '이메일 알 수 없음'
+      }`
+    );
   }
+};
+
+const join = async (socialMember: IUser): Promise<UserDocument> => {
+  await validateMemberState(socialMember);
   socialMember.nickname = await UserService.autoGenerateNicknameFrom(
     socialMember.nickname
   );
@@ -98,26 +105,7 @@ const findSocialUser = async (socialMember: IUser) => {
   return alreadyMember;
 };
 
-const findOrCreateUserBySocialToken = async (vendor: string, token: string) => {
-  const response: SocialLoginResponse = await getUserFromSocialVendor(
-    token,
-    vendor
-  );
-  const socialVendor = SocialVendorExtension.getVendorByValue(vendor);
-  const socialMember: IUser = convertSocialToPiickle(socialVendor, response);
-  const isAlreadyMember = await isAlreadySocialMember(socialMember);
-  if (isAlreadyMember) {
-    const alreadyMember = await findUserBySocial(
-      socialVendor,
-      socialMember.socialId!
-    );
-    return alreadyMember;
-  }
-  return join(socialMember);
-};
-
 export {
-  findOrCreateUserBySocialToken,
   findUserBySocial,
   getPiickleUser,
   isAlreadySocialMember,

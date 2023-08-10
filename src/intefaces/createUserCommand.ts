@@ -1,5 +1,6 @@
 import { AgeGroup, AgeGroupKey } from '../models/user/ageGroup';
 import { Gender, GenderKey } from '../models/user/gender';
+import { TypedRequest } from '../types/TypedRequest';
 
 interface CreateUserCommand {
   email: string;
@@ -18,4 +19,18 @@ interface CreateUserReq {
   gender?: GenderKey;
 }
 
-export { CreateUserCommand, CreateUserReq };
+const toCommand = (req: TypedRequest<CreateUserReq>) => {
+  const createUserCommand: CreateUserCommand = {
+    email: req.body.email,
+    password: req.body.password,
+    nickname: req.body.nickname,
+    ageGroup: req.body.ageGroup
+      ? AgeGroup[req.body.ageGroup]
+      : AgeGroup.UNDEFINED,
+    gender: req.body.gender ? Gender[req.body.gender] : Gender.ETC,
+    profileImgUrl: (req?.file as Express.MulterS3.File)?.location
+  };
+  return createUserCommand;
+};
+
+export { CreateUserCommand, CreateUserReq, toCommand };

@@ -11,8 +11,7 @@ type UserDocument = IUser & IDocument;
 const userSchema = new Schema<UserDocument>(
   {
     email: {
-      type: String,
-      unique: true
+      type: String
     },
     socialId: {
       type: String,
@@ -60,7 +59,7 @@ const userSchema = new Schema<UserDocument>(
   }
 );
 
-userSchema.index({ socialVendor: 1, socialId: 1 }, { unique: true });
+userSchema.index({ socialVendor: 1, email: 1 }, { unique: true });
 
 const User = model<UserDocument>('User', userSchema);
 
