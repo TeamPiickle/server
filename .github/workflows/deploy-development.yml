@@ -23,11 +23,13 @@ jobs:
       - uses: borales/actions-yarn@v3.0.0
         with:
           cmd: build # will run `yarn build` command
+      - name: remove unnessasary files
+        run: rm -rf .github
       - uses: cpina/github-action-push-to-another-repository@main
         env:
           API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
         with:
-          source-directory: /
+          source-directory: .
           destination-github-username: 'TeamPiickle'
           destination-repository-name: 'express-build'
           user-email: dev.kayoung@gmail.com
