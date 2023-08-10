@@ -11,12 +11,6 @@ router.use('/cards', userCardRouter);
 
 router.get('/existing', UserController.readEmailIsExisting);
 
-router.post(
-  '/email-verification',
-  [body('email').notEmpty()],
-  UserController.sendEmailVerification
-);
-
 router.get('/email-check', UserController.verifyEmail);
 
 router.get('/email-check/test', UserController.verifyEmailTest);

@@ -67,33 +67,6 @@ const readEmailIsExisting = async (
 };
 
 /**
- *  @route POST /email-verification
- *  @desc 인증메일 전송 api
- *  @access Public
- */
-const sendEmailVerification = async (
-  req: TypedRequest<EmailVerificationReqDto>,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const error = validationResult(req);
-    if (!error.isEmpty()) {
-      throw new IllegalArgumentException('필요한 값이 없습니다');
-    }
-    const { email } = req.body;
-    const { preUser, isNew } = await PreUserService.createPreUser(email);
-    const isDev = req.header('Origin') != 'https://www.piickle.link';
-    await AuthService.sendEmail(preUser.email, preUser.password, isNew, isDev);
-    res
-      .status(statusCode.OK)
-      .send(util.success(statusCode.OK, '인증메일 발송 성공', email));
-  } catch (err) {
-    next(err);
-  }
-};
-
-/**
  *  @route GET /users/nickname
  *  @desc 닉네임 중복 체크 api
  *  @access Public
@@ -536,14 +509,12 @@ export {
   readEmailIsExisting,
   socialLogin,
   postUser,
-  // patchUser,
   postUserLogin,
   getUserProfile,
   updateUserNickname,
   updateUserProfileImage,
   getBookmarks,
   createdeleteBookmark,
-  sendEmailVerification,
   verifyEmail,
   verifyEmailTest,
   nicknameDuplicationCheck,

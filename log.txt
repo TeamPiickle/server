@@ -1,0 +1,1214 @@
+[96msrc/config/index.ts[0m:[93m1[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module 'dotenv' or its corresponding type declarations.
+
+[7m1[0m import dotenv from 'dotenv';
+[7m [0m [91m                   ~~~~~~~~[0m
+
+[96msrc/config/index.ts[0m:[93m8[0m:[93m18[0m - [91merror[0m[90m TS2580: [0mCannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+
+[7m8[0m const NODE_ENV = process.env.NODE_ENV || 'development';
+[7m [0m [91m                 ~~~~~~~[0m
+
+[96msrc/config/index.ts[0m:[93m12[0m:[93m7[0m - [91merror[0m[90m TS2580: [0mCannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+
+[7m12[0m     ? process.env.MONGODB_URI
+[7m  [0m [91m      ~~~~~~~[0m
+
+[96msrc/config/index.ts[0m:[93m13[0m:[93m7[0m - [91merror[0m[90m TS2580: [0mCannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+
+[7m13[0m     : process.env.MONGODB_DEVELOPMENT_URI;
+[7m  [0m [91m      ~~~~~~~[0m
+
+[96msrc/config/index.ts[0m:[93m17[0m:[93m18[0m - [91merror[0m[90m TS2580: [0mCannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+
+[7m17[0m   port: parseInt(process.env.PORT as string, 10),
+[7m  [0m [91m                 ~~~~~~~[0m
+
+[96msrc/config/index.ts[0m:[93m22[0m:[93m15[0m - [91merror[0m[90m TS2580: [0mCannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+
+[7m22[0m   sessionKey: process.env.SESSION_SECRET_KEY as string,
+[7m  [0m [91m              ~~~~~~~[0m
+
+[96msrc/config/index.ts[0m:[93m27[0m:[93m14[0m - [91merror[0m[90m TS2580: [0mCannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+
+[7m27[0m   jwtSecret: process.env.JWT_SECRET as string,
+[7m  [0m [91m             ~~~~~~~[0m
+
+[96msrc/config/index.ts[0m:[93m28[0m:[93m12[0m - [91merror[0m[90m TS2580: [0mCannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+
+[7m28[0m   jwtAlgo: process.env.JWT_ALGO as string,
+[7m  [0m [91m           ~~~~~~~[0m
+
+[96msrc/config/index.ts[0m:[93m34[0m:[93m17[0m - [91merror[0m[90m TS2580: [0mCannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+
+[7m34[0m   mongoTestURI: process.env.MONGODB_TEST_URI as string,
+[7m  [0m [91m                ~~~~~~~[0m
+
+[96msrc/config/index.ts[0m:[93m35[0m:[93m25[0m - [91merror[0m[90m TS2580: [0mCannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+
+[7m35[0m   defaultProfileImgUrl: process.env.DEFAULT_PROFILE_IMG_URL as string,
+[7m  [0m [91m                        ~~~~~~~[0m
+
+[96msrc/config/index.ts[0m:[93m40[0m:[93m16[0m - [91merror[0m[90m TS2580: [0mCannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+
+[7m40[0m   s3AccessKey: process.env.S3_ACCESS_KEY as string,
+[7m  [0m [91m               ~~~~~~~[0m
+
+[96msrc/config/index.ts[0m:[93m41[0m:[93m16[0m - [91merror[0m[90m TS2580: [0mCannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+
+[7m41[0m   s3SecretKey: process.env.S3_SECRET_KEY as string,
+[7m  [0m [91m               ~~~~~~~[0m
+
+[96msrc/config/index.ts[0m:[93m42[0m:[93m15[0m - [91merror[0m[90m TS2580: [0mCannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+
+[7m42[0m   bucketName: process.env.BUCKET_NAME as string,
+[7m  [0m [91m              ~~~~~~~[0m
+
+[96msrc/config/index.ts[0m:[93m44[0m:[93m20[0m - [91merror[0m[90m TS2580: [0mCannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+
+[7m44[0m   slackWebHookUrl: process.env.SLACK_WEBHOOK as string,
+[7m  [0m [91m                   ~~~~~~~[0m
+
+[96msrc/config/index.ts[0m:[93m47[0m:[93m13[0m - [91merror[0m[90m TS2580: [0mCannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+
+[7m47[0m     apiKey: process.env.FIREBASE_API_KEY as string,
+[7m  [0m [91m            ~~~~~~~[0m
+
+[96msrc/config/index.ts[0m:[93m48[0m:[93m17[0m - [91merror[0m[90m TS2580: [0mCannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+
+[7m48[0m     authDomain: process.env.FIREBASE_AUTH_DOMAIN as string,
+[7m  [0m [91m                ~~~~~~~[0m
+
+[96msrc/config/index.ts[0m:[93m49[0m:[93m16[0m - [91merror[0m[90m TS2580: [0mCannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+
+[7m49[0m     projectId: process.env.FIREBASE_PROJECT_ID as string,
+[7m  [0m [91m               ~~~~~~~[0m
+
+[96msrc/config/index.ts[0m:[93m50[0m:[93m20[0m - [91merror[0m[90m TS2580: [0mCannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+
+[7m50[0m     storageBucket: process.env.FIREBASE_STORAGE_BUCKET as string,
+[7m  [0m [91m                   ~~~~~~~[0m
+
+[96msrc/config/index.ts[0m:[93m51[0m:[93m24[0m - [91merror[0m[90m TS2580: [0mCannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+
+[7m51[0m     messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID as string,
+[7m  [0m [91m                       ~~~~~~~[0m
+
+[96msrc/config/index.ts[0m:[93m52[0m:[93m12[0m - [91merror[0m[90m TS2580: [0mCannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+
+[7m52[0m     appId: process.env.FIREBASE_APP_ID as string,
+[7m  [0m [91m           ~~~~~~~[0m
+
+[96msrc/config/index.ts[0m:[93m53[0m:[93m20[0m - [91merror[0m[90m TS2580: [0mCannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+
+[7m53[0m     measurementId: process.env.FIREBASE_MEASUREMENT_ID as string
+[7m  [0m [91m                   ~~~~~~~[0m
+
+[96msrc/config/index.ts[0m:[93m56[0m:[93m11[0m - [91merror[0m[90m TS2580: [0mCannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+
+[7m56[0m     prod: process.env.SIGN_UP_REDIRECTION_PROD_URL as string,
+[7m  [0m [91m          ~~~~~~~[0m
+
+[96msrc/config/index.ts[0m:[93m57[0m:[93m10[0m - [91merror[0m[90m TS2580: [0mCannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+
+[7m57[0m     dev: process.env.SIGN_UP_REDIRECTION_DEV_URL as string
+[7m  [0m [91m         ~~~~~~~[0m
+
+[96msrc/config/index.ts[0m:[93m59[0m:[93m14[0m - [91merror[0m[90m TS2580: [0mCannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+
+[7m59[0m   clientKey: process.env.CLIENT_KEY as string,
+[7m  [0m [91m             ~~~~~~~[0m
+
+[96msrc/config/index.ts[0m:[93m60[0m:[93m18[0m - [91merror[0m[90m TS2580: [0mCannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+
+[7m60[0m   naverClientId: process.env.NAVER_CLIENT_ID as string,
+[7m  [0m [91m                 ~~~~~~~[0m
+
+[96msrc/config/index.ts[0m:[93m61[0m:[93m22[0m - [91merror[0m[90m TS2580: [0mCannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+
+[7m61[0m   naverClientSecret: process.env.NAVER_CLIENT_SECRET as string,
+[7m  [0m [91m                     ~~~~~~~[0m
+
+[96msrc/config/index.ts[0m:[93m62[0m:[93m14[0m - [91merror[0m[90m TS2580: [0mCannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+
+[7m62[0m   sentryDsn: process.env.SENTRY_DSN as string
+[7m  [0m [91m             ~~~~~~~[0m
+
+[96msrc/config/multer.ts[0m:[93m1[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module 'multer' or its corresponding type declarations.
+
+[7m1[0m import multer from 'multer';
+[7m [0m [91m                   ~~~~~~~~[0m
+
+[96msrc/config/multer.ts[0m:[93m2[0m:[93m22[0m - [91merror[0m[90m TS2307: [0mCannot find module 'multer-s3' or its corresponding type declarations.
+
+[7m2[0m import multerS3 from 'multer-s3';
+[7m [0m [91m                     ~~~~~~~~~~~[0m
+
+[96msrc/config/multer.ts[0m:[93m12[0m:[93m47[0m - [91merror[0m[90m TS2694: [0mNamespace 'global.Express' has no exported member 'MulterS3'.
+
+[7m12[0m     key: (req: Express.Request, file: Express.MulterS3.File, cb) => {
+[7m  [0m [91m                                              ~~~~~~~~[0m
+
+[96msrc/config/multer.ts[0m:[93m12[0m:[93m62[0m - [91merror[0m[90m TS7006: [0mParameter 'cb' implicitly has an 'any' type.
+
+[7m12[0m     key: (req: Express.Request, file: Express.MulterS3.File, cb) => {
+[7m  [0m [91m                                                             ~~[0m
+
+[96msrc/config/s3Client.ts[0m:[93m1[0m:[93m17[0m - [91merror[0m[90m TS2307: [0mCannot find module 'aws-sdk' or its corresponding type declarations.
+
+[7m1[0m import AWS from 'aws-sdk';
+[7m [0m [91m                ~~~~~~~~~[0m
+
+[96msrc/controllers/ballotController.ts[0m:[93m1[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module 'mongoose' or its corresponding type declarations.
+
+[7m1[0m import { Types } from 'mongoose';
+[7m [0m [91m                      ~~~~~~~~~~[0m
+
+[96msrc/controllers/ballotController.ts[0m:[93m2[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"express"' has no exported member 'NextFunction'.
+
+[7m2[0m import { NextFunction, Request, Response } from 'express';
+[7m [0m [91m         ~~~~~~~~~~~~[0m
+
+[96msrc/controllers/ballotController.ts[0m:[93m2[0m:[93m24[0m - [91merror[0m[90m TS2305: [0mModule '"express"' has no exported member 'Request'.
+
+[7m2[0m import { NextFunction, Request, Response } from 'express';
+[7m [0m [91m                       ~~~~~~~[0m
+
+[96msrc/controllers/ballotController.ts[0m:[93m2[0m:[93m33[0m - [91merror[0m[90m TS2305: [0mModule '"express"' has no exported member 'Response'.
+
+[7m2[0m import { NextFunction, Request, Response } from 'express';
+[7m [0m [91m                                ~~~~~~~~[0m
+
+[96msrc/controllers/cardController.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"express"' has no exported member 'NextFunction'.
+
+[7m1[0m import { NextFunction, Request, Response } from 'express';
+[7m [0m [91m         ~~~~~~~~~~~~[0m
+
+[96msrc/controllers/cardController.ts[0m:[93m1[0m:[93m24[0m - [91merror[0m[90m TS2305: [0mModule '"express"' has no exported member 'Request'.
+
+[7m1[0m import { NextFunction, Request, Response } from 'express';
+[7m [0m [91m                       ~~~~~~~[0m
+
+[96msrc/controllers/cardController.ts[0m:[93m1[0m:[93m33[0m - [91merror[0m[90m TS2305: [0mModule '"express"' has no exported member 'Response'.
+
+[7m1[0m import { NextFunction, Request, Response } from 'express';
+[7m [0m [91m                                ~~~~~~~~[0m
+
+[96msrc/controllers/cardController.ts[0m:[93m6[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module 'mongoose' or its corresponding type declarations.
+
+[7m6[0m import { Types } from 'mongoose';
+[7m [0m [91m                      ~~~~~~~~~~[0m
+
+[96msrc/controllers/cardMedleyController.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"express"' has no exported member 'Request'.
+
+[7m1[0m import { Request, Response, NextFunction } from 'express';
+[7m [0m [91m         ~~~~~~~[0m
+
+[96msrc/controllers/cardMedleyController.ts[0m:[93m1[0m:[93m19[0m - [91merror[0m[90m TS2305: [0mModule '"express"' has no exported member 'Response'.
+
+[7m1[0m import { Request, Response, NextFunction } from 'express';
+[7m [0m [91m                  ~~~~~~~~[0m
+
+[96msrc/controllers/cardMedleyController.ts[0m:[93m1[0m:[93m29[0m - [91merror[0m[90m TS2305: [0mModule '"express"' has no exported member 'NextFunction'.
+
+[7m1[0m import { Request, Response, NextFunction } from 'express';
+[7m [0m [91m                            ~~~~~~~~~~~~[0m
+
+[96msrc/controllers/CategoryController.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"express"' has no exported member 'NextFunction'.
+
+[7m1[0m import { NextFunction, Request, Response } from 'express';
+[7m [0m [91m         ~~~~~~~~~~~~[0m
+
+[96msrc/controllers/CategoryController.ts[0m:[93m1[0m:[93m24[0m - [91merror[0m[90m TS2305: [0mModule '"express"' has no exported member 'Request'.
+
+[7m1[0m import { NextFunction, Request, Response } from 'express';
+[7m [0m [91m                       ~~~~~~~[0m
+
+[96msrc/controllers/CategoryController.ts[0m:[93m1[0m:[93m33[0m - [91merror[0m[90m TS2305: [0mModule '"express"' has no exported member 'Response'.
+
+[7m1[0m import { NextFunction, Request, Response } from 'express';
+[7m [0m [91m                                ~~~~~~~~[0m
+
+[96msrc/controllers/userController.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"express"' has no exported member 'NextFunction'.
+
+[7m1[0m import { NextFunction, Request, Response } from 'express';
+[7m [0m [91m         ~~~~~~~~~~~~[0m
+
+[96msrc/controllers/userController.ts[0m:[93m1[0m:[93m24[0m - [91merror[0m[90m TS2305: [0mModule '"express"' has no exported member 'Request'.
+
+[7m1[0m import { NextFunction, Request, Response } from 'express';
+[7m [0m [91m                       ~~~~~~~[0m
+
+[96msrc/controllers/userController.ts[0m:[93m1[0m:[93m33[0m - [91merror[0m[90m TS2305: [0mModule '"express"' has no exported member 'Response'.
+
+[7m1[0m import { NextFunction, Request, Response } from 'express';
+[7m [0m [91m                                ~~~~~~~~[0m
+
+[96msrc/controllers/userController.ts[0m:[93m2[0m:[93m34[0m - [91merror[0m[90m TS2307: [0mCannot find module 'express-validator' or its corresponding type declarations.
+
+[7m2[0m import { validationResult } from 'express-validator';
+[7m [0m [91m                                 ~~~~~~~~~~~~~~~~~~~[0m
+
+[96msrc/controllers/userController.ts[0m:[93m31[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module 'mongoose' or its corresponding type declarations.
+
+[7m31[0m import { Types } from 'mongoose';
+[7m  [0m [91m                      ~~~~~~~~~~[0m
+
+[96msrc/controllers/userController.ts[0m:[93m338[0m:[93m39[0m - [91merror[0m[90m TS2694: [0mNamespace 'global.Express' has no exported member 'MulterS3'.
+
+[7m338[0m     const image = req.file as Express.MulterS3.File;
+[7m   [0m [91m                                      ~~~~~~~~[0m
+
+[96msrc/index.ts[0m:[93m4[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module 'helmet' or its corresponding type declarations.
+
+[7m4[0m import helmet from 'helmet';
+[7m [0m [91m                   ~~~~~~~~[0m
+
+[96msrc/index.ts[0m:[93m7[0m:[93m18[0m - [91merror[0m[90m TS2307: [0mCannot find module 'cors' or its corresponding type declarations.
+
+[7m7[0m import cors from 'cors';
+[7m [0m [91m                 ~~~~~~[0m
+
+[96msrc/index.ts[0m:[93m11[0m:[93m13[0m - [91merror[0m[90m TS2349: [0mThis expression is not callable.
+  Type 'typeof import("/Users/oieuoa/dev/piickle/server/src/types/express")' has no call signatures.
+
+[7m11[0m const app = express();
+[7m  [0m [91m            ~~~~~~~[0m
+
+[96msrc/index.ts[0m:[93m13[0m:[93m17[0m - [91merror[0m[90m TS2339: [0mProperty 'urlencoded' does not exist on type 'typeof import("/Users/oieuoa/dev/piickle/server/src/types/express")'.
+
+[7m13[0m app.use(express.urlencoded({ extended: true }));
+[7m  [0m [91m                ~~~~~~~~~~[0m
+
+[96msrc/index.ts[0m:[93m14[0m:[93m17[0m - [91merror[0m[90m TS2339: [0mProperty 'json' does not exist on type 'typeof import("/Users/oieuoa/dev/piickle/server/src/types/express")'.
+
+[7m14[0m app.use(express.json());
+[7m  [0m [91m                ~~~~[0m
+
+[96msrc/index.ts[0m:[93m29[0m:[93m5[0m - [91merror[0m[90m TS2580: [0mCannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+
+[7m29[0m     process.exit(1);
+[7m  [0m [91m    ~~~~~~~[0m
+
+[96msrc/index.ts[0m:[93m38[0m:[93m5[0m - [91merror[0m[90m TS2580: [0mCannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+
+[7m38[0m     process.exit(1);
+[7m  [0m [91m    ~~~~~~~[0m
+
+[96msrc/intefaces/CardMedleyDto.ts[0m:[93m1[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module 'mongoose' or its corresponding type declarations.
+
+[7m1[0m import { Types } from 'mongoose';
+[7m [0m [91m                      ~~~~~~~~~~[0m
+
+[96msrc/intefaces/CardMedleyPreviewDto.ts[0m:[93m1[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module 'mongoose' or its corresponding type declarations.
+
+[7m1[0m import { Types } from 'mongoose';
+[7m [0m [91m                      ~~~~~~~~~~[0m
+
+[96msrc/intefaces/CardResponseDto.ts[0m:[93m1[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module 'mongoose' or its corresponding type declarations.
+
+[7m1[0m import { Types } from 'mongoose';
+[7m [0m [91m                      ~~~~~~~~~~[0m
+
+[96msrc/intefaces/CategoryInfoDto.ts[0m:[93m1[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module 'mongoose' or its corresponding type declarations.
+
+[7m1[0m import { Types } from 'mongoose';
+[7m [0m [91m                      ~~~~~~~~~~[0m
+
+[96msrc/intefaces/CategoryResponseDto.ts[0m:[93m2[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module 'mongoose' or its corresponding type declarations.
+
+[7m2[0m import { Types } from 'mongoose';
+[7m [0m [91m                      ~~~~~~~~~~[0m
+
+[96msrc/intefaces/CreateBallotResultDto.ts[0m:[93m1[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module 'mongoose' or its corresponding type declarations.
+
+[7m1[0m import { Types } from 'mongoose';
+[7m [0m [91m                      ~~~~~~~~~~[0m
+
+[96msrc/intefaces/createUserCommand.ts[0m:[93m28[0m:[93m9[0m - [91merror[0m[90m TS7053: [0mElement implicitly has an 'any' type because expression of type 'any' can't be used to index type 'typeof AgeGroup'.
+
+[7m28[0m       ? AgeGroup[req.body.ageGroup]
+[7m  [0m [91m        ~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96msrc/intefaces/createUserCommand.ts[0m:[93m30[0m:[93m31[0m - [91merror[0m[90m TS7053: [0mElement implicitly has an 'any' type because expression of type 'any' can't be used to index type 'typeof Gender'.
+
+[7m30[0m     gender: req.body.gender ? Gender[req.body.gender] : Gender.ETC,
+[7m  [0m [91m                              ~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96msrc/intefaces/createUserCommand.ts[0m:[93m31[0m:[93m42[0m - [91merror[0m[90m TS2694: [0mNamespace 'global.Express' has no exported member 'MulterS3'.
+
+[7m31[0m     profileImgUrl: (req?.file as Express.MulterS3.File)?.location
+[7m  [0m [91m                                         ~~~~~~~~[0m
+
+[96msrc/intefaces/JwtPayloadInfo.ts[0m:[93m1[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module 'mongoose' or its corresponding type declarations.
+
+[7m1[0m import { Types } from 'mongoose';
+[7m [0m [91m                      ~~~~~~~~~~[0m
+
+[96msrc/intefaces/PostBaseResponseDto.ts[0m:[93m1[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module 'mongoose' or its corresponding type declarations.
+
+[7m1[0m import { Types } from 'mongoose';
+[7m [0m [91m                      ~~~~~~~~~~[0m
+
+[96msrc/intefaces/user/LoginResponseDto.ts[0m:[93m1[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module 'mongoose' or its corresponding type declarations.
+
+[7m1[0m import { Types } from 'mongoose';
+[7m [0m [91m                      ~~~~~~~~~~[0m
+
+[96msrc/intefaces/user/UpdateUserDto.ts[0m:[93m1[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module 'mongoose' or its corresponding type declarations.
+
+[7m1[0m import { Types } from 'mongoose';
+[7m [0m [91m                      ~~~~~~~~~~[0m
+
+[96msrc/intefaces/user/UserBookmarkDto.ts[0m:[93m1[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module 'mongoose' or its corresponding type declarations.
+
+[7m1[0m import { Types } from 'mongoose';
+[7m [0m [91m                      ~~~~~~~~~~[0m
+
+[96msrc/intefaces/user/UserBookmarkInfo.ts[0m:[93m1[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module 'mongoose' or its corresponding type declarations.
+
+[7m1[0m import { Types } from 'mongoose';
+[7m [0m [91m                      ~~~~~~~~~~[0m
+
+[96msrc/loaders/db.ts[0m:[93m1[0m:[93m33[0m - [91merror[0m[90m TS2307: [0mCannot find module 'mongoose' or its corresponding type declarations.
+
+[7m1[0m import mongoose, { Model } from 'mongoose';
+[7m [0m [91m                                ~~~~~~~~~~[0m
+
+[96msrc/loaders/db.ts[0m:[93m18[0m:[93m34[0m - [91merror[0m[90m TS7006: [0mParameter 'err' implicitly has an 'any' type.
+
+[7m18[0m   model.createCollection().catch(err => {
+[7m  [0m [91m                                 ~~~[0m
+
+[96msrc/loaders/sentryConfiguration.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"express"' has no exported member 'Express'.
+
+[7m1[0m import { Express } from 'express';
+[7m [0m [91m         ~~~~~~~[0m
+
+[96msrc/loaders/sentryConfiguration.ts[0m:[93m7[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '@sentry/node' or its corresponding type declarations.
+
+[7m7[0m } from '@sentry/node';
+[7m [0m [91m       ~~~~~~~~~~~~~~[0m
+
+[96msrc/loaders/session.ts[0m:[93m2[0m:[93m21[0m - [91merror[0m[90m TS2307: [0mCannot find module 'express-session' or its corresponding type declarations.
+
+[7m2[0m import session from 'express-session';
+[7m [0m [91m                    ~~~~~~~~~~~~~~~~~[0m
+
+[96msrc/loaders/session.ts[0m:[93m4[0m:[93m24[0m - [91merror[0m[90m TS2307: [0mCannot find module 'connect-mongo' or its corresponding type declarations.
+
+[7m4[0m import MongoStore from 'connect-mongo';
+[7m [0m [91m                       ~~~~~~~~~~~~~~~[0m
+
+[96msrc/loaders/session.ts[0m:[93m6[0m:[93m31[0m - [91merror[0m[90m TS2694: [0mNamespace '"/Users/oieuoa/dev/piickle/server/src/types/express"' has no exported member 'RequestHandler'.
+
+[7m6[0m const expressSession: express.RequestHandler = session({
+[7m [0m [91m                              ~~~~~~~~~~~~~~[0m
+
+[96msrc/middlewares/auth.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"express"' has no exported member 'Request'.
+
+[7m1[0m import { Request, Response, NextFunction } from 'express';
+[7m [0m [91m         ~~~~~~~[0m
+
+[96msrc/middlewares/auth.ts[0m:[93m1[0m:[93m19[0m - [91merror[0m[90m TS2305: [0mModule '"express"' has no exported member 'Response'.
+
+[7m1[0m import { Request, Response, NextFunction } from 'express';
+[7m [0m [91m                  ~~~~~~~~[0m
+
+[96msrc/middlewares/auth.ts[0m:[93m1[0m:[93m29[0m - [91merror[0m[90m TS2305: [0mModule '"express"' has no exported member 'NextFunction'.
+
+[7m1[0m import { Request, Response, NextFunction } from 'express';
+[7m [0m [91m                            ~~~~~~~~~~~~[0m
+
+[96msrc/middlewares/auth.ts[0m:[93m2[0m:[93m17[0m - [91merror[0m[90m TS2307: [0mCannot find module 'jsonwebtoken' or its corresponding type declarations.
+
+[7m2[0m import jwt from 'jsonwebtoken';
+[7m [0m [91m                ~~~~~~~~~~~~~~[0m
+
+[96msrc/middlewares/errorHandler.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"express"' has no exported member 'NextFunction'.
+
+[7m1[0m import { NextFunction, Request, Response } from 'express';
+[7m [0m [91m         ~~~~~~~~~~~~[0m
+
+[96msrc/middlewares/errorHandler.ts[0m:[93m1[0m:[93m24[0m - [91merror[0m[90m TS2305: [0mModule '"express"' has no exported member 'Request'.
+
+[7m1[0m import { NextFunction, Request, Response } from 'express';
+[7m [0m [91m                       ~~~~~~~[0m
+
+[96msrc/middlewares/errorHandler.ts[0m:[93m1[0m:[93m33[0m - [91merror[0m[90m TS2305: [0mModule '"express"' has no exported member 'Response'.
+
+[7m1[0m import { NextFunction, Request, Response } from 'express';
+[7m [0m [91m                                ~~~~~~~~[0m
+
+[96msrc/middlewares/flexibleAuth.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"express"' has no exported member 'Request'.
+
+[7m1[0m import { Request, Response, NextFunction } from 'express';
+[7m [0m [91m         ~~~~~~~[0m
+
+[96msrc/middlewares/flexibleAuth.ts[0m:[93m1[0m:[93m19[0m - [91merror[0m[90m TS2305: [0mModule '"express"' has no exported member 'Response'.
+
+[7m1[0m import { Request, Response, NextFunction } from 'express';
+[7m [0m [91m                  ~~~~~~~~[0m
+
+[96msrc/middlewares/flexibleAuth.ts[0m:[93m1[0m:[93m29[0m - [91merror[0m[90m TS2305: [0mModule '"express"' has no exported member 'NextFunction'.
+
+[7m1[0m import { Request, Response, NextFunction } from 'express';
+[7m [0m [91m                            ~~~~~~~~~~~~[0m
+
+[96msrc/middlewares/flexibleAuth.ts[0m:[93m2[0m:[93m17[0m - [91merror[0m[90m TS2307: [0mCannot find module 'jsonwebtoken' or its corresponding type declarations.
+
+[7m2[0m import jwt from 'jsonwebtoken';
+[7m [0m [91m                ~~~~~~~~~~~~~~[0m
+
+[96msrc/middlewares/guestHandler.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"express"' has no exported member 'NextFunction'.
+
+[7m1[0m import { NextFunction, Request, Response } from 'express';
+[7m [0m [91m         ~~~~~~~~~~~~[0m
+
+[96msrc/middlewares/guestHandler.ts[0m:[93m1[0m:[93m24[0m - [91merror[0m[90m TS2305: [0mModule '"express"' has no exported member 'Request'.
+
+[7m1[0m import { NextFunction, Request, Response } from 'express';
+[7m [0m [91m                       ~~~~~~~[0m
+
+[96msrc/middlewares/guestHandler.ts[0m:[93m1[0m:[93m33[0m - [91merror[0m[90m TS2305: [0mModule '"express"' has no exported member 'Response'.
+
+[7m1[0m import { NextFunction, Request, Response } from 'express';
+[7m [0m [91m                                ~~~~~~~~[0m
+
+[96msrc/models/ballotItem.ts[0m:[93m1[0m:[93m31[0m - [91merror[0m[90m TS2307: [0mCannot find module 'mongoose' or its corresponding type declarations.
+
+[7m1[0m import { Schema, model } from 'mongoose';
+[7m [0m [91m                              ~~~~~~~~~~[0m
+
+[96msrc/models/ballotResult.ts[0m:[93m1[0m:[93m31[0m - [91merror[0m[90m TS2307: [0mCannot find module 'mongoose' or its corresponding type declarations.
+
+[7m1[0m import { Schema, model } from 'mongoose';
+[7m [0m [91m                              ~~~~~~~~~~[0m
+
+[96msrc/models/ballotTopic.ts[0m:[93m1[0m:[93m31[0m - [91merror[0m[90m TS2307: [0mCannot find module 'mongoose' or its corresponding type declarations.
+
+[7m1[0m import { Schema, model } from 'mongoose';
+[7m [0m [91m                              ~~~~~~~~~~[0m
+
+[96msrc/models/bestCard.ts[0m:[93m1[0m:[93m38[0m - [91merror[0m[90m TS2307: [0mCannot find module 'mongoose' or its corresponding type declarations.
+
+[7m1[0m import { model, Schema, Types } from 'mongoose';
+[7m [0m [91m                                     ~~~~~~~~~~[0m
+
+[96msrc/models/blockedCard.ts[0m:[93m3[0m:[93m31[0m - [91merror[0m[90m TS2307: [0mCannot find module 'mongoose' or its corresponding type declarations.
+
+[7m3[0m import { model, Schema } from 'mongoose';
+[7m [0m [91m                              ~~~~~~~~~~[0m
+
+[96msrc/models/bookmark.ts[0m:[93m1[0m:[93m31[0m - [91merror[0m[90m TS2307: [0mCannot find module 'mongoose' or its corresponding type declarations.
+
+[7m1[0m import { model, Schema } from 'mongoose';
+[7m [0m [91m                              ~~~~~~~~~~[0m
+
+[96msrc/models/card.ts[0m:[93m1[0m:[93m31[0m - [91merror[0m[90m TS2307: [0mCannot find module 'mongoose' or its corresponding type declarations.
+
+[7m1[0m import { model, Schema } from 'mongoose';
+[7m [0m [91m                              ~~~~~~~~~~[0m
+
+[96msrc/models/cardMedley.ts[0m:[93m1[0m:[93m31[0m - [91merror[0m[90m TS2307: [0mCannot find module 'mongoose' or its corresponding type declarations.
+
+[7m1[0m import { model, Schema } from 'mongoose';
+[7m [0m [91m                              ~~~~~~~~~~[0m
+
+[96msrc/models/category.ts[0m:[93m1[0m:[93m31[0m - [91merror[0m[90m TS2307: [0mCannot find module 'mongoose' or its corresponding type declarations.
+
+[7m1[0m import { model, Schema } from 'mongoose';
+[7m [0m [91m                              ~~~~~~~~~~[0m
+
+[96msrc/models/emailAuth.ts[0m:[93m1[0m:[93m31[0m - [91merror[0m[90m TS2307: [0mCannot find module 'mongoose' or its corresponding type declarations.
+
+[7m1[0m import { Schema, model } from 'mongoose';
+[7m [0m [91m                              ~~~~~~~~~~[0m
+
+[96msrc/models/interface/Document.ts[0m:[93m1[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module 'mongoose' or its corresponding type declarations.
+
+[7m1[0m import { Types } from 'mongoose';
+[7m [0m [91m                      ~~~~~~~~~~[0m
+
+[96msrc/models/interface/IBallotItem.ts[0m:[93m1[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module 'mongoose' or its corresponding type declarations.
+
+[7m1[0m import { Types } from 'mongoose';
+[7m [0m [91m                      ~~~~~~~~~~[0m
+
+[96msrc/models/interface/IBallotResult.ts[0m:[93m1[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module 'mongoose' or its corresponding type declarations.
+
+[7m1[0m import { Types } from 'mongoose';
+[7m [0m [91m                      ~~~~~~~~~~[0m
+
+[96msrc/models/interface/IBlockedCard.ts[0m:[93m1[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module 'mongoose' or its corresponding type declarations.
+
+[7m1[0m import { Types } from 'mongoose';
+[7m [0m [91m                      ~~~~~~~~~~[0m
+
+[96msrc/models/interface/IBookmark.ts[0m:[93m1[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module 'mongoose' or its corresponding type declarations.
+
+[7m1[0m import { Types } from 'mongoose';
+[7m [0m [91m                      ~~~~~~~~~~[0m
+
+[96msrc/models/interface/ICard.ts[0m:[93m1[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module 'mongoose' or its corresponding type declarations.
+
+[7m1[0m import { Types } from 'mongoose';
+[7m [0m [91m                      ~~~~~~~~~~[0m
+
+[96msrc/models/interface/ICardMedley.ts[0m:[93m1[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module 'mongoose' or its corresponding type declarations.
+
+[7m1[0m import { Types } from 'mongoose';
+[7m [0m [91m                      ~~~~~~~~~~[0m
+
+[96msrc/models/interface/ICategory.ts[0m:[93m1[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module 'mongoose' or its corresponding type declarations.
+
+[7m1[0m import { Types } from 'mongoose';
+[7m [0m [91m                      ~~~~~~~~~~[0m
+
+[96msrc/models/interface/IUser.ts[0m:[93m1[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module 'mongoose' or its corresponding type declarations.
+
+[7m1[0m import { Types } from 'mongoose';
+[7m [0m [91m                      ~~~~~~~~~~[0m
+
+[96msrc/models/preUser.ts[0m:[93m1[0m:[93m31[0m - [91merror[0m[90m TS2307: [0mCannot find module 'mongoose' or its corresponding type declarations.
+
+[7m1[0m import { model, Schema } from 'mongoose';
+[7m [0m [91m                              ~~~~~~~~~~[0m
+
+[96msrc/models/quitLog.ts[0m:[93m1[0m:[93m31[0m - [91merror[0m[90m TS2307: [0mCannot find module 'mongoose' or its corresponding type declarations.
+
+[7m1[0m import { Schema, model } from 'mongoose';
+[7m [0m [91m                              ~~~~~~~~~~[0m
+
+[96msrc/models/user/user.ts[0m:[93m3[0m:[93m31[0m - [91merror[0m[90m TS2307: [0mCannot find module 'mongoose' or its corresponding type declarations.
+
+[7m3[0m import { model, Schema } from 'mongoose';
+[7m [0m [91m                              ~~~~~~~~~~[0m
+
+[96msrc/modules/jwtHandler.ts[0m:[93m1[0m:[93m17[0m - [91merror[0m[90m TS2307: [0mCannot find module 'jsonwebtoken' or its corresponding type declarations.
+
+[7m1[0m import jwt from 'jsonwebtoken';
+[7m [0m [91m                ~~~~~~~~~~~~~~[0m
+
+[96msrc/modules/jwtHandler.ts[0m:[93m2[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module 'mongoose' or its corresponding type declarations.
+
+[7m2[0m import { Types } from 'mongoose';
+[7m [0m [91m                      ~~~~~~~~~~[0m
+
+[96msrc/modules/returnToSlack.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"express"' has no exported member 'Request'.
+
+[7m1[0m import { Request } from 'express';
+[7m [0m [91m         ~~~~~~~[0m
+
+[96msrc/modules/util.ts[0m:[93m2[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module 'mongoose' or its corresponding type declarations.
+
+[7m2[0m import { Types } from 'mongoose';
+[7m [0m [91m                      ~~~~~~~~~~[0m
+
+[96msrc/routes/ballotRouter.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"express"' has no exported member 'Router'.
+
+[7m1[0m import { Router } from 'express';
+[7m [0m [91m         ~~~~~~[0m
+
+[96msrc/routes/ballotRouter.ts[0m:[93m2[0m:[93m22[0m - [91merror[0m[90m TS2307: [0mCannot find module 'express-validator' or its corresponding type declarations.
+
+[7m2[0m import { body } from 'express-validator';
+[7m [0m [91m                     ~~~~~~~~~~~~~~~~~~~[0m
+
+[96msrc/routes/cardMedleyRouter.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"express"' has no exported member 'Router'.
+
+[7m1[0m import { Router } from 'express';
+[7m [0m [91m         ~~~~~~[0m
+
+[96msrc/routes/cardRouter.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"express"' has no exported member 'Router'.
+
+[7m1[0m import { Router } from 'express';
+[7m [0m [91m         ~~~~~~[0m
+
+[96msrc/routes/CategoryRouter.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"express"' has no exported member 'Router'.
+
+[7m1[0m import { Router } from 'express';
+[7m [0m [91m         ~~~~~~[0m
+
+[96msrc/routes/index.ts[0m:[93m2[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"express"' has no exported member 'Router'.
+
+[7m2[0m import { Router } from 'express';
+[7m [0m [91m         ~~~~~~[0m
+
+[96msrc/routes/testRouter.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"express"' has no exported member 'Router'.
+
+[7m1[0m import { Router } from 'express';
+[7m [0m [91m         ~~~~~~[0m
+
+[96msrc/routes/testRouter.ts[0m:[93m13[0m:[93m61[0m - [91merror[0m[90m TS7006: [0mParameter 'res' implicitly has an 'any' type.
+
+[7m13[0m   async (req: TypedRequest<{ email: string; key: string }>, res, next) => {
+[7m  [0m [91m                                                            ~~~[0m
+
+[96msrc/routes/testRouter.ts[0m:[93m13[0m:[93m66[0m - [91merror[0m[90m TS7006: [0mParameter 'next' implicitly has an 'any' type.
+
+[7m13[0m   async (req: TypedRequest<{ email: string; key: string }>, res, next) => {
+[7m  [0m [91m                                                                 ~~~~[0m
+
+[96msrc/routes/testRouter.ts[0m:[93m39[0m:[93m61[0m - [91merror[0m[90m TS7006: [0mParameter 'res' implicitly has an 'any' type.
+
+[7m39[0m   async (req: TypedRequest<{ email: string; key: string }>, res, next) => {
+[7m  [0m [91m                                                            ~~~[0m
+
+[96msrc/routes/testRouter.ts[0m:[93m39[0m:[93m66[0m - [91merror[0m[90m TS7006: [0mParameter 'next' implicitly has an 'any' type.
+
+[7m39[0m   async (req: TypedRequest<{ email: string; key: string }>, res, next) => {
+[7m  [0m [91m                                                                 ~~~~[0m
+
+[96msrc/routes/userRouter/index.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"express"' has no exported member 'Router'.
+
+[7m1[0m import { Router } from 'express';
+[7m [0m [91m         ~~~~~~[0m
+
+[96msrc/routes/userRouter/index.ts[0m:[93m2[0m:[93m22[0m - [91merror[0m[90m TS2307: [0mCannot find module 'express-validator' or its corresponding type declarations.
+
+[7m2[0m import { body } from 'express-validator';
+[7m [0m [91m                     ~~~~~~~~~~~~~~~~~~~[0m
+
+[96msrc/routes/userRouter/userCardRouter.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"express"' has no exported member 'Router'.
+
+[7m1[0m import { Router } from 'express';
+[7m [0m [91m         ~~~~~~[0m
+
+[96msrc/services/ballotService.ts[0m:[93m4[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module 'mongoose' or its corresponding type declarations.
+
+[7m4[0m import { Types } from 'mongoose';
+[7m [0m [91m                      ~~~~~~~~~~[0m
+
+[96msrc/services/ballotService.ts[0m:[93m131[0m:[93m49[0m - [91merror[0m[90m TS7006: [0mParameter 'e' implicitly has an 'any' type.
+
+[7m131[0m   const completedIds = completedBallotTopic.map(e => e.ballotTopicId);
+[7m   [0m [91m                                                ~[0m
+
+[96msrc/services/blockCardService.ts[0m:[93m1[0m:[93m38[0m - [91merror[0m[90m TS2307: [0mCannot find module 'mongoose' or its corresponding type declarations.
+
+[7m1[0m import { Types, MongooseError } from 'mongoose';
+[7m [0m [91m                                     ~~~~~~~~~~[0m
+
+[96msrc/services/cardMedleyService.ts[0m:[93m8[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module 'mongoose' or its corresponding type declarations.
+
+[7m8[0m import { Types } from 'mongoose';
+[7m [0m [91m                      ~~~~~~~~~~[0m
+
+[96msrc/services/cardService.ts[0m:[93m4[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module 'mongoose' or its corresponding type declarations.
+
+[7m4[0m import { Types } from 'mongoose';
+[7m [0m [91m                      ~~~~~~~~~~[0m
+
+[96msrc/services/cardService.ts[0m:[93m160[0m:[93m37[0m - [91merror[0m[90m TS7006: [0mParameter 'bookmark' implicitly has an 'any' type.
+
+[7m160[0m     await Promise.all(bookmarks.map(bookmark => Card.findById(bookmark._id)))
+[7m   [0m [91m                                    ~~~~~~~~[0m
+
+[96msrc/services/CategoryService.ts[0m:[93m4[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module 'mongoose' or its corresponding type declarations.
+
+[7m4[0m import { Types } from 'mongoose';
+[7m [0m [91m                      ~~~~~~~~~~[0m
+
+[96msrc/services/CategoryService.ts[0m:[93m33[0m:[93m17[0m - [91merror[0m[90m TS2550: [0mProperty 'includes' does not exist on type 'number[]'. Do you need to change your target library? Try changing the 'lib' compiler option to 'es2016' or later.
+
+[7m33[0m     if (!result.includes(randomNumberInRange)) {
+[7m  [0m [91m                ~~~~~~~~[0m
+
+[96msrc/services/CategoryService.ts[0m:[93m92[0m:[93m14[0m - [91merror[0m[90m TS2550: [0mProperty 'includes' does not exist on type 'string[]'. Do you need to change your target library? Try changing the 'lib' compiler option to 'es2016' or later.
+
+[7m92[0m   if (search.includes(FILTER_R_RATED)) {
+[7m  [0m [91m             ~~~~~~~~[0m
+
+[96msrc/services/CategoryService.ts[0m:[93m140[0m:[93m22[0m - [91merror[0m[90m TS2550: [0mProperty 'includes' does not exist on type 'string[]'. Do you need to change your target library? Try changing the 'lib' compiler option to 'es2016' or later.
+
+[7m140[0m   if (filterKeywords.includes(FILTER_R_RATED)) {
+[7m   [0m [91m                     ~~~~~~~~[0m
+
+[96msrc/services/CategoryService.ts[0m:[93m168[0m:[93m13[0m - [91merror[0m[90m TS7006: [0mParameter 'res' implicitly has an 'any' type.
+
+[7m168[0m     }).then(res => {
+[7m   [0m [91m            ~~~[0m
+
+[96msrc/services/CategoryService.ts[0m:[93m169[0m:[93m22[0m - [91merror[0m[90m TS7006: [0mParameter 'e' implicitly has an 'any' type.
+
+[7m169[0m       return res.map(e => e.card.toString());
+[7m   [0m [91m                     ~[0m
+
+[96msrc/services/dto/socialLoginResponse.ts[0m:[93m1[0m:[93m31[0m - [91merror[0m[90m TS2307: [0mCannot find module 'axios' or its corresponding type declarations.
+
+[7m1[0m import { AxiosResponse } from 'axios';
+[7m [0m [91m                              ~~~~~~~[0m
+
+[96msrc/services/naverLoginService.ts[0m:[93m1[0m:[93m19[0m - [91merror[0m[90m TS2307: [0mCannot find module 'axios' or its corresponding type declarations.
+
+[7m1[0m import axios from 'axios';
+[7m [0m [91m                  ~~~~~~~[0m
+
+[96msrc/services/socialAuthService.ts[0m:[93m1[0m:[93m38[0m - [91merror[0m[90m TS2307: [0mCannot find module 'axios' or its corresponding type declarations.
+
+[7m1[0m import axios, { AxiosResponse } from 'axios';
+[7m [0m [91m                                     ~~~~~~~[0m
+
+[96msrc/services/userService.ts[0m:[93m1[0m:[93m35[0m - [91merror[0m[90m TS2307: [0mCannot find module 'bcryptjs' or its corresponding type declarations.
+
+[7m1[0m import { compare, hashSync } from 'bcryptjs';
+[7m [0m [91m                                  ~~~~~~~~~~[0m
+
+[96msrc/services/userService.ts[0m:[93m15[0m:[93m23[0m - [91merror[0m[90m TS2307: [0mCannot find module 'mongoose' or its corresponding type declarations.
+
+[7m15[0m import { Types } from 'mongoose';
+[7m  [0m [91m                      ~~~~~~~~~~[0m
+
+[96msrc/types/TypedRequest.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"express"' has no exported member 'Request'.
+
+[7m1[0m import { Request } from 'express';
+[7m [0m [91m         ~~~~~~~[0m
+
+[96msrc/types/TypedResponse.ts[0m:[93m1[0m:[93m10[0m - [91merror[0m[90m TS2305: [0mModule '"express"' has no exported member 'Response'.
+
+[7m1[0m import { Response } from 'express';
+[7m [0m [91m         ~~~~~~~~[0m
+
+[96mtest/ballot.spec.ts[0m:[93m1[0m:[93m21[0m - [91merror[0m[90m TS2307: [0mCannot find module 'supertest' or its corresponding type declarations.
+
+[7m1[0m import request from 'supertest';
+[7m [0m [91m                    ~~~~~~~~~~~[0m
+
+[96mtest/ballot.spec.ts[0m:[93m4[0m:[93m1[0m - [91merror[0m[90m TS2582: [0mCannot find name 'describe'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+
+[7m4[0m describe('POST /ballots', () => {
+[7m [0m [91m~~~~~~~~[0m
+
+[96mtest/ballot.spec.ts[0m:[93m5[0m:[93m3[0m - [91merror[0m[90m TS2582: [0mCannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+
+[7m5[0m   it('투표 성공', async () => {
+[7m [0m [91m  ~~[0m
+
+[96mtest/ballot.spec.ts[0m:[93m20[0m:[93m3[0m - [91merror[0m[90m TS2582: [0mCannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+
+[7m20[0m   it('투표 실패', async () => {
+[7m  [0m [91m  ~~[0m
+
+[96mtest/ballot.spec.ts[0m:[93m29[0m:[93m1[0m - [91merror[0m[90m TS2582: [0mCannot find name 'describe'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+
+[7m29[0m describe('Get /ballots/:ballotTopicId', () => {
+[7m  [0m [91m~~~~~~~~[0m
+
+[96mtest/ballot.spec.ts[0m:[93m30[0m:[93m3[0m - [91merror[0m[90m TS2582: [0mCannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+
+[7m30[0m   it('투표 현황 조회 성공', async () => {
+[7m  [0m [91m  ~~[0m
+
+[96mtest/ballot.spec.ts[0m:[93m43[0m:[93m1[0m - [91merror[0m[90m TS2582: [0mCannot find name 'describe'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+
+[7m43[0m describe('GET /ballots', () => {
+[7m  [0m [91m~~~~~~~~[0m
+
+[96mtest/ballot.spec.ts[0m:[93m44[0m:[93m3[0m - [91merror[0m[90m TS2582: [0mCannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+
+[7m44[0m   it('투표 목록 조회 성공', async () => {
+[7m  [0m [91m  ~~[0m
+
+[96mtest/card.spec.ts[0m:[93m1[0m:[93m21[0m - [91merror[0m[90m TS2307: [0mCannot find module 'supertest' or its corresponding type declarations.
+
+[7m1[0m import request from 'supertest';
+[7m [0m [91m                    ~~~~~~~~~~~[0m
+
+[96mtest/card.spec.ts[0m:[93m4[0m:[93m1[0m - [91merror[0m[90m TS2582: [0mCannot find name 'describe'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+
+[7m4[0m describe('GET /cards/best', () => {
+[7m [0m [91m~~~~~~~~[0m
+
+[96mtest/card.spec.ts[0m:[93m5[0m:[93m3[0m - [91merror[0m[90m TS2582: [0mCannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+
+[7m5[0m   it('이번 달의 베스트 피클 30개 조회 성공', async () => {
+[7m [0m [91m  ~~[0m
+
+[96mtest/cardMedleyController.spec.ts[0m:[93m1[0m:[93m21[0m - [91merror[0m[90m TS2307: [0mCannot find module 'supertest' or its corresponding type declarations.
+
+[7m1[0m import request from 'supertest';
+[7m [0m [91m                    ~~~~~~~~~~~[0m
+
+[96mtest/cardMedleyController.spec.ts[0m:[93m4[0m:[93m24[0m - [91merror[0m[90m TS2307: [0mCannot find module 'chai' or its corresponding type declarations.
+
+[7m4[0m import { expect } from 'chai';
+[7m [0m [91m                       ~~~~~~[0m
+
+[96mtest/cardMedleyController.spec.ts[0m:[93m6[0m:[93m1[0m - [91merror[0m[90m TS2582: [0mCannot find name 'describe'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+
+[7m6[0m describe('getCardMedleyById', () => {
+[7m [0m [91m~~~~~~~~[0m
+
+[96mtest/cardMedleyController.spec.ts[0m:[93m8[0m:[93m3[0m - [91merror[0m[90m TS2304: [0mCannot find name 'before'.
+
+[7m8[0m   before(async () => {
+[7m [0m [91m  ~~~~~~[0m
+
+[96mtest/cardMedleyController.spec.ts[0m:[93m24[0m:[93m3[0m - [91merror[0m[90m TS2304: [0mCannot find name 'after'.
+
+[7m24[0m   after(async () => {
+[7m  [0m [91m  ~~~~~[0m
+
+[96mtest/cardMedleyController.spec.ts[0m:[93m30[0m:[93m3[0m - [91merror[0m[90m TS2582: [0mCannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+
+[7m30[0m   it('로그인 하지 않은 경우 성공', async () => {
+[7m  [0m [91m  ~~[0m
+
+[96mtest/cardMedleyController.spec.ts[0m:[93m43[0m:[93m1[0m - [91merror[0m[90m TS2582: [0mCannot find name 'describe'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+
+[7m43[0m describe('모든 메들리 프리뷰 조회하기', () => {
+[7m  [0m [91m~~~~~~~~[0m
+
+[96mtest/cardMedleyController.spec.ts[0m:[93m45[0m:[93m3[0m - [91merror[0m[90m TS2304: [0mCannot find name 'before'.
+
+[7m45[0m   before(async () => {
+[7m  [0m [91m  ~~~~~~[0m
+
+[96mtest/cardMedleyController.spec.ts[0m:[93m61[0m:[93m3[0m - [91merror[0m[90m TS2304: [0mCannot find name 'after'.
+
+[7m61[0m   after(async () => {
+[7m  [0m [91m  ~~~~~[0m
+
+[96mtest/cardMedleyController.spec.ts[0m:[93m67[0m:[93m3[0m - [91merror[0m[90m TS2582: [0mCannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+
+[7m67[0m   it('성공', async () => {
+[7m  [0m [91m  ~~[0m
+
+[96mtest/cardMedleyService.spec.ts[0m:[93m6[0m:[93m30[0m - [91merror[0m[90m TS2307: [0mCannot find module 'chai' or its corresponding type declarations.
+
+[7m6[0m import chai, { assert } from 'chai';
+[7m [0m [91m                             ~~~~~~[0m
+
+[96mtest/cardMedleyService.spec.ts[0m:[93m7[0m:[93m24[0m - [91merror[0m[90m TS2307: [0mCannot find module 'chai-things' or its corresponding type declarations.
+
+[7m7[0m import chaiThings from 'chai-things';
+[7m [0m [91m                       ~~~~~~~~~~~~~[0m
+
+[96mtest/cardMedleyService.spec.ts[0m:[93m14[0m:[93m1[0m - [91merror[0m[90m TS2582: [0mCannot find name 'describe'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+
+[7m14[0m describe('카드 메들리를 가져오는 서비스', () => {
+[7m  [0m [91m~~~~~~~~[0m
+
+[96mtest/cardMedleyService.spec.ts[0m:[93m16[0m:[93m3[0m - [91merror[0m[90m TS2304: [0mCannot find name 'before'.
+
+[7m16[0m   before(async () => {
+[7m  [0m [91m  ~~~~~~[0m
+
+[96mtest/cardMedleyService.spec.ts[0m:[93m33[0m:[93m3[0m - [91merror[0m[90m TS2304: [0mCannot find name 'after'.
+
+[7m33[0m   after(async () => {
+[7m  [0m [91m  ~~~~~[0m
+
+[96mtest/cardMedleyService.spec.ts[0m:[93m38[0m:[93m3[0m - [91merror[0m[90m TS2582: [0mCannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+
+[7m38[0m   it('카드 메들리의 모든 정보가 포함돼있다.', async () => {
+[7m  [0m [91m  ~~[0m
+
+[96mtest/cardMedleyService.spec.ts[0m:[93m49[0m:[93m3[0m - [91merror[0m[90m TS2582: [0mCannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+
+[7m49[0m   it('미리보기 카드가 3장 존재한다.', async () => {
+[7m  [0m [91m  ~~[0m
+
+[96mtest/cardMedleyService.spec.ts[0m:[93m53[0m:[93m3[0m - [91merror[0m[90m TS2582: [0mCannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+
+[7m53[0m   it('카드가 비어있지 않다.', async () => {
+[7m  [0m [91m  ~~[0m
+
+[96mtest/cardMedleyService.spec.ts[0m:[93m57[0m:[93m3[0m - [91merror[0m[90m TS2582: [0mCannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+
+[7m57[0m   it('카드 정보에는 북마크 여부가 포함된다.', async () => {
+[7m  [0m [91m  ~~[0m
+
+[96mtest/cardMedleyService.spec.ts[0m:[93m59[0m:[93m18[0m - [91merror[0m[90m TS2339: [0mProperty 'should' does not exist on type 'CardResponseDto[]'.
+
+[7m59[0m     result.cards.should.all.have.property('isBookmark');
+[7m  [0m [91m                 ~~~~~~[0m
+
+[96mtest/cardMedleyService.spec.ts[0m:[93m63[0m:[93m1[0m - [91merror[0m[90m TS2582: [0mCannot find name 'describe'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+
+[7m63[0m describe('모든 메들리 미리보기를 가져오는 서비스', () => {
+[7m  [0m [91m~~~~~~~~[0m
+
+[96mtest/cardMedleyService.spec.ts[0m:[93m65[0m:[93m3[0m - [91merror[0m[90m TS2304: [0mCannot find name 'before'.
+
+[7m65[0m   before(async () => {
+[7m  [0m [91m  ~~~~~~[0m
+
+[96mtest/cardMedleyService.spec.ts[0m:[93m82[0m:[93m3[0m - [91merror[0m[90m TS2304: [0mCannot find name 'after'.
+
+[7m82[0m   after(async () => {
+[7m  [0m [91m  ~~~~~[0m
+
+[96mtest/cardMedleyService.spec.ts[0m:[93m88[0m:[93m3[0m - [91merror[0m[90m TS2582: [0mCannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+
+[7m88[0m   it('미리 보기를 가져온다.', async () => {
+[7m  [0m [91m  ~~[0m
+
+[96mtest/cardMedleyService.spec.ts[0m:[93m90[0m:[93m12[0m - [91merror[0m[90m TS2339: [0mProperty 'should' does not exist on type 'CardMedleyPreviewDto[]'.
+
+[7m90[0m     result.should.all.have.keys([
+[7m  [0m [91m           ~~~~~~[0m
+
+[96mtest/cardMedleyService.spec.ts[0m:[93m99[0m:[93m3[0m - [91merror[0m[90m TS2582: [0mCannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+
+[7m99[0m   it('미리 보기 카드의 요소가 모두 포함되어있다.', async () => {
+[7m  [0m [91m  ~~[0m
+
+[96mtest/cardMedleyService.spec.ts[0m:[93m104[0m:[93m10[0m - [91merror[0m[90m TS2339: [0mProperty 'should' does not exist on type 'any[]'.
+
+[7m104[0m         .should.all.have.keys(['_id', 'content']);
+[7m   [0m [91m         ~~~~~~[0m
+
+[96mtest/category.spec.ts[0m:[93m1[0m:[93m21[0m - [91merror[0m[90m TS2307: [0mCannot find module 'supertest' or its corresponding type declarations.
+
+[7m1[0m import request from 'supertest';
+[7m [0m [91m                    ~~~~~~~~~~~[0m
+
+[96mtest/category.spec.ts[0m:[93m4[0m:[93m1[0m - [91merror[0m[90m TS2582: [0mCannot find name 'describe'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+
+[7m4[0m describe('GET /categories', () => {
+[7m [0m [91m~~~~~~~~[0m
+
+[96mtest/category.spec.ts[0m:[93m5[0m:[93m3[0m - [91merror[0m[90m TS2582: [0mCannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+
+[7m5[0m   it('카테고리 조회 성공', async () => {
+[7m [0m [91m  ~~[0m
+
+[96mtest/category.spec.ts[0m:[93m14[0m:[93m1[0m - [91merror[0m[90m TS2582: [0mCannot find name 'describe'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+
+[7m14[0m describe('GET /categories/:categoryId', () => {
+[7m  [0m [91m~~~~~~~~[0m
+
+[96mtest/category.spec.ts[0m:[93m15[0m:[93m3[0m - [91merror[0m[90m TS2582: [0mCannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+
+[7m15[0m   it('카테고리별 대화 주제 리스트 조회 성공', async () => {
+[7m  [0m [91m  ~~[0m
+
+[96mtest/category.spec.ts[0m:[93m24[0m:[93m1[0m - [91merror[0m[90m TS2582: [0mCannot find name 'describe'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+
+[7m24[0m describe('GET /categories/cards?search=', () => {
+[7m  [0m [91m~~~~~~~~[0m
+
+[96mtest/category.spec.ts[0m:[93m25[0m:[93m3[0m - [91merror[0m[90m TS2582: [0mCannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+
+[7m25[0m   it('카테고리별 대화 주제 리스트 성공', async () => {
+[7m  [0m [91m  ~~[0m
+
+[96mtest/user.spec.ts[0m:[93m2[0m:[93m31[0m - [91merror[0m[90m TS2307: [0mCannot find module 'mocha' or its corresponding type declarations.
+
+[7m2[0m import { before, after } from 'mocha';
+[7m [0m [91m                              ~~~~~~~[0m
+
+[96mtest/user.spec.ts[0m:[93m3[0m:[93m21[0m - [91merror[0m[90m TS2307: [0mCannot find module 'supertest' or its corresponding type declarations.
+
+[7m3[0m import request from 'supertest';
+[7m [0m [91m                    ~~~~~~~~~~~[0m
+
+[96mtest/user.spec.ts[0m:[93m5[0m:[93m22[0m - [91merror[0m[90m TS2307: [0mCannot find module 'mongoose' or its corresponding type declarations.
+
+[7m5[0m import mongoose from 'mongoose';
+[7m [0m [91m                     ~~~~~~~~~~[0m
+
+[96mtest/user.spec.ts[0m:[93m6[0m:[93m20[0m - [91merror[0m[90m TS2307: [0mCannot find module 'dotenv' or its corresponding type declarations.
+
+[7m6[0m import dotenv from 'dotenv';
+[7m [0m [91m                   ~~~~~~~~[0m
+
+[96mtest/user.spec.ts[0m:[93m11[0m:[93m22[0m - [91merror[0m[90m TS2580: [0mCannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+
+[7m11[0m const mongoTestUri = process.env.MONGODB_URI;
+[7m  [0m [91m                     ~~~~~~~[0m
+
+[96mtest/user.spec.ts[0m:[93m23[0m:[93m5[0m - [91merror[0m[90m TS2580: [0mCannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+
+[7m23[0m     process.exit(1);
+[7m  [0m [91m    ~~~~~~~[0m
+
+[96mtest/user.spec.ts[0m:[93m27[0m:[93m1[0m - [91merror[0m[90m TS2582: [0mCannot find name 'describe'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+
+[7m27[0m describe('POST /users 유저 생성 API', () => {
+[7m  [0m [91m~~~~~~~~[0m
+
+[96mtest/user.spec.ts[0m:[93m28[0m:[93m3[0m - [91merror[0m[90m TS2582: [0mCannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+
+[7m28[0m   it('유저 생성 성공', async () => {
+[7m  [0m [91m  ~~[0m
+
+[96mtest/user.spec.ts[0m:[93m41[0m:[93m3[0m - [91merror[0m[90m TS2582: [0mCannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+
+[7m41[0m   it('유저 생성 실패', async () => {
+[7m  [0m [91m  ~~[0m
+
+[96mtest/user.spec.ts[0m:[93m51[0m:[93m1[0m - [91merror[0m[90m TS2582: [0mCannot find name 'describe'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+
+[7m51[0m describe('POST /users/login 유저 로그인 API', () => {
+[7m  [0m [91m~~~~~~~~[0m
+
+[96mtest/user.spec.ts[0m:[93m52[0m:[93m3[0m - [91merror[0m[90m TS2582: [0mCannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+
+[7m52[0m   it('유저 로그인 성공', async () => {
+[7m  [0m [91m  ~~[0m
+
+[96mtest/user.spec.ts[0m:[93m66[0m:[93m3[0m - [91merror[0m[90m TS2582: [0mCannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+
+[7m66[0m   it('유저 로그인 실패', async () => {
+[7m  [0m [91m  ~~[0m
+
+[96mtest/user.spec.ts[0m:[93m75[0m:[93m1[0m - [91merror[0m[90m TS2582: [0mCannot find name 'describe'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+
+[7m75[0m describe('GET /users 유저 프로필 조회 API', () => {
+[7m  [0m [91m~~~~~~~~[0m
+
+[96mtest/user.spec.ts[0m:[93m76[0m:[93m3[0m - [91merror[0m[90m TS2582: [0mCannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+
+[7m76[0m   it('유저 프로필 조회 성공', async () => {
+[7m  [0m [91m  ~~[0m
+
+[96mtest/user.spec.ts[0m:[93m84[0m:[93m3[0m - [91merror[0m[90m TS2582: [0mCannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+
+[7m84[0m   it('유저 프로필 조회 실패', async () => {
+[7m  [0m [91m  ~~[0m
+
+[96mtest/user.spec.ts[0m:[93m93[0m:[93m1[0m - [91merror[0m[90m TS2582: [0mCannot find name 'describe'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+
+[7m93[0m describe('PATCH /users/nickname 유저 닉네임 변경 API', () => {
+[7m  [0m [91m~~~~~~~~[0m
+
+[96mtest/user.spec.ts[0m:[93m94[0m:[93m3[0m - [91merror[0m[90m TS2582: [0mCannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+
+[7m94[0m   it('유저 닉네임 변경 성공', async () => {
+[7m  [0m [91m  ~~[0m
+
+[96mtest/user.spec.ts[0m:[93m105[0m:[93m3[0m - [91merror[0m[90m TS2582: [0mCannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+
+[7m105[0m   it('유저 닉네임 변경 실패', async () => {
+[7m   [0m [91m  ~~[0m
+
+[96mtest/user.spec.ts[0m:[93m114[0m:[93m1[0m - [91merror[0m[90m TS2582: [0mCannot find name 'describe'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+
+[7m114[0m describe('PATCH /users/profile-image 유저 프로필 이미지 변경 API', () => {
+[7m   [0m [91m~~~~~~~~[0m
+
+[96mtest/user.spec.ts[0m:[93m115[0m:[93m3[0m - [91merror[0m[90m TS2582: [0mCannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+
+[7m115[0m   it('유저 프로필 이미지 변경 성공', async () => {
+[7m   [0m [91m  ~~[0m
+
+[96mtest/user.spec.ts[0m:[93m124[0m:[93m3[0m - [91merror[0m[90m TS2582: [0mCannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+
+[7m124[0m   it('유저 프로필 이미지 변경 실패', async () => {
+[7m   [0m [91m  ~~[0m
+
+[96mtest/user.spec.ts[0m:[93m134[0m:[93m1[0m - [91merror[0m[90m TS2582: [0mCannot find name 'describe'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+
+[7m134[0m describe('GET /users/bookmarks 유저 북마크 조회 API', () => {
+[7m   [0m [91m~~~~~~~~[0m
+
+[96mtest/user.spec.ts[0m:[93m135[0m:[93m3[0m - [91merror[0m[90m TS2582: [0mCannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+
+[7m135[0m   it('유저 북마크 조회 성공', async () => {
+[7m   [0m [91m  ~~[0m
+
+[96mtest/user.spec.ts[0m:[93m143[0m:[93m3[0m - [91merror[0m[90m TS2582: [0mCannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+
+[7m143[0m   it('유저 북마크 조회 실패', async () => {
+[7m   [0m [91m  ~~[0m
+
+[96mtest/user.spec.ts[0m:[93m152[0m:[93m1[0m - [91merror[0m[90m TS2582: [0mCannot find name 'describe'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+
+[7m152[0m describe('PUT /users/bookmarks 유저 북마크 생성 API', () => {
+[7m   [0m [91m~~~~~~~~[0m
+
+[96mtest/user.spec.ts[0m:[93m153[0m:[93m3[0m - [91merror[0m[90m TS2582: [0mCannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+
+[7m153[0m   it('유저 북마크 생성 성공', async () => {
+[7m   [0m [91m  ~~[0m
+
+[96mtest/user.spec.ts[0m:[93m164[0m:[93m3[0m - [91merror[0m[90m TS2582: [0mCannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+
+[7m164[0m   it('유저 북마크 생성 실패', async () => {
+[7m   [0m [91m  ~~[0m
+
+
+Found 226 errors in 79 files.
+
+Errors  Files
+    27  src/config/index.ts[90m:1[0m
+     4  src/config/multer.ts[90m:1[0m
+     1  src/config/s3Client.ts[90m:1[0m
+     4  src/controllers/ballotController.ts[90m:1[0m
+     4  src/controllers/cardController.ts[90m:1[0m
+     3  src/controllers/cardMedleyController.ts[90m:1[0m
+     3  src/controllers/CategoryController.ts[90m:1[0m
+     6  src/controllers/userController.ts[90m:1[0m
+     7  src/index.ts[90m:4[0m
+     1  src/intefaces/CardMedleyDto.ts[90m:1[0m
+     1  src/intefaces/CardMedleyPreviewDto.ts[90m:1[0m
+     1  src/intefaces/CardResponseDto.ts[90m:1[0m
+     1  src/intefaces/CategoryInfoDto.ts[90m:1[0m
+     1  src/intefaces/CategoryResponseDto.ts[90m:2[0m
+     1  src/intefaces/CreateBallotResultDto.ts[90m:1[0m
+     3  src/intefaces/createUserCommand.ts[90m:28[0m
+     1  src/intefaces/JwtPayloadInfo.ts[90m:1[0m
+     1  src/intefaces/PostBaseResponseDto.ts[90m:1[0m
+     1  src/intefaces/user/LoginResponseDto.ts[90m:1[0m
+     1  src/intefaces/user/UpdateUserDto.ts[90m:1[0m
+     1  src/intefaces/user/UserBookmarkDto.ts[90m:1[0m
+     1  src/intefaces/user/UserBookmarkInfo.ts[90m:1[0m
+     2  src/loaders/db.ts[90m:1[0m
+     2  src/loaders/sentryConfiguration.ts[90m:1[0m
+     3  src/loaders/session.ts[90m:2[0m
+     4  src/middlewares/auth.ts[90m:1[0m
+     3  src/middlewares/errorHandler.ts[90m:1[0m
+     4  src/middlewares/flexibleAuth.ts[90m:1[0m
+     3  src/middlewares/guestHandler.ts[90m:1[0m
+     1  src/models/ballotItem.ts[90m:1[0m
+     1  src/models/ballotResult.ts[90m:1[0m
+     1  src/models/ballotTopic.ts[90m:1[0m
+     1  src/models/bestCard.ts[90m:1[0m
+     1  src/models/blockedCard.ts[90m:3[0m
+     1  src/models/bookmark.ts[90m:1[0m
+     1  src/models/card.ts[90m:1[0m
+     1  src/models/cardMedley.ts[90m:1[0m
+     1  src/models/category.ts[90m:1[0m
+     1  src/models/emailAuth.ts[90m:1[0m
+     1  src/models/interface/Document.ts[90m:1[0m
+     1  src/models/interface/IBallotItem.ts[90m:1[0m
+     1  src/models/interface/IBallotResult.ts[90m:1[0m
+     1  src/models/interface/IBlockedCard.ts[90m:1[0m
+     1  src/models/interface/IBookmark.ts[90m:1[0m
+     1  src/models/interface/ICard.ts[90m:1[0m
+     1  src/models/interface/ICardMedley.ts[90m:1[0m
+     1  src/models/interface/ICategory.ts[90m:1[0m
+     1  src/models/interface/IUser.ts[90m:1[0m
+     1  src/models/preUser.ts[90m:1[0m
+     1  src/models/quitLog.ts[90m:1[0m
+     1  src/models/user/user.ts[90m:3[0m
+     2  src/modules/jwtHandler.ts[90m:1[0m
+     1  src/modules/returnToSlack.ts[90m:1[0m
+     1  src/modules/util.ts[90m:2[0m
+     2  src/routes/ballotRouter.ts[90m:1[0m
+     1  src/routes/cardMedleyRouter.ts[90m:1[0m
+     1  src/routes/cardRouter.ts[90m:1[0m
+     1  src/routes/CategoryRouter.ts[90m:1[0m
+     1  src/routes/index.ts[90m:2[0m
+     5  src/routes/testRouter.ts[90m:1[0m
+     2  src/routes/userRouter/index.ts[90m:1[0m
+     1  src/routes/userRouter/userCardRouter.ts[90m:1[0m
+     2  src/services/ballotService.ts[90m:4[0m
+     1  src/services/blockCardService.ts[90m:1[0m
+     1  src/services/cardMedleyService.ts[90m:8[0m
+     2  src/services/cardService.ts[90m:4[0m
+     6  src/services/CategoryService.ts[90m:4[0m
+     1  src/services/dto/socialLoginResponse.ts[90m:1[0m
+     1  src/services/naverLoginService.ts[90m:1[0m
+     1  src/services/socialAuthService.ts[90m:1[0m
+     2  src/services/userService.ts[90m:1[0m
+     1  src/types/TypedRequest.ts[90m:1[0m
+     1  src/types/TypedResponse.ts[90m:1[0m
+     8  test/ballot.spec.ts[90m:1[0m
+     3  test/card.spec.ts[90m:1[0m
+    10  test/cardMedleyController.spec.ts[90m:1[0m
+    17  test/cardMedleyService.spec.ts[90m:6[0m
+     7  test/category.spec.ts[90m:1[0m
+    27  test/user.spec.ts[90m:2[0m
