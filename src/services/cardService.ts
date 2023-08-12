@@ -167,32 +167,6 @@ const findCardByBookmarkedGender = async (
   return totalCards;
 };
 
-// const findCardByCardList = async (
-//   cardIdList: CardListDto,
-//   blockedCardId?: Types.ObjectId,
-//   userId?: Types.ObjectId
-// ) => {
-//   const blockedCard = await BlockedCard.findOne({
-//     user: userId,
-//     card: blockedCardId
-//   });
-//   const ninCards: Types.ObjectId[] = [];
-//   if (blockedCard) {
-//     ninCards.push(blockedCard.card);
-//   }
-//   const cards: CardDocument[] = await Card.find({
-//     _id: {
-//       $nin: ninCards,
-//       $in: cardIdList._ids
-//     }
-//   });
-//   const totalCards: CardResponseDto[] = [];
-//   for (const card of cards) {
-//     totalCards.push(await createCardResponse(card, userId));
-//   }
-//   return;
-// };
-
 export {
   findBestCards,
   findCards,
