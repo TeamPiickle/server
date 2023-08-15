@@ -62,13 +62,14 @@ const findExtraCardsExceptFor = async (
       ninCards.push(blockedCard.card);
     }
   }
-  const extraCards: CardDocument[] = await Card.find({
-    _id: {
-      $nin: ninCards
-    }
-  })
-    .sort('_id')
-    .limit(size - cards.length);
+  const extraCards: CardDocument[] = await Card.aggregate()
+    .match({
+      _id: {
+        $nin: ninCards
+      }
+    })
+    .sample(size - cards.length)
+    .sort({ _id: -1 });
   return extraCards;
 };
 
