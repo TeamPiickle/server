@@ -13,6 +13,9 @@ import QuitLog from '../models/quitLog';
 import BestCard from '../models/bestCard';
 import CardMedley from '../models/cardMedley';
 import { BlockedCard } from '../models/blockedCard';
+import Question from '../models/mind23/question';
+import PrizeEntry from '../models/mind23/prizeEntry';
+import Comment from '../models/mind23/comment';
 
 const createCollection = (model: Model<any>) => {
   model.createCollection().catch(err => {
@@ -37,7 +40,11 @@ const connectDB = async () => {
     EmailAuth,
     BestCard,
     CardMedley,
-    BlockedCard
+    BlockedCard,
+    CardMedley,
+    Question,
+    Comment,
+    PrizeEntry
   ];
 
   models.forEach(model => {
