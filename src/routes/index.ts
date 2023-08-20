@@ -1,5 +1,5 @@
 //router index file
-import { Router } from 'express';
+import { Router, RequestHandler } from 'express';
 import UserRouter from './userRouter';
 import CategoryRouter from './CategoryRouter';
 import BallotRouter from './ballotRouter';
@@ -38,7 +38,7 @@ const cookieCors = cors({
 
 router.use('/users', UserRouter);
 router.use('/categories', CategoryRouter);
-router.get('/ballots', flexibleAuth, BallotController.getMainBallotList);
+
 router.use(
   '/ballots',
   cookieCors,
@@ -47,6 +47,7 @@ router.use(
   flexibleAuth,
   BallotRouter
 );
+
 router.use('/cards', CardRouter);
 router.use('/test', TestRouter);
 router.use('/medley', CardMedleyRouter);

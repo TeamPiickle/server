@@ -10,6 +10,9 @@ router.post(
   [body('ballotTopicId').notEmpty(), body('ballotItemId').notEmpty()],
   BallotController.postBallotResult
 );
+
 router.get('/:ballotTopicId', BallotController.getBallotStatus);
+
+router.get('', BallotController.getMainBallotList);
 
 export default router;
