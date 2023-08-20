@@ -1,12 +1,17 @@
-import { Router } from 'express';
+import { Router, RequestHandler } from 'express';
 import { body } from 'express-validator';
 import { BallotController } from '../controllers';
 import auth from '../middlewares/auth';
 import flexibleAuth from '../middlewares/flexibleAuth';
+import session from 'express-session';
+import uidSetter from '../middlewares/session/uidSetter';
+import MongoStore from 'connect-mongo';
+import config from '../config';
+import cors from 'cors';
 
 const router = Router();
 
-const expressSession: express.RequestHandler = session({
+const expressSession: RequestHandler = session({
   secret: config.sessionKey,
   store: MongoStore.create({
     mongoUrl: config.mongoURI
