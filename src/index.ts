@@ -4,16 +4,16 @@ import routes from './routes';
 import helmet from 'helmet';
 import config from './config';
 import errorHandler from './middlewares/errorHandler';
-import cors from 'cors';
 import * as SentryConfig from './loaders/sentryConfiguration';
+import corsMiddleware from './middlewares/cors';
 
 const app = express();
-app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(helmet());
 SentryConfig.initializeSentry(app);
 
+app.use(corsMiddleware);
 app.use(routes);
 SentryConfig.attachSentryErrorHandler(app);
 app.use(errorHandler);
