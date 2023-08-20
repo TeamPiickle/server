@@ -6,18 +6,16 @@ import PrizeEntry, { PrizeEntryDocument } from '../models/mind23/prizeEntry';
 import { CardResponseDto } from '../intefaces/CardResponseDto';
 import { QuestionResponseDto } from '../intefaces/mind23/QuestionResponseDto';
 import { CommentDto } from '../intefaces/mind23/CommentDto';
-import Card, { CardDocument } from '../models/card';
 import { Types } from 'mongoose';
-import config from '../config';
 import User from '../models/user/user';
 import { QuestionDto } from '../intefaces/mind23/QuestionDto';
 
-const findProfileImageUrl = async (userId?: Types.ObjectId) => {
+const findUserInfo = async (userId?: Types.ObjectId) => {
   const user = await User.findOne({ _id: userId });
   if (!user) {
     throw new IllegalArgumentException('해당하는 아이디의 유저가 없습니다.');
   }
-  return user.profileImageUrl;
+  return user;
 };
 
 const createCardResponse = async (
@@ -36,10 +34,12 @@ const createCardResponse = async (
 const createCommentResponse = async (
   comment: CommentDocument
 ): Promise<CommentDto> => {
+  const user = await findUserInfo(comment.author);
   return {
     _id: comment.author,
     content: comment.content,
-    profileImageUrl: await findProfileImageUrl(comment.author)
+    profileImageUrl: user.profileImageUrl,
+    nickname: user.nickname
   };
 };
 
