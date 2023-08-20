@@ -8,6 +8,7 @@ import CardRouter from './cardRouter';
 import TestRouter from './testRouter';
 import CardMedleyRouter from './cardMedleyRouter';
 import flexibleAuth from '../middlewares/flexibleAuth';
+import guestHandler from '../middlewares/session/guestHandler';
 
 import session from 'express-session';
 import uidSetter from '../middlewares/session/uidSetter';
@@ -33,7 +34,8 @@ const expressSession: RequestHandler = session({
 
 const cookieCors = cors({
   origin: 'https://client-wheat-three.vercel.app',
-  credentials: true
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
 });
 
 router.use('/users', UserRouter);
@@ -44,6 +46,7 @@ router.use(
   cookieCors,
   expressSession,
   uidSetter,
+  guestHandler,
   flexibleAuth,
   BallotRouter
 );
