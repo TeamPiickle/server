@@ -1,0 +1,99 @@
+import util from '../modules/util';
+import Question, { QuestionDocument } from '../models/mind23/question';
+import Comment, { CommentDocument } from '../models/mind23/comment';
+import { IllegalArgumentException } from '../intefaces/exception';
+import PrizeEntry, { PrizeEntryDocument } from '../models/mind23/prizeEntry';
+import { CardResponseDto } from '../intefaces/CardResponseDto';
+import { QuestionResponseDto } from '../intefaces/mind23/QuestionResponseDto';
+import { CommentDto } from '../intefaces/mind23/CommentDto';
+import Card, { CardDocument } from '../models/card';
+import { Types } from 'mongoose';
+import config from '../config';
+import User from '../models/user/user';
+import { QuestionDto } from '../intefaces/mind23/QuestionDto';
+
+const findProfileImageUrl = async (userId?: Types.ObjectId) => {
+  const user = await User.findOne({ _id: userId });
+  if (!user) {
+    throw new IllegalArgumentException('해당하는 아이디의 유저가 없습니다.');
+  }
+  return user.profileImageUrl;
+};
+
+const createCardResponse = async (
+  question: QuestionDocument
+): Promise<CardResponseDto> => {
+  return {
+    _id: question._id,
+    content: question.content,
+    tags: [],
+    category: [],
+    filter: [],
+    isBookmark: false
+  };
+};
+
+const createCommentResponse = async (
+  comment: CommentDocument
+): Promise<CommentDto> => {
+  return {
+    _id: comment.author,
+    content: comment.content,
+    profileImageUrl: await findProfileImageUrl(comment.author)
+  };
+};
+
+const findQuestionList = async (): Promise<QuestionResponseDto> => {
+  const questions = await Question.find({});
+  const totalCards: CardResponseDto[] = [];
+  for (const question of questions) {
+    totalCards.push(await createCardResponse(question));
+  }
+  const count = await PrizeEntry.find({}).count();
+  return {
+    totalCount: count,
+    cards: totalCards
+  };
+};
+
+const findCommentsList = async (questionId?: Types.ObjectId) => {
+  const comments = await Comment.aggregate()
+    .match({
+      question: questionId
+    })
+    .sort({ createdAt: -1 });
+  console.log(comments.length);
+  const totalComments: CommentDto[] = [];
+  for (const comment of comments) {
+    totalComments.push(await createCommentResponse(comment));
+  }
+  return totalComments;
+};
+
+const createComment = async (
+  userId?: Types.ObjectId,
+  questionId?: Types.ObjectId,
+  content?: String
+) => {
+  if (!userId) {
+    throw new IllegalArgumentException('해당하는 아이디의 유저가 없습니다.');
+  }
+  const comment = new Comment({
+    question: questionId,
+    author: userId,
+    content: content
+  });
+  await comment.save();
+};
+
+const createPrizeEntry = async (userId?: Types.ObjectId) => {
+  if (!userId) {
+    throw new IllegalArgumentException('해당하는 아이디의 유저가 없습니다.');
+  }
+  const prizeEntry = new PrizeEntry({
+    user: userId
+  });
+  await prizeEntry.save();
+};
+
+export { findQuestionList, findCommentsList, createComment, createPrizeEntry };

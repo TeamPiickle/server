@@ -38,7 +38,13 @@ const message = {
   // 투표
   BALLOT_RESULT_CREATED: '투표 성공',
   BALLOT_STATUS_VIEW_SUCCESS: '투표 현황 조회 성공',
-  READ_MAIN_BALLOTS_SUCCESS: '메인 투표 주제 조회 성공'
+  READ_MAIN_BALLOTS_SUCCESS: '메인 투표 주제 조회 성공',
+
+  //마인드 23
+  READ_MIND23_QUESTIONS_SUCCESS: '마인드 23 질문 리스트 조회 성공',
+  CREATE_MIND23_COMMENT_SUCCESS: '마인드 23 댓글 등록 성공',
+  READ_MIND23_COMMENTS_SUCCESS: '마인드 23 댓글 리스트 조회 성공',
+  CREATE_MIND23_PRIZE_ENTRY_SUCCESS: '경품 응모 성공'
 };
 
 export default message;
