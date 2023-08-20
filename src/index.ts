@@ -1,21 +1,21 @@
-import express, { NextFunction, Request, Response } from 'express';
+import express from 'express';
 import connectDB from './loaders/db';
 import routes from './routes';
 import helmet from 'helmet';
 import config from './config';
 import errorHandler from './middlewares/errorHandler';
 import cors from 'cors';
-import session from 'express-session';
-import MongoStore from 'connect-mongo';
-import uidSetter from './middlewares/session/uidSetter';
+import * as SentryConfig from './loaders/sentryConfiguration';
 
 const app = express();
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(helmet());
+SentryConfig.initializeSentry(app);
 
 app.use(routes);
+SentryConfig.attachSentryErrorHandler(app);
 app.use(errorHandler);
 
 connectDB()

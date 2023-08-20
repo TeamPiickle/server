@@ -23,8 +23,13 @@ const message = {
 
   //카드
   SEARCH_CARDS_SUCCESS: '필터에 해당하는 카드들 읽어오기 성공',
-  READ_CARD_SUCCESS: '카테고리에 해당 카드 읽어오기 성공',
+  READ_CARD_SUCCESS: '공유 받은 해당 카드 읽어오기 성공',
+  READ_RECENTLY_UPDATE_CARD_SUCCESS: '최근 업데이트 된 카드 읽어오기 성공',
+  READ_RECENTLY_BOOKMARKED_CARD_SUCCESS: '최근 북마크 된 카드 읽어오기 성공',
+  READ_GENDER_BEST_CARD_SUCCESS: '성별 별 베스트 카드 읽어오기 성공',
   READ_BEST_CARDS_SUCCESS: '베스트 카드 읽어오기 성공',
+  BLOCK_CARD_SUCCESS: '카드 블랙리스트 추가 성공',
+  CANCEL_BLOCK_CARD_SUCCESS: '카드 블랙리스트 제외 성공',
 
   //카드 메들리
   READ_CARD_MEDLEY_DETAIL_SUCCESS: '카드 메들리 상세 조회 성공',

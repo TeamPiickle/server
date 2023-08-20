@@ -68,7 +68,7 @@ const getCardsBySearch = async (
   const { search } = req.query;
   const userId = req.user?.id;
   try {
-    const data = await CategoryService.getCardsBySearch(
+    const data = await CategoryService.getFilteredCards(
       search as string[],
       userId
     );

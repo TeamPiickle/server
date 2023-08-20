@@ -2,11 +2,13 @@ import { NextFunction, Request, Response } from 'express';
 import { validationResult } from 'express-validator';
 import {
   EmptyMailCodeException,
-  IllegalArgumentException
+  IllegalArgumentException,
+  IllegalStateException
 } from '../intefaces/exception';
 import {
   CreateUserCommand,
-  CreateUserReq
+  CreateUserReq,
+  toCommand
 } from '../intefaces/createUserCommand';
 import { PostBaseResponseDto } from '../intefaces/PostBaseResponseDto';
 import { UserLoginDto } from '../intefaces/user/UserLoginDto';
@@ -14,7 +16,14 @@ import getToken from '../modules/jwtHandler';
 import message from '../modules/responseMessage';
 import statusCode from '../modules/statusCode';
 import util from '../modules/util';
-import { UserService, PreUserService, AuthService } from '../services';
+import {
+  AuthService,
+  BlockCardService,
+  NaverLoginService,
+  PreUserService,
+  SocialAuthService,
+  UserService
+} from '../services';
 import { UserProfileResponseDto } from '../intefaces/user/UserProfileResponseDto';
 import { UserUpdateNicknameDto } from '../intefaces/user/UserUpdateNicknameDto';
 import { UserBookmarkDto } from '../intefaces/user/UserBookmarkDto';
@@ -22,8 +31,14 @@ import { UserBookmarkInfo } from '../intefaces/user/UserBookmarkInfo';
 import { Types } from 'mongoose';
 import { TypedRequest } from '../types/TypedRequest';
 import EmailVerificationReqDto from '../intefaces/user/EmailVerificationReqDto';
-import { UpdateUserDto } from '../intefaces/user/UpdateUserDto';
 import config from '../config';
+import SocialLoginDto from '../intefaces/user/SocialLoginDto';
+import LoginResponseDto from '../intefaces/user/LoginResponseDto';
+import { SocialVendor } from '../models/socialVendor';
+import IUser from '../models/interface/IUser';
+import { AgeGroup } from '../models/user/ageGroup';
+import { Gender } from '../models/user/gender';
+import { createUser, validateNewLocalEmail } from '../services/userService';
 
 /**
  * @route GET /email
@@ -93,7 +108,7 @@ const nicknameDuplicationCheck = async (
     if (!nickname) {
       throw new IllegalArgumentException('필요한 값이 없습니다.');
     }
-    const result = await UserService.nicknameDuplicationCheck(<string>nickname);
+    const result = await UserService.nicknameAlreadyExists(<string>nickname);
     res
       .status(statusCode.OK)
       .send(util.success(statusCode.OK, '닉네임 중복 체크 성공', result));
@@ -155,7 +170,7 @@ const verifyEmailTest = async (
 };
 
 /**
- *  @route /users
+ *  @route POST /users
  *  @desc 회원가입 api
  *  @access Public
  */
@@ -170,57 +185,15 @@ const postUser = async (
       throw new IllegalArgumentException('필요한 값이 없습니다.');
     }
 
-    const createUserCommand: CreateUserCommand = {
-      email: req.body.email,
-      password: req.body.password,
-      nickname: req.body.nickname,
-      birthday: req.body.birthday,
-      gender: req.body.gender,
-      profileImgUrl: (req?.file as Express.MulterS3.File)?.location
-    };
-
-    const createdUser = await UserService.createUser(createUserCommand);
+    const createUserCommand = toCommand(req);
+    await validateNewLocalEmail(createUserCommand.email);
+    const createdUser = await createUser(createUserCommand);
 
     const jwt = getToken(createdUser._id);
 
     return res
       .status(statusCode.CREATED)
       .send(util.success(statusCode.CREATED, message.USER_CREATED, { jwt }));
-  } catch (err) {
-    next(err);
-  }
-};
-
-/**
- * @method PATCH
- * @route /users
- * @access Public
- */
-const patchUser = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const userId = req.user?.id;
-    if (!userId) {
-      throw new IllegalArgumentException('로그인이 필요합니다.');
-    }
-    const reqErr = validationResult(req);
-
-    if (!reqErr.isEmpty()) {
-      throw new IllegalArgumentException('필요한 값이 없습니다.');
-    }
-
-    const input: UpdateUserDto = {
-      id: userId,
-      nickname: req.body.nickname,
-      birthday: req.body.birthday,
-      gender: req.body.gender,
-      profileImgUrl: (req?.file as Express.MulterS3.File)?.location
-    };
-
-    await UserService.patchUser(input);
-
-    res
-      .status(statusCode.OK)
-      .send(util.success(statusCode.OK, message.USER_UPDATE_SUCCESS));
   } catch (err) {
     next(err);
   }
@@ -246,13 +219,75 @@ const postUserLogin = async (
       userLoginDto
     );
     const accessToken = getToken(result._id);
-    const data = {
+    const data: LoginResponseDto = {
       _id: result._id,
       accessToken
     };
     return res
       .status(statusCode.OK)
       .send(util.success(statusCode.OK, message.USER_LOGIN_SUCCESS, data));
+  } catch (err) {
+    next(err);
+  }
+};
+
+const getAccessToken = async (
+  req: TypedRequest<SocialLoginDto>
+): Promise<string> => {
+  const { vendor } = req.body;
+  let accessToken = req.body.accessToken;
+
+  if (vendor == SocialVendor.NAVER) {
+    const { code, state } = req.body;
+    if (!code || !state) {
+      throw new IllegalArgumentException(
+        `${SocialVendor.NAVER}는 code와 state가 필요합니다.`
+      );
+    }
+    accessToken = await NaverLoginService.getToken(code, state);
+  }
+  if (!accessToken) {
+    throw new IllegalStateException('accessToken이 없습니다.');
+  }
+  return accessToken;
+};
+
+const findOrCreateSocialUser = async (
+  alreadyMember: boolean,
+  buildUser: IUser
+) => {
+  if (alreadyMember) {
+    const foundUser = await SocialAuthService.findSocialUser(buildUser);
+    return foundUser;
+  }
+  const newUser = await SocialAuthService.join(buildUser);
+  return newUser;
+};
+
+const socialLogin = async (
+  req: TypedRequest<SocialLoginDto>,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { vendor } = req.body;
+    const socialAccessToken = await getAccessToken(req);
+    const buildUser: IUser = await SocialAuthService.getPiickleUser(
+      vendor,
+      socialAccessToken
+    );
+    const alreadyUser: boolean = await SocialAuthService.isAlreadySocialMember(
+      buildUser
+    );
+    const socialUser = await findOrCreateSocialUser(alreadyUser, buildUser);
+
+    return res.status(statusCode.OK).send(
+      util.success(statusCode.OK, message.USER_LOGIN_SUCCESS, {
+        _id: socialUser._id,
+        accessToken: getToken(socialUser._id),
+        newMember: !alreadyUser
+      })
+    );
   } catch (err) {
     next(err);
   }
@@ -443,10 +478,64 @@ const deleteUser = async (
   }
 };
 
+/**
+ * @route POST /users/cards/blacklist
+ * @desc 카드 블랙리스트 추가
+ * @access public
+ */
+const blockCard = async (
+  req: TypedRequest<{ cardId: Types.ObjectId }>,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const userId = req.user?.id;
+    if (!userId) {
+      throw new IllegalArgumentException('유저 아이디가 없습니다.');
+    }
+    const { cardId } = req.body;
+    await BlockCardService.blockCard(userId, cardId);
+    return res
+      .status(statusCode.OK)
+      .send(util.success(statusCode.OK, message.BLOCK_CARD_SUCCESS));
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
+};
+
+/**
+ * @route DELETE /users/cards/blacklist/:cardId
+ * @desc 카드 블랙리스트 추가
+ * @access public
+ */
+const cancelToBlock = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const userId = req.user?.id;
+    if (!userId) {
+      throw new IllegalArgumentException('유저 아이디가 없습니다.');
+    }
+    const cardId = new Types.ObjectId(req.params.cardId);
+    if (!cardId) {
+      throw new IllegalArgumentException('카드 아이디가 없습니다.');
+    }
+    await BlockCardService.cancelToBlockCard(userId, cardId);
+    return res
+      .status(statusCode.OK)
+      .send(util.success(statusCode.OK, message.CANCEL_BLOCK_CARD_SUCCESS));
+  } catch (e) {
+    next(e);
+  }
+};
+
 export {
   readEmailIsExisting,
+  socialLogin,
   postUser,
-  patchUser,
   postUserLogin,
   getUserProfile,
   updateUserNickname,
@@ -457,5 +546,7 @@ export {
   verifyEmail,
   verifyEmailTest,
   nicknameDuplicationCheck,
-  deleteUser
+  deleteUser,
+  blockCard,
+  cancelToBlock
 };

@@ -1,10 +1,12 @@
 import { Types } from 'mongoose';
 
 interface IUser {
-  email: string;
+  email?: string;
+  socialId?: string;
+  socialVendor?: string;
   nickname: string;
-  hashedPassword: string;
-  birthday: Date;
+  hashedPassword?: string;
+  ageGroup?: string;
   gender: string;
   profileImageUrl: string;
   cardIdList: Types.ObjectId[];
