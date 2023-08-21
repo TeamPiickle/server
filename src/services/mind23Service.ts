@@ -46,7 +46,7 @@ const createCommentResponse = async (
 
 const findQuestionList = async (): Promise<QuestionResponseDto> => {
   const questions = await Question.find({});
-  const totalCards: CardResponseDto[] = [];
+  const totalCards: Mind23CardResponseDto[] = [];
   for (const question of questions) {
     totalCards.push(await createCardResponse(question));
   }
@@ -63,7 +63,6 @@ const findCommentsList = async (questionId?: Types.ObjectId) => {
       question: questionId
     })
     .sort({ createdAt: -1 });
-  console.log(comments.length);
   const totalComments: CommentDto[] = [];
   for (const comment of comments) {
     totalComments.push(await createCommentResponse(comment));
