@@ -20,6 +20,8 @@ import PreUser from '../models/preUser';
 import Card, { CardDocument } from '../models/card';
 import QuitLog from '../models/quitLog';
 
+const NICKNAME_LIMIT = 8;
+
 const isEmailExisting = async (email: string): Promise<boolean> => {
   const alreadyUser = await User.findOne({
     email
@@ -94,8 +96,9 @@ const findUserById = async (
   if (!user) {
     throw new IllegalArgumentException('존재하지 않는 유저 입니다.');
   }
+  const splitedNickname = user.nickname.slice(0, NICKNAME_LIMIT);
   return {
-    nickname: user.nickname,
+    nickname: splitedNickname,
     email: user.email,
     profileImageUrl: user.profileImageUrl
   };
