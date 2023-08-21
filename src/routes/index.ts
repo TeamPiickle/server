@@ -10,14 +10,11 @@ import CardMedleyRouter from './cardMedleyRouter';
 import flexibleAuth from '../middlewares/flexibleAuth';
 import guestHandler from '../middlewares/session/guestHandler';
 
-import uidSetter from '../middlewares/session/uidSetter';
 const router = Router();
 
 router.use('/users', UserRouter);
 router.use('/categories', CategoryRouter);
-
-router.use('/ballots', uidSetter, guestHandler, flexibleAuth, BallotRouter);
-
+router.use('/ballots', flexibleAuth, guestHandler, BallotRouter);
 router.use('/cards', CardRouter);
 router.use('/test', TestRouter);
 router.use('/medley', CardMedleyRouter);
