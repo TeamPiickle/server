@@ -3,7 +3,7 @@ import Question, { QuestionDocument } from '../models/mind23/question';
 import Comment, { CommentDocument } from '../models/mind23/comment';
 import { IllegalArgumentException } from '../intefaces/exception';
 import PrizeEntry, { PrizeEntryDocument } from '../models/mind23/prizeEntry';
-import { CardResponseDto } from '../intefaces/CardResponseDto';
+import { Mind23CardResponseDto } from '../intefaces/mind23/Mind23CardResponseDto';
 import { QuestionResponseDto } from '../intefaces/mind23/QuestionResponseDto';
 import { CommentDto } from '../intefaces/mind23/CommentDto';
 import { Types } from 'mongoose';
@@ -20,14 +20,15 @@ const findUserInfo = async (userId?: Types.ObjectId) => {
 
 const createCardResponse = async (
   question: QuestionDocument
-): Promise<CardResponseDto> => {
+): Promise<Mind23CardResponseDto> => {
   return {
     _id: question._id,
     content: question.content,
     tags: [],
     category: [],
     filter: [],
-    isBookmark: false
+    isBookmark: false,
+    essential: question.essential
   };
 };
 

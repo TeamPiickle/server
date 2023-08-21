@@ -1,7 +1,7 @@
 import { Types } from 'mongoose';
-import { CardResponseDto } from '../CardResponseDto';
+import { Mind23CardResponseDto } from '../mind23/Mind23CardResponseDto';
 
 export interface QuestionResponseDto {
   totalCount: Number;
-  cards: CardResponseDto[];
+  cards: Mind23CardResponseDto[];
 }
