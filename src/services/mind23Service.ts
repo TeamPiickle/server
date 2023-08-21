@@ -1,14 +1,12 @@
-import util from '../modules/util';
 import Question, { QuestionDocument } from '../models/mind23/question';
 import Comment, { CommentDocument } from '../models/mind23/comment';
 import { IllegalArgumentException } from '../intefaces/exception';
-import PrizeEntry, { PrizeEntryDocument } from '../models/mind23/prizeEntry';
+import PrizeEntry from '../models/mind23/prizeEntry';
 import { Mind23CardResponseDto } from '../intefaces/mind23/Mind23CardResponseDto';
 import { QuestionResponseDto } from '../intefaces/mind23/QuestionResponseDto';
 import { CommentDto } from '../intefaces/mind23/CommentDto';
 import { Types } from 'mongoose';
 import User from '../models/user/user';
-import { QuestionDto } from '../intefaces/mind23/QuestionDto';
 
 const findUserInfo = async (userId?: Types.ObjectId) => {
   const user = await User.findOne({ _id: userId });
@@ -18,9 +16,9 @@ const findUserInfo = async (userId?: Types.ObjectId) => {
   return user;
 };
 
-const createCardResponse = async (
+const createCardResponse = (
   question: QuestionDocument
-): Promise<Mind23CardResponseDto> => {
+): Mind23CardResponseDto => {
   return {
     _id: question._id,
     content: question.content,
@@ -46,10 +44,9 @@ const createCommentResponse = async (
 
 const findQuestionList = async (): Promise<QuestionResponseDto> => {
   const questions = await Question.find({});
-  const totalCards: Mind23CardResponseDto[] = [];
-  for (const question of questions) {
-    totalCards.push(await createCardResponse(question));
-  }
+  const totalCards: Mind23CardResponseDto[] = questions.map(question =>
+    createCardResponse(question)
+  );
   const count = await PrizeEntry.find({}).count();
   return {
     totalCount: count,
@@ -58,11 +55,11 @@ const findQuestionList = async (): Promise<QuestionResponseDto> => {
 };
 
 const findCommentsList = async (questionId?: Types.ObjectId) => {
-  const comments = await Comment.aggregate()
+  const comments = (await Comment.aggregate()
     .match({
       question: questionId
     })
-    .sort({ createdAt: -1 });
+    .sort({ createdAt: -1 })) as CommentDocument[];
   const totalComments: CommentDto[] = [];
   for (const comment of comments) {
     totalComments.push(await createCommentResponse(comment));
@@ -73,7 +70,7 @@ const findCommentsList = async (questionId?: Types.ObjectId) => {
 const createComment = async (
   userId?: Types.ObjectId,
   questionId?: Types.ObjectId,
-  content?: String
+  content?: string
 ) => {
   if (!userId) {
     throw new IllegalArgumentException('해당하는 아이디의 유저가 없습니다.');

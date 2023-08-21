@@ -6,14 +6,14 @@ import errorHandler from './middlewares/errorHandler';
 import * as SentryConfig from './loaders/sentryConfiguration';
 import corsMiddleware from './middlewares/cors';
 import config from './config';
-import expressSession from './middlewares/session/guestSession';
+import sessionConfiguration from './middlewares/session/sessionConfiguration';
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(helmet());
 app.use(corsMiddleware);
-app.use(expressSession);
+app.use(sessionConfiguration);
 SentryConfig.initializeSentry(app);
 app.use(routes);
 SentryConfig.attachSentryErrorHandler(app);

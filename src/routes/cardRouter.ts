@@ -1,24 +1,24 @@
 import { Router } from 'express';
 import { CardController } from '../controllers';
-import flexibleAuth from '../middlewares/flexibleAuth';
+import optionalUserResolver from '../middlewares/optionalUserResolver';
 
 const router = Router();
 router.get(
   '/cardByBookmarkedGender/:gender',
-  flexibleAuth,
+  optionalUserResolver,
   CardController.getCardByBookmarkedGender
 );
 router.get(
   '/recentlyBookmarkedCard',
-  flexibleAuth,
+  optionalUserResolver,
   CardController.getRecentlyBookmarkedCard
 );
 router.get(
   '/recentlyUpdatedCard',
-  flexibleAuth,
+  optionalUserResolver,
   CardController.getRecentlyUpdatedCard
 );
-router.get('/best', flexibleAuth, CardController.getBestCardList);
-router.get('/:cardId', flexibleAuth, CardController.getCards);
+router.get('/best', optionalUserResolver, CardController.getBestCardList);
+router.get('/:cardId', optionalUserResolver, CardController.getCards);
 
 export default router;

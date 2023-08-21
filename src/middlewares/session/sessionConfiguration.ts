@@ -3,7 +3,7 @@ import MongoStore from 'connect-mongo';
 import config from '../../config';
 import { RequestHandler } from 'express';
 
-const expressSession: RequestHandler = session({
+const sessionConfiguration: RequestHandler = session({
   secret: config.sessionKey,
   store: MongoStore.create({
     mongoUrl: config.mongoURI
@@ -19,4 +19,4 @@ const expressSession: RequestHandler = session({
   saveUninitialized: false
 });
 
-export default expressSession;
+export default sessionConfiguration;

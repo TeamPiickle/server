@@ -1,4 +1,4 @@
-import { Router, RequestHandler } from 'express';
+import { Router } from 'express';
 import { body } from 'express-validator';
 import { BallotController } from '../controllers';
 

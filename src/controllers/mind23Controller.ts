@@ -4,9 +4,7 @@ import statusCode from '../modules/statusCode';
 import util from '../modules/util';
 import { Mind23Service } from '../services';
 import { Types } from 'mongoose';
-import { QuestionDto } from '../intefaces/mind23/QuestionDto';
 import { QuestionResponseDto } from '../intefaces/mind23/QuestionResponseDto';
-import { TypedRequest } from '../types/TypedRequest';
 
 /**
  *  @route /mind23/api/questions
@@ -72,7 +70,7 @@ const createComment = async (
     const questionId: Types.ObjectId | undefined = new Types.ObjectId(
       req.params.questionId
     );
-    const comment: String = req.body.content;
+    const comment: string = req.body.content;
     await Mind23Service.createComment(userId, questionId, comment);
     return res
       .status(statusCode.OK)
