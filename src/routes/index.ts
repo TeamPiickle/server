@@ -5,6 +5,7 @@ import CategoryRouter from './CategoryRouter';
 import BallotRouter from './ballotRouter';
 import CardRouter from './cardRouter';
 import TestRouter from './testRouter';
+import Mind23Router from './mind23Router';
 import CardMedleyRouter from './cardMedleyRouter';
 import flexibleAuth from '../middlewares/flexibleAuth';
 import guestHandler from '../middlewares/session/guestHandler';
@@ -45,4 +46,5 @@ router.use(
 router.use('/cards', CardRouter);
 router.use('/test', TestRouter);
 router.use('/medley', CardMedleyRouter);
+router.use('/mind23/api', Mind23Router);
 export default router;
