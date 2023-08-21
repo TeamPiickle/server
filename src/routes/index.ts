@@ -24,6 +24,7 @@ const expressSession: RequestHandler = session({
   }),
   cookie: {
     sameSite: 'none',
+    httpOnly: true,
     secure: true,
     maxAge: 3.6e6 * 24 * 180
   },

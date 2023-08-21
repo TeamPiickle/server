@@ -1,7 +1,6 @@
 import { Router, RequestHandler } from 'express';
 import { body } from 'express-validator';
 import { BallotController } from '../controllers';
-import auth from '../middlewares/auth';
 
 const router = Router();
 
