@@ -21,6 +21,7 @@ const expressSession: RequestHandler = session({
     maxAge: 3.6e6 * 24 * 180
   },
   resave: false,
+  proxy: true,
   saveUninitialized: false
 });
 
