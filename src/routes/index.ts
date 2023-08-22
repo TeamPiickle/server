@@ -19,4 +19,7 @@ router.use('/cards', CardRouter);
 router.use('/test', TestRouter);
 router.use('/medley', CardMedleyRouter);
 router.use('/mind23/api', Mind23Router);
+router.use('/health', (req, res) => {
+  res.status(200).send('ok');
+});
 export default router;
