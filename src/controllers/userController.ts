@@ -536,7 +536,6 @@ export {
   readEmailIsExisting,
   socialLogin,
   postUser,
-  // patchUser,
   postUserLogin,
   getUserProfile,
   updateUserNickname,

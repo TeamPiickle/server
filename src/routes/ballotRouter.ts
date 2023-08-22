@@ -11,6 +11,7 @@ router.post(
 );
 
 router.get('/:ballotTopicId', BallotController.getBallotStatus);
+
 router.get('', BallotController.getMainBallotList);
 
 export default router;
