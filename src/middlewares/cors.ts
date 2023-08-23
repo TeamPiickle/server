@@ -1,8 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
+import config from '../config';
 
 const cookieCors = cors({
-  origin: 'https://client-wheat-three.vercel.app',
+  origin: config.webAppUrl,
   credentials: true
 });
 
