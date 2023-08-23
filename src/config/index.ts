@@ -12,6 +12,11 @@ const MONGO_URI =
     ? process.env.MONGODB_URI
     : process.env.MONGODB_DEVELOPMENT_URI;
 
+const WEB_APP_URL =
+  NODE_ENV == 'production'
+    ? process.env.WEB_APP_URL
+    : process.env.WEB_APP_DEV_URL;
+
 export default {
   nodeEnv: NODE_ENV,
   port: parseInt(process.env.PORT as string, 10),
@@ -59,5 +64,9 @@ export default {
   clientKey: process.env.CLIENT_KEY as string,
   naverClientId: process.env.NAVER_CLIENT_ID as string,
   naverClientSecret: process.env.NAVER_CLIENT_SECRET as string,
-  sentryDsn: process.env.SENTRY_DSN as string
+  sentryDsn: process.env.SENTRY_DSN as string,
+  /**
+   * piickle service application url
+   */
+  webAppUrl: WEB_APP_URL as string
 };
