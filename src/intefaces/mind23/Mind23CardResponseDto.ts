@@ -7,5 +7,4 @@ export interface Mind23CardResponseDto {
   category: Types.ObjectId[];
   filter: string[];
   isBookmark?: boolean;
-  essential: Boolean;
 }

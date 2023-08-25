@@ -25,8 +25,7 @@ const createCardResponse = (
     tags: [],
     category: [],
     filter: [],
-    isBookmark: false,
-    essential: question.essential
+    isBookmark: false
   };
 };
 
