@@ -8,6 +8,7 @@ import { CommentDto } from '../intefaces/mind23/CommentDto';
 import { Types } from 'mongoose';
 import User from '../models/user/user';
 
+const NICKNAME_LIMIT = 8;
 const findUserInfo = async (userId?: Types.ObjectId) => {
   const user = await User.findOne({ _id: userId });
   if (!user) {
@@ -30,15 +31,28 @@ const createCardResponse = (
   };
 };
 
+const checkCommentStatus = (
+  authorId: Types.ObjectId,
+  userId?: Types.ObjectId
+): Boolean => {
+  if (!userId) {
+    return false;
+  }
+  return userId.toString() === authorId.toString();
+};
+
 const createCommentResponse = async (
-  comment: CommentDocument
+  comment: CommentDocument,
+  userId?: Types.ObjectId
 ): Promise<CommentDto> => {
   const user = await findUserInfo(comment.author);
   return {
-    _id: comment.author,
+    _id: comment._id,
+    authorId: comment.author,
     content: comment.content,
     profileImageUrl: user.profileImageUrl,
-    nickname: user.nickname
+    nickname: user.nickname.slice(0, NICKNAME_LIMIT),
+    commentStatus: checkCommentStatus(comment.author, userId)
   };
 };
 
@@ -54,7 +68,10 @@ const findQuestionList = async (): Promise<QuestionResponseDto> => {
   };
 };
 
-const findCommentsList = async (questionId?: Types.ObjectId) => {
+const findCommentsList = async (
+  userId?: Types.ObjectId,
+  questionId?: Types.ObjectId
+) => {
   const comments = (await Comment.aggregate()
     .match({
       question: questionId
@@ -62,7 +79,7 @@ const findCommentsList = async (questionId?: Types.ObjectId) => {
     .sort({ createdAt: -1 })) as CommentDocument[];
   const totalComments: CommentDto[] = [];
   for (const comment of comments) {
-    totalComments.push(await createCommentResponse(comment));
+    totalComments.push(await createCommentResponse(comment, userId));
   }
   return totalComments;
 };
@@ -83,12 +100,17 @@ const createComment = async (
   await comment.save();
 };
 
-const createPrizeEntry = async (userId?: Types.ObjectId) => {
+const createPrizeEntry = async (
+  userId?: Types.ObjectId,
+  prizeEntryStatus?: Boolean
+) => {
   if (!userId) {
     throw new IllegalArgumentException('해당하는 아이디의 유저가 없습니다.');
   }
+  console.log(prizeEntryStatus);
   const prizeEntry = new PrizeEntry({
-    user: userId
+    user: userId,
+    prizeEntryStatus: prizeEntryStatus
   });
   await prizeEntry.save();
 };
