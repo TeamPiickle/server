@@ -4,7 +4,9 @@ import statusCode from '../modules/statusCode';
 import util from '../modules/util';
 import { Mind23Service } from '../services';
 import { Types } from 'mongoose';
+import { QuestionDto } from '../intefaces/mind23/QuestionDto';
 import { QuestionResponseDto } from '../intefaces/mind23/QuestionResponseDto';
+import { TypedRequest } from '../types/TypedRequest';
 
 /**
  *  @route /mind23/api/questions
@@ -29,7 +31,7 @@ const getQuestionList = async (
 };
 
 /**
- *  @route /mind23/api/comments
+ *  @route /mind23/api/comments/:questionId
  *  @desc mind23 용 댓글을 조회합니다.
  *  @access Public
  */
@@ -39,8 +41,9 @@ const getCommentList = async (
   next: NextFunction
 ) => {
   try {
+    const userId: Types.ObjectId | undefined = req.user?.id;
     const questionId = new Types.ObjectId(req.params.questionId);
-    const comments = await Mind23Service.findCommentsList(questionId);
+    const comments = await Mind23Service.findCommentsList(userId, questionId);
     return res
       .status(statusCode.OK)
       .send(
@@ -56,7 +59,7 @@ const getCommentList = async (
 };
 
 /**
- *  @route /mind23/api/comments?questionId=
+ *  @route /mind23/api/comments/:questionId
  *  @desc mind23 용 댓글을 등록합니다.
  *  @access Public
  */
@@ -92,7 +95,8 @@ const createPrizeEntry = async (
 ) => {
   try {
     const userId: Types.ObjectId | undefined = req.user?.id;
-    await Mind23Service.createPrizeEntry(userId);
+    const prizeEntryStatus: Boolean = req.body.prizeEntryStatus;
+    await Mind23Service.createPrizeEntry(userId, prizeEntryStatus);
     return res
       .status(statusCode.OK)
       .send(
