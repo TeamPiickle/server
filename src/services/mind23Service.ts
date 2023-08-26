@@ -23,7 +23,7 @@ const createCardResponse = (
   return {
     _id: question._id,
     content: question.content,
-    tags: [],
+    tags: question.tags,
     category: [],
     filter: [],
     isBookmark: false
@@ -33,7 +33,7 @@ const createCardResponse = (
 const checkCommentStatus = (
   authorId: Types.ObjectId,
   userId?: Types.ObjectId
-): Boolean => {
+): boolean => {
   if (!userId) {
     return false;
   }
@@ -101,12 +101,11 @@ const createComment = async (
 
 const createPrizeEntry = async (
   userId?: Types.ObjectId,
-  prizeEntryStatus?: Boolean
+  prizeEntryStatus?: boolean
 ) => {
   if (!userId) {
     throw new IllegalArgumentException('해당하는 아이디의 유저가 없습니다.');
   }
-  console.log(prizeEntryStatus);
   const prizeEntry = new PrizeEntry({
     user: userId,
     prizeEntryStatus: prizeEntryStatus

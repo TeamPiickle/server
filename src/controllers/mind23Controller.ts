@@ -4,7 +4,6 @@ import statusCode from '../modules/statusCode';
 import util from '../modules/util';
 import { Mind23Service } from '../services';
 import { Types } from 'mongoose';
-import { QuestionDto } from '../intefaces/mind23/QuestionDto';
 import { QuestionResponseDto } from '../intefaces/mind23/QuestionResponseDto';
 import { TypedRequest } from '../types/TypedRequest';
 
@@ -64,7 +63,7 @@ const getCommentList = async (
  *  @access Public
  */
 const createComment = async (
-  req: Request,
+  req: TypedRequest<{ content: string }, any, { questionId: string }>,
   res: Response,
   next: NextFunction
 ) => {
@@ -89,13 +88,13 @@ const createComment = async (
  *  @access Public
  */
 const createPrizeEntry = async (
-  req: Request,
+  req: TypedRequest<{ prizeEntryStatus: boolean }>,
   res: Response,
   next: NextFunction
 ) => {
   try {
     const userId: Types.ObjectId | undefined = req.user?.id;
-    const prizeEntryStatus: Boolean = req.body.prizeEntryStatus;
+    const prizeEntryStatus: boolean = req.body.prizeEntryStatus;
     await Mind23Service.createPrizeEntry(userId, prizeEntryStatus);
     return res
       .status(statusCode.OK)
