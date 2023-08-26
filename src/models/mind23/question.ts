@@ -3,7 +3,6 @@ import IDocument from '../interface/Document';
 
 interface IQuestion {
   content: string;
-  essential: boolean;
   tags: string[];
 }
 
@@ -11,7 +10,6 @@ type QuestionDocument = IQuestion & IDocument;
 
 const questionSchema = new Schema<QuestionDocument>({
   content: String,
-  essential: Boolean,
   tags: [String]
 });
 
