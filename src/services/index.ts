@@ -5,6 +5,10 @@ import * as CardService from './cardService';
 import * as PreUserService from './preUserService';
 import * as AuthService from './authService';
 import * as CardMedleyService from './cardMedleyService';
+import * as SocialAuthService from './socialAuthService';
+import * as NaverLoginService from './naverLoginService';
+import * as BlockCardService from './blockCardService';
+import * as Mind23Service from './mind23Service';
 
 export {
   AuthService,
@@ -12,6 +16,10 @@ export {
   CategoryService,
   BallotService,
   CardService,
+  BlockCardService,
   PreUserService,
-  CardMedleyService
+  CardMedleyService,
+  SocialAuthService,
+  NaverLoginService,
+  Mind23Service
 };

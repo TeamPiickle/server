@@ -1,15 +1,23 @@
-import User from '../src/models/user';
+import User from '../src/models/user/user';
 import { before, after } from 'mocha';
 import request from 'supertest';
 import app from '../src/index';
 import mongoose from 'mongoose';
-import path from 'path';
-import config from '../src/config';
+import dotenv from 'dotenv';
+import { IllegalStateException } from '../src/intefaces/exception';
+import LoginResponseDto from '../src/intefaces/user/LoginResponseDto';
+
+dotenv.config({ path: `.env.test` });
+const mongoTestUri = process.env.MONGODB_URI;
+
+if (!mongoTestUri) {
+  throw new IllegalStateException('cannot read test database uri');
+}
 
 let jwtToken = 'Bearar ';
 before(async () => {
   try {
-    await mongoose.createConnection(config.mongoTestURI);
+    await mongoose.connect(mongoTestUri);
   } catch (err) {
     console.error(err);
     process.exit(1);
@@ -39,6 +47,7 @@ describe('POST /users 유저 생성 API', () => {
   });
 });
 
+type LoginResponse = { body: { data: LoginResponseDto } };
 describe('POST /users/login 유저 로그인 API', () => {
   it('유저 로그인 성공', async () => {
     await request(app)
@@ -48,8 +57,8 @@ describe('POST /users/login 유저 로그인 API', () => {
         email: 'test@gmail.com',
         password: 'test'
       })
-      .expect(res => {
-        jwtToken = jwtToken + res.body.data.accessToken;
+      .expect((res: LoginResponse) => {
+        jwtToken = `Bearer ${res.body.data.accessToken}`;
       })
       .expect(200) // 예측 상태 코드
       .expect('Content-Type', /json/); // 예측 content-type

@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import User from '../models/user';
+import User from '../models/user/user';
 import util from '../modules/util';
 import { TypedRequest } from '../types/TypedRequest';
 import config from '../config';
