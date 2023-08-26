@@ -3,14 +3,16 @@ import IDocument from '../interface/Document';
 
 interface IQuestion {
   content: string;
-  essential: Boolean;
+  essential: boolean;
+  tags: string[];
 }
 
 type QuestionDocument = IQuestion & IDocument;
 
 const questionSchema = new Schema<QuestionDocument>({
   content: String,
-  essential: Boolean
+  essential: Boolean,
+  tags: [String]
 });
 
 const Question = model<QuestionDocument>('Question', questionSchema);
