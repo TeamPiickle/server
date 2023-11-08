@@ -1,9 +1,10 @@
 import { Request } from 'express';
-import { UserId } from '../types/types';
-export const generateSlackMessage = (req: Request, error: any): string => {
+import axios from 'axios';
+import config from '../config';
+
+const alertError = (req: Request, error: any): string => {
   const method = req.method.toUpperCase();
   const originalUrl = req.originalUrl;
-  const uid = <UserId>req.user?.id;
   const token = req.header('x-auth-token')?.split(' ')[1];
 
   const reqInfo = {
@@ -13,6 +14,7 @@ export const generateSlackMessage = (req: Request, error: any): string => {
     jwt: token,
     body: req.body
   };
+
   return `🚨  [${method}] \`${originalUrl}\`\n - *statusCode*: ${
     error.statusCode
   }\n - *message*: ${error.message} \`\`\`${JSON.stringify(
@@ -20,4 +22,17 @@ export const generateSlackMessage = (req: Request, error: any): string => {
     null,
     2
   )}\`\`\``;
+};
+
+export const send = async (
+  req: Request,
+  causeError: any,
+  color?: string
+): Promise<void> => {
+  try {
+    const message: string = alertError(req, causeError);
+    await axios.post(config.slackWebHookUrl, { text: message, color });
+  } catch (error: any) {
+    console.log(error);
+  }
 };
