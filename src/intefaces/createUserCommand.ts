@@ -1,3 +1,4 @@
+import config from '../config';
 import { AgeGroup, AgeGroupKey } from '../models/user/ageGroup';
 import { Gender, GenderKey } from '../models/user/gender';
 import { TypedRequest } from '../types/TypedRequest';
@@ -28,7 +29,9 @@ const toCommand = (req: TypedRequest<CreateUserReq>) => {
       ? AgeGroup[req.body.ageGroup]
       : AgeGroup.UNDEFINED,
     gender: req.body.gender ? Gender[req.body.gender] : Gender.ETC,
-    profileImgUrl: (req?.file as Express.MulterS3.File)?.location
+    profileImgUrl: `${config.imageServerUrl}/${
+      (req?.file as Express.MulterS3.File)?.key
+    }`
   };
   return createUserCommand;
 };
