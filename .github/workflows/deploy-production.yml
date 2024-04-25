@@ -1,15 +1,11 @@
-name: build and push code
+name: CI
 on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
-
 jobs:
   git-push:
-    name: build and push
+    name: Build and push
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -29,8 +25,8 @@ jobs:
           user-email: dev.kayoung@gmail.com
           target-branch: main
   sync-branches:
+    name: Sync main -> develop
     runs-on: ubuntu-latest
-    name: Syncing develop branch with main
     steps:
       - name: Checkout
         uses: actions/checkout@v2
