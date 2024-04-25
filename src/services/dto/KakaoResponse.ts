@@ -70,7 +70,7 @@ const toPiickleAgeGroup = (ageGroup: string): AgeGroup => {
 
 const kakaoToPiickleUser = (kakaoUser: KakaoResponse): IUser => {
   const nickname =
-    kakaoUser.kakao_account.profile.nickname || `kakao ${kakaoUser.id}`;
+    kakaoUser.kakao_account?.profile?.nickname ?? `kakao ${kakaoUser.id}`;
   const profileImageUrl =
     kakaoUser.kakao_account.profile.profile_image_url ||
     config.defaultProfileImgUrl;
