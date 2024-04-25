@@ -1,8 +1,8 @@
 import {
-  getAuth,
   createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  sendEmailVerification
+  getAuth,
+  sendEmailVerification,
+  signInWithEmailAndPassword
 } from 'firebase/auth';
 import { InternalServerError } from '../intefaces/exception';
 import firebase from '../loaders/firebase';

@@ -1,11 +1,11 @@
-name: build and push code
+name: CI
 on:
   push:
     branches:
       - main
 jobs:
   git-push:
-    name: build and push
+    name: Build and push
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -24,10 +24,21 @@ jobs:
           destination-repository-name: 'express-build'
           user-email: dev.kayoung@gmail.com
           target-branch: main
-#  deploy:
-#    name: deploy pm2
-#    needs: git-push
-#    runs-on: [self-hosted, production]
-#    steps:
-#      - name: run shell script
-#        run: /home/ubuntu/deploy-piickle-server.sh
+  sync-branches:
+    name: Sync main -> develop
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - name: Opening pull request
+        id: pull
+        uses: tretuna/sync-branches@1.4.0
+        with:
+          GITHUB_TOKEN: ${{ secrets.TOKEN_FOR_PR }}
+          FROM_BRANCH: "main"
+          TO_BRANCH: "develop"
+          PULL_REQUEST_TITLE: "sync: main -> develop"

@@ -1,10 +1,13 @@
 import { Router } from 'express';
 import { body } from 'express-validator';
-import { UserController } from '../controllers';
-import auth from '../middlewares/auth';
-import upload from '../config/multer';
+import { UserController } from '../../controllers';
+import userResolver from '../../middlewares/userResolver';
+import upload from '../../config/multer';
+import userCardRouter from './userCardRouter';
 
 const router = Router();
+
+router.use('/cards', userCardRouter);
 
 router.get('/existing', UserController.readEmailIsExisting);
 
@@ -27,13 +30,7 @@ router.post(
   UserController.postUser
 );
 
-router.patch(
-  '',
-  auth,
-  upload.single('imgFile'),
-  [body('nickname').notEmpty(), body('birthday').notEmpty()],
-  UserController.patchUser
-);
+router.post('/social', UserController.socialLogin);
 
 router.post(
   '/login',
@@ -41,30 +38,30 @@ router.post(
   UserController.postUserLogin
 );
 
-router.get('', auth, UserController.getUserProfile);
-router.get('/bookmarks', auth, UserController.getBookmarks);
+router.get('', userResolver, UserController.getUserProfile);
+router.get('/bookmarks', userResolver, UserController.getBookmarks);
 
 router.put(
   '/bookmarks',
-  auth,
+  userResolver,
   [body('cardId').notEmpty()],
   UserController.createdeleteBookmark
 );
 
 router.patch(
   '/profile-image',
-  auth,
+  userResolver,
   upload.single('file'),
   UserController.updateUserProfileImage
 );
 
 router.patch(
   '/nickname',
-  auth,
+  userResolver,
   [body('nickname').notEmpty()],
   UserController.updateUserNickname
 );
 
-router.put('/me', auth, UserController.deleteUser);
+router.put('/me', userResolver, UserController.deleteUser);
 
 export default router;
