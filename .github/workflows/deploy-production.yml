@@ -3,6 +3,12 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
+env:
+  BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+
 jobs:
   git-push:
     name: build and push
@@ -41,4 +47,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.TOKEN_FOR_PR }}
           FROM_BRANCH: "main"
           TO_BRANCH: "develop"
-          PULL_REQUEST_TITLE: "sync: main -> develop"
+          PULL_REQUEST_TITLE: "sync: $BRANCH_NAME -> main -> develop"
