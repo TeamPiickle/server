@@ -41,4 +41,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.TOKEN_FOR_PR }}
           FROM_BRANCH: "main"
           TO_BRANCH: "develop"
-          PULL_REQUEST_TITLE: "sync: ${{ github.ref_name || github.ref }} -> main -> develop"
+          PULL_REQUEST_TITLE: "sync: main -> develop"

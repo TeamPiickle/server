@@ -68,5 +68,6 @@ export default {
   /**
    * piickle service application url
    */
-  webAppUrl: WEB_APP_URL as string
+  webAppUrl: WEB_APP_URL as string,
+  imageServerUrl: process.env.IMAGE_SERVER_URL as string
 };

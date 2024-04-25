@@ -363,12 +363,15 @@ const updateUserProfileImage = async (
       throw new IllegalArgumentException('필요한 값이 없습니다.');
     }
     const image = req.file as Express.MulterS3.File;
-    const { location } = image;
+    const { key } = image;
     const userId = req.user?.id;
     if (!userId) {
       throw new IllegalArgumentException('로그인이 필요합니다.');
     }
-    const data = await UserService.updateUserProfileImage(userId, location);
+    const data = await UserService.updateUserProfileImage(
+      userId,
+      `${config.imageServerUrl}/${key}`
+    );
     return res
       .status(statusCode.OK)
       .send(
