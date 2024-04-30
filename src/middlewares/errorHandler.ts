@@ -20,7 +20,6 @@ const errHandler = (
   }
 
   webhook
-    // .send(generateSlackMessage(req, err))
     .send(generateBlock(req, err))
     .then(() => {})
     .catch(error => {
