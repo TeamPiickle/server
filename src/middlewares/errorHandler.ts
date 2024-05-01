@@ -24,11 +24,14 @@ const errHandler = (
     .then(() => {})
     .catch(error => {
       console.error(error);
+    })
+    .finally(() => {
+      return res
+        .status(statusCode.INTERNAL_SERVER_ERROR)
+        .send(
+          util.fail(statusCode.INTERNAL_SERVER_ERROR, (err as Error).message)
+        );
     });
-
-  return res
-    .status(statusCode.INTERNAL_SERVER_ERROR)
-    .send(util.fail(statusCode.INTERNAL_SERVER_ERROR, (err as Error).message));
 };
 
 export default errHandler;
