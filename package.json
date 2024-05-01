@@ -43,6 +43,7 @@
   "dependencies": {
     "@sentry/node": "^7.57.0",
     "@slack/client": "^5.0.2",
+    "@slack/webhook": "^7.0.2",
     "@types/bcrypt": "^5.0.0",
     "@types/bcryptjs": "^2.4.2",
     "@types/chai-things": "^0.0.35",

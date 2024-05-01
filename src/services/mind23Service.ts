@@ -6,14 +6,15 @@ import { Mind23CardResponseDto } from '../intefaces/mind23/Mind23CardResponseDto
 import { QuestionResponseDto } from '../intefaces/mind23/QuestionResponseDto';
 import { CommentDto } from '../intefaces/mind23/CommentDto';
 import { Types } from 'mongoose';
-import User from '../models/user/user';
+import User, { UserDocument } from '../models/user/user';
+import { Nullable } from '../types/types';
+import config from '../config';
 
 const NICKNAME_LIMIT = 8;
-const findUserInfo = async (userId?: Types.ObjectId) => {
+const findUserInfo = async (
+  userId?: Types.ObjectId
+): Promise<Nullable<UserDocument>> => {
   const user = await User.findOne({ _id: userId });
-  if (!user) {
-    throw new IllegalArgumentException('해당하는 아이디의 유저가 없습니다.');
-  }
   return user;
 };
 
@@ -49,8 +50,8 @@ const createCommentResponse = async (
     _id: comment._id,
     authorId: comment.author,
     content: comment.content,
-    profileImageUrl: user.profileImageUrl,
-    nickname: user.nickname.slice(0, NICKNAME_LIMIT),
+    profileImageUrl: user?.profileImageUrl || config.defaultProfileImgUrl,
+    nickname: user?.nickname.slice(0, NICKNAME_LIMIT) || '탈퇴한 회원',
     commentStatus: checkCommentStatus(comment.author, userId)
   };
 };
