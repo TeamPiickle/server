@@ -42,7 +42,6 @@
     웹서비스 피클의 서버 저장소
     <br />
     <br />
-    <a href="https://www.piickle.link">View Demo</a>
     ·
     <a href="https://github.com/TeamPiickle/server/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
     ·
